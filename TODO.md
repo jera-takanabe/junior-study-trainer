@@ -15,14 +15,14 @@
 - [x] docs/concept/category_policy.md を作成する
 - [x] 初回コミットを作成する
 - [ ] app/index.html を配置する
-- [ ] app/questions.js を配置する
+- [x] app/questions.js を配置する
 
 ## 漢検5級プロトタイプ
 
 - [ ] set002_definition.md からセット定義テンプレートを分離する
 - [x] Set001〜Set010 の定義ドキュメントを配置する
 - [x] Set001〜Set010 の問題データを配置する
-- [ ] Set001〜Set010 統合版 questions.js を配置する
+- [x] Set001〜Set010 統合版 questions.js を配置する
 - [ ] 合計438問としてアプリで表示されることを確認する
 
 ## 将来検討
