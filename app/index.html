@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>タイムアタック一問一答 v0.6</title>
+  <!--
+    questions.js を同じフォルダに置いてください。
+
+    v0.6 追加点：
+    - 問題セット切替
+    - window.QUIZ_SETS manifest 対応
+    - setId / setName 自動抽出
+    - JSONバックアップに sets を含める
+    - CSVに set_id / set_name を含める
+
+    推奨 questions.js 形式：
+
+    window.QUIZ_SETS = [
+      {
+        setId: "s001",
+        setName: "基本熟語・日常語 01",
+        seriesName: "基本熟語・日常語",
+        order: 1,
+        description: "最初に扱う基本熟語・日常語セット"
+      }
+    ];
+
+    window.QUIZ_QUESTIONS = [
+      {
+        id: "kanken5-s001-read-001",
+        setId: "s001",
+        setName: "基本熟語・日常語 01",
+        domain: "kanken",
+        exam: "漢検5級",
+        category: "漢検5級・移動用",
+        level: "読み",
+        unit: "小6漢字",
+        questionType: "read",
+        question: "次の漢字の読みは？\n\n『承認』",
+        answer: "しょうにん",
+        note: "意味：よいと認めること。",
+        tags: ["漢検5級", "Set001", "読み"],
+        targets: ["承", "認", "承認"]
+      }
+    ];
+  -->
+  <script src="questions.js"></script>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --warning: #f59e0b;
+      --border: #e5e7eb;
+      --new: #f3f4f6;
+      --started: #dbeafe;
+      --review: #fef3c7;
+      --mastered: #dcfce7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .app {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3 { margin-top: 0; }
+    h1 { font-size: 1.7rem; line-height: 1.3; }
+    h2 { font-size: 1.35rem; }
+
+    .muted { color: var(--muted); font-size: 0.95rem; }
+    .small { font-size: 0.9rem; }
+    .hidden { display: none !important; }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    label {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    select, input {
+      width: 100%;
+      font-size: 1rem;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.05s ease, opacity 0.15s ease;
+      min-height: 54px;
+    }
+
+    button:active { transform: scale(0.98); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-secondary { background: #e5e7eb; color: #111827; }
+    .btn-success { background: var(--success); color: white; }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-warning { background: var(--warning); color: #111827; }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    @media (min-width: 560px) {
+      .btn-row.two { grid-template-columns: 1fr 1fr; }
+      .btn-row.three { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .top-actions button {
+      min-height: 42px;
+      padding: 10px 12px;
+      font-size: 0.9rem;
+    }
+
+    .progress {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-weight: 700;
+      flex-wrap: wrap;
+    }
+
+    .timer {
+      font-size: 3.5rem;
+      font-weight: 900;
+      text-align: center;
+      line-height: 1;
+      margin: 18px 0;
+    }
+
+    .timer.warning { color: var(--danger); }
+
+    .question {
+      font-size: 2rem;
+      line-height: 1.45;
+      font-weight: 900;
+      text-align: center;
+      margin: 24px 0;
+      white-space: pre-wrap;
+    }
+
+    .answer {
+      font-size: 2rem;
+      line-height: 1.45;
+      font-weight: 900;
+      text-align: center;
+      margin: 18px 0;
+      color: var(--primary-dark);
+      white-space: pre-wrap;
+    }
+
+    .note, .status-panel {
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      color: #374151;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .status-panel.ok { background: #ecfdf5; border-color: #bbf7d0; }
+    .status-panel.warn { background: #fffbeb; border-color: #fde68a; }
+    .status-panel.bad { background: #fef2f2; border-color: #fecaca; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    @media (min-width: 720px) {
+      .summary-grid.wide { grid-template-columns: repeat(5, 1fr); }
+    }
+
+    .summary-box {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+      background: #f9fafb;
+    }
+
+    .summary-box .value {
+      font-size: 1.6rem;
+      font-weight: 900;
+    }
+
+    .status-new { background: var(--new); }
+    .status-started { background: var(--started); }
+    .status-review { background: var(--review); }
+    .status-mastered { background: var(--mastered); }
+
+    .review-list { padding-left: 18px; line-height: 1.7; }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th { background: #f9fafb; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section id="setupScreen" class="card">
+      <h1>タイムアタック一問一答 v0.6</h1>
+      <p class="muted">
+        v0.5の保存・復元機能に加えて、問題セットを画面上で切り替えられます。
+      </p>
+
+      <div id="storageStatus" class="status-panel">保存状態を確認中...</div>
+
+      <div class="form-grid" style="margin-top: 16px;">
+        <div>
+          <label for="setSelect">セット</label>
+          <select id="setSelect"></select>
+        </div>
+
+        <div>
+          <label for="categorySelect">カテゴリ</label>
+          <select id="categorySelect"></select>
+        </div>
+
+        <div>
+          <label for="levelSelect">出題タイプ</label>
+          <select id="levelSelect"></select>
+        </div>
+
+        <div>
+          <label for="modeSelect">出題モード</label>
+          <select id="modeSelect">
+            <option value="all" selected>全部から出題</option>
+            <option value="new">未着手だけ</option>
+            <option value="not_mastered">習得済みを除く</option>
+            <option value="review_points">復習ポイントあり</option>
+            <option value="wrong_before">過去に不正解あり</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="questionCountSelect">問題数</label>
+          <select id="questionCountSelect">
+            <option value="5">5問</option>
+            <option value="10" selected>10問</option>
+            <option value="20">20問</option>
+            <option value="30">30問</option>
+            <option value="all">全問</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="questionTimeSelect">問題表示時間</label>
+          <select id="questionTimeSelect">
+            <option value="10">10秒</option>
+            <option value="15" selected>15秒</option>
+            <option value="20">20秒</option>
+            <option value="30">30秒</option>
+            <option value="60">60秒</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="answerTimeSelect">回答表示時間</label>
+          <select id="answerTimeSelect">
+            <option value="3">3秒</option>
+            <option value="5" selected>5秒</option>
+            <option value="10">10秒</option>
+            <option value="15">15秒</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="orderSelect">出題順</label>
+          <select id="orderSelect">
+            <option value="random" selected>ランダム</option>
+            <option value="normal">登録順</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="progressSummary" class="summary-grid wide"></div>
+      <p id="questionCountInfo" class="muted small"></p>
+
+      <div class="btn-row">
+        <button class="btn-primary" onclick="startQuiz()">スタート</button>
+      </div>
+
+      <h3 style="margin-top: 20px;">保存・バックアップ</h3>
+      <div class="top-actions">
+        <button class="btn-secondary" onclick="checkStorageStatus()">保存確認</button>
+        <button class="btn-secondary" onclick="exportBackupJson()">バックアップJSON出力</button>
+        <button class="btn-secondary" onclick="document.getElementById('backupFileInput').click()">バックアップJSON読込</button>
+        <input id="backupFileInput" type="file" accept="application/json,.json" class="hidden" onchange="importBackupJson(event)" />
+      </div>
+
+      <h3 style="margin-top: 20px;">確認・管理</h3>
+      <div class="top-actions">
+        <button class="btn-secondary" onclick="showHistory()">履歴を見る</button>
+        <button class="btn-secondary" onclick="showProgressList()">問題別進捗を見る</button>
+        <button class="btn-secondary" onclick="exportHistoryCsv()">履歴CSV</button>
+        <button class="btn-secondary" onclick="exportProgressCsv()">進捗CSV</button>
+        <button class="btn-secondary" onclick="clearHistory()">履歴削除</button>
+        <button class="btn-danger" onclick="clearProgress()">進捗リセット</button>
+      </div>
+    </section>
+
+    <section id="quizScreen" class="card hidden">
+      <div class="progress">
+        <span id="progressText">第1問 / 10問</span>
+        <span id="categoryText">カテゴリ</span>
+      </div>
+
+      <div id="timer" class="timer">15</div>
+
+      <div id="questionArea">
+        <div class="question" id="questionText"></div>
+        <div class="btn-row two">
+          <button class="btn-primary" onclick="showAnswer('manual')">回答を見る</button>
+          <button class="btn-secondary" onclick="togglePause()" id="pauseButton">一時停止</button>
+        </div>
+      </div>
+
+      <div id="answerArea" class="hidden">
+        <h2>答え</h2>
+        <div class="answer" id="answerText"></div>
+        <div id="noteText" class="note hidden"></div>
+        <p class="muted small">親が判定してください。間違いは「復習ポイント」として次につながります。</p>
+        <div class="btn-row three">
+          <button class="btn-success" onclick="judgeCurrent('correct')">正解</button>
+          <button class="btn-danger" onclick="judgeCurrent('wrong')">不正解</button>
+          <button class="btn-warning" onclick="judgeCurrent('pass')">パス</button>
+        </div>
+      </div>
+
+      <div class="btn-row two">
+        <button class="btn-secondary" onclick="finishQuiz(true)">途中終了</button>
+      </div>
+    </section>
+
+    <section id="resultScreen" class="card hidden">
+      <h2>結果</h2>
+      <div id="resultSummary" class="summary-grid"></div>
+      <div id="reviewArea"></div>
+      <div class="btn-row two">
+        <button class="btn-primary" onclick="restartWithSameSettings()">同じ設定でもう一度</button>
+        <button class="btn-secondary" onclick="backToSetup()">設定に戻る</button>
+      </div>
+      <div class="btn-row">
+        <button id="retryWrongButton" class="btn-warning" onclick="retryWrongQuestions()">間違えた問題だけ再挑戦</button>
+      </div>
+    </section>
+
+    <section id="historyScreen" class="card hidden">
+      <h2>履歴</h2>
+      <div id="historyArea"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="backToSetup()">設定に戻る</button>
+      </div>
+    </section>
+
+    <section id="progressListScreen" class="card hidden">
+      <h2>問題別進捗</h2>
+      <p class="muted small">現在のセット・カテゴリ・出題タイプ条件で表示します。</p>
+      <div id="progressListArea"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="backToSetup()">設定に戻る</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const SAMPLE_QUESTIONS = [
+      {
+        id: "sample-k5-read-001",
+        setId: "sample",
+        setName: "サンプルセット",
+        domain: "kanken",
+        exam: "漢検5級",
+        category: "漢検5級・移動用",
+        level: "読み",
+        unit: "小6漢字",
+        questionType: "read",
+        question: "次の漢字の読みは？\n\n『承認』",
+        answer: "しょうにん",
+        note: "questions.js が読み込まれていない場合のサンプル問題です。",
+        tags: ["漢検5級", "読み"],
+        targets: ["承", "認"]
+      }
+    ];
+
+    const QUESTIONS = Array.isArray(window.QUIZ_QUESTIONS) && window.QUIZ_QUESTIONS.length > 0
+      ? window.QUIZ_QUESTIONS
+      : SAMPLE_QUESTIONS;
+
+    const SETS = buildSetManifest();
+
+    // v0.4/v0.5の進捗を引き継ぐため、保存キーは同じにしています。
+    const HISTORY_KEY = "timedQuizTrainerHistoryV04";
+    const PROGRESS_KEY = "timedQuizTrainerProgressV04";
+    const APP_VERSION = "v0.6";
+
+    let settings = null;
+    let quizQuestions = [];
+    let currentIndex = 0;
+    let currentQuestionStartedAt = null;
+    let answerShownAt = null;
+    let answerTrigger = null;
+    let remainingSeconds = 0;
+    let timerId = null;
+    let isPaused = false;
+    let results = [];
+    let lastSession = null;
+
+    const setupScreen = document.getElementById("setupScreen");
+    const quizScreen = document.getElementById("quizScreen");
+    const resultScreen = document.getElementById("resultScreen");
+    const historyScreen = document.getElementById("historyScreen");
+    const progressListScreen = document.getElementById("progressListScreen");
+
+    const setSelect = document.getElementById("setSelect");
+    const categorySelect = document.getElementById("categorySelect");
+    const levelSelect = document.getElementById("levelSelect");
+    const modeSelect = document.getElementById("modeSelect");
+    const questionCountSelect = document.getElementById("questionCountSelect");
+    const questionTimeSelect = document.getElementById("questionTimeSelect");
+    const answerTimeSelect = document.getElementById("answerTimeSelect");
+    const orderSelect = document.getElementById("orderSelect");
+    const questionCountInfo = document.getElementById("questionCountInfo");
+    const progressSummary = document.getElementById("progressSummary");
+    const storageStatus = document.getElementById("storageStatus");
+
+    const progressText = document.getElementById("progressText");
+    const categoryText = document.getElementById("categoryText");
+    const timerEl = document.getElementById("timer");
+    const questionText = document.getElementById("questionText");
+    const answerText = document.getElementById("answerText");
+    const noteText = document.getElementById("noteText");
+    const questionArea = document.getElementById("questionArea");
+    const answerArea = document.getElementById("answerArea");
+    const pauseButton = document.getElementById("pauseButton");
+    const resultSummary = document.getElementById("resultSummary");
+    const reviewArea = document.getElementById("reviewArea");
+    const retryWrongButton = document.getElementById("retryWrongButton");
+    const historyArea = document.getElementById("historyArea");
+    const progressListArea = document.getElementById("progressListArea");
+
+    initialize();
+
+    function initialize() {
+      validateQuestionIds();
+      populateSets();
+      populateCategories();
+      populateLevels();
+      refreshSetupSummary();
+      checkStorageStatus(false);
+
+      setSelect.addEventListener("change", () => {
+        populateCategories();
+        populateLevels();
+        refreshSetupSummary();
+      });
+
+      categorySelect.addEventListener("change", () => {
+        populateLevels();
+        refreshSetupSummary();
+      });
+
+      levelSelect.addEventListener("change", refreshSetupSummary);
+      modeSelect.addEventListener("change", refreshSetupSummary);
+      questionCountSelect.addEventListener("change", refreshSetupSummary);
+    }
+
+    function buildSetManifest() {
+      if (Array.isArray(window.QUIZ_SETS) && window.QUIZ_SETS.length > 0) {
+        return window.QUIZ_SETS
+          .map(s => ({
+            setId: s.setId || "unset",
+            setName: s.setName || "未設定セット",
+            seriesName: s.seriesName || "",
+            order: Number.isFinite(Number(s.order)) ? Number(s.order) : 9999,
+            description: s.description || ""
+          }))
+          .sort((a, b) => a.order - b.order || a.setId.localeCompare(b.setId));
+      }
+
+      const map = new Map();
+      QUESTIONS.forEach(q => {
+        const setId = q.setId || "unset";
+        const setName = q.setName || "未設定セット";
+        if (!map.has(setId)) {
+          map.set(setId, {
+            setId,
+            setName,
+            seriesName: q.seriesName || "",
+            order: inferSetOrder(setId),
+            description: ""
+          });
+        }
+      });
+      return Array.from(map.values()).sort((a, b) => a.order - b.order || a.setId.localeCompare(b.setId));
+    }
+
+    function inferSetOrder(setId) {
+      const match = String(setId || "").match(/s(\d+)/i);
+      return match ? Number(match[1]) : 9999;
+    }
+
+    function validateQuestionIds() {
+      const ids = QUESTIONS.map(q => q.id);
+      const duplicated = ids.filter((id, index) => ids.indexOf(id) !== index);
+      if (duplicated.length > 0) {
+        alert(`問題IDが重複しています：${Array.from(new Set(duplicated)).join(", ")}`);
+      }
+    }
+
+    function populateSets() {
+      setSelect.innerHTML = "";
+      setSelect.appendChild(new Option("全部", "all"));
+      SETS.forEach(set => {
+        const count = QUESTIONS.filter(q => (q.setId || "unset") === set.setId).length;
+        const label = `${formatSetLabel(set)}（${count}問）`;
+        setSelect.appendChild(new Option(label, set.setId));
+      });
+    }
+
+    function formatSetLabel(set) {
+      if (set.setId === "unset") return set.setName;
+      const number = set.setId.replace(/^s/i, "").padStart(3, "0");
+      return `Set ${number}：${set.setName}`;
+    }
+
+    function populateCategories() {
+      const targetQuestions = getQuestionsBySet(setSelect.value);
+      const categories = Array.from(new Set(targetQuestions.map(q => q.category || "未設定"))).sort();
+      categorySelect.innerHTML = "";
+      categorySelect.appendChild(new Option("全部", "all"));
+      categories.forEach(category => categorySelect.appendChild(new Option(category, category)));
+    }
+
+    function populateLevels() {
+      const targetQuestions = getQuestionsBySetAndCategory(setSelect.value, categorySelect.value);
+      const levels = Array.from(new Set(targetQuestions.map(q => q.level || "未設定"))).sort();
+      levelSelect.innerHTML = "";
+      levelSelect.appendChild(new Option("全部", "all"));
+      levels.forEach(level => levelSelect.appendChild(new Option(level, level)));
+    }
+
+    function getQuestionsBySet(setId) {
+      if (setId === "all") return QUESTIONS;
+      return QUESTIONS.filter(q => (q.setId || "unset") === setId);
+    }
+
+    function getQuestionsBySetAndCategory(setId, category) {
+      return getQuestionsBySet(setId).filter(q => {
+        const qCategory = q.category || "未設定";
+        return category === "all" || qCategory === category;
+      });
+    }
+
+    function refreshSetupSummary() {
+      updateProgressSummary();
+      updateQuestionCountInfo();
+    }
+
+    function startQuiz(customQuestions = null) {
+      settings = {
+        setId: setSelect.value,
+        setName: getSelectedSetName(),
+        category: categorySelect.value,
+        level: levelSelect.value,
+        mode: modeSelect.value,
+        questionCount: questionCountSelect.value,
+        questionTimeSec: Number(questionTimeSelect.value),
+        answerTimeSec: Number(answerTimeSelect.value),
+        order: orderSelect.value
+      };
+
+      let sourceQuestions = customQuestions || getFilteredQuestions(settings.setId, settings.category, settings.level, settings.mode);
+
+      if (settings.order === "random") sourceQuestions = shuffleArray(sourceQuestions);
+      if (settings.questionCount !== "all") sourceQuestions = sourceQuestions.slice(0, Number(settings.questionCount));
+
+      if (sourceQuestions.length === 0) {
+        alert("出題できる問題がありません。セット、カテゴリ、出題タイプ、出題モードを変更してください。");
+        return;
+      }
+
+      quizQuestions = sourceQuestions;
+      currentIndex = 0;
+      results = [];
+      isPaused = false;
+
+      showScreen("quiz");
+      showQuestion();
+    }
+
+    function getSelectedSetName() {
+      if (setSelect.value === "all") return "全部";
+      const set = SETS.find(s => s.setId === setSelect.value);
+      return set ? set.setName : "未設定セット";
+    }
+
+    function getFilteredQuestions(setId, category, level, mode = "all") {
+      return QUESTIONS.filter(q => {
+        const qSetId = q.setId || "unset";
+        const qCategory = q.category || "未設定";
+        const qLevel = q.level || "未設定";
+        const matchSet = setId === "all" || qSetId === setId;
+        const matchCategory = category === "all" || qCategory === category;
+        const matchLevel = level === "all" || qLevel === level;
+        const matchMode = matchProgressMode(q.id, mode);
+        return matchSet && matchCategory && matchLevel && matchMode;
+      });
+    }
+
+    function matchProgressMode(questionId, mode) {
+      const progress = getQuestionProgress(questionId);
+      if (mode === "all") return true;
+      if (mode === "new") return progress.progressStatus === "new";
+      if (mode === "not_mastered") return progress.progressStatus !== "mastered";
+      if (mode === "review_points") return progress.mistakePoints > 0;
+      if (mode === "wrong_before") return progress.wrongCount > 0;
+      return true;
+    }
+
+    function updateQuestionCountInfo() {
+      const count = getFilteredQuestions(setSelect.value, categorySelect.value, levelSelect.value, modeSelect.value).length;
+      const countSetting = questionCountSelect.value === "all" ? "全問" : `${questionCountSelect.value}問`;
+      questionCountInfo.textContent = `現在の条件で ${count} 問あります。開始時は ${countSetting} 出題します。`;
+    }
+
+    function updateProgressSummary() {
+      const baseQuestions = getFilteredQuestions(setSelect.value, categorySelect.value, levelSelect.value, "all");
+      const summary = summarizeProgress(baseQuestions);
+      progressSummary.innerHTML = `
+        <div class="summary-box"><div class="value">${summary.total}</div><div>総問題</div></div>
+        <div class="summary-box status-new"><div class="value">${summary.new}</div><div>未着手</div></div>
+        <div class="summary-box status-started"><div class="value">${summary.started}</div><div>着手済み</div></div>
+        <div class="summary-box status-mastered"><div class="value">${summary.mastered}</div><div>習得済み</div></div>
+        <div class="summary-box status-review"><div class="value">${summary.mistakePoints}</div><div>復習ポイント</div></div>
+      `;
+    }
+
+    function summarizeProgress(questions) {
+      const summary = { total: questions.length, new: 0, started: 0, mastered: 0, mistakePoints: 0 };
+      questions.forEach(q => {
+        const p = getQuestionProgress(q.id);
+        if (p.progressStatus === "mastered") summary.mastered += 1;
+        else if (p.seenCount > 0) summary.started += 1;
+        else summary.new += 1;
+        summary.mistakePoints += p.mistakePoints;
+      });
+      return summary;
+    }
+
+    function showQuestion() {
+      clearTimer();
+
+      const q = quizQuestions[currentIndex];
+      currentQuestionStartedAt = Date.now();
+      answerShownAt = null;
+      answerTrigger = null;
+      remainingSeconds = settings.questionTimeSec;
+      isPaused = false;
+
+      progressText.textContent = `第${currentIndex + 1}問 / ${quizQuestions.length}問`;
+      categoryText.textContent = `${q.setName || "未設定セット"} / ${q.category || "未設定"} / ${q.level || "未設定"}`;
+      questionText.textContent = q.question;
+      answerText.textContent = "";
+      noteText.textContent = "";
+      noteText.classList.add("hidden");
+      timerEl.textContent = remainingSeconds;
+      timerEl.classList.remove("warning");
+      pauseButton.textContent = "一時停止";
+
+      questionArea.classList.remove("hidden");
+      answerArea.classList.add("hidden");
+
+      timerId = setInterval(() => {
+        if (isPaused) return;
+        remainingSeconds -= 1;
+        timerEl.textContent = remainingSeconds;
+        if (remainingSeconds <= 3) timerEl.classList.add("warning");
+        if (remainingSeconds <= 0) showAnswer("timeout");
+      }, 1000);
+    }
+
+    function showAnswer(trigger) {
+      if (answerShownAt) return;
+
+      clearTimer();
+      answerTrigger = trigger;
+      answerShownAt = Date.now();
+
+      const q = quizQuestions[currentIndex];
+      answerText.textContent = q.answer;
+
+      if (q.note) {
+        noteText.textContent = q.note;
+        noteText.classList.remove("hidden");
+      }
+
+      questionArea.classList.add("hidden");
+      answerArea.classList.remove("hidden");
+
+      remainingSeconds = settings.answerTimeSec;
+      timerEl.textContent = remainingSeconds;
+      timerEl.classList.remove("warning");
+
+      timerId = setInterval(() => {
+        if (isPaused) return;
+        remainingSeconds -= 1;
+        timerEl.textContent = remainingSeconds;
+        if (remainingSeconds <= 3) timerEl.classList.add("warning");
+        if (remainingSeconds <= 0) {
+          clearTimer();
+          timerEl.textContent = "判定";
+        }
+      }, 1000);
+    }
+
+    function judgeCurrent(judgement) {
+      const q = quizQuestions[currentIndex];
+      const now = Date.now();
+      const questionTimeMs = answerShownAt ? answerShownAt - currentQuestionStartedAt : now - currentQuestionStartedAt;
+
+      const updatedProgress = updateQuestionProgress(q.id, judgement, now);
+
+      results.push({
+        questionId: q.id,
+        setId: q.setId || "unset",
+        setName: q.setName || "未設定セット",
+        domain: q.domain || "",
+        exam: q.exam || "",
+        category: q.category || "未設定",
+        level: q.level || "未設定",
+        unit: q.unit || "",
+        questionType: q.questionType || "",
+        question: q.question,
+        answer: q.answer,
+        judgement,
+        answerTrigger,
+        questionTimeMs,
+        mistakePointsAfter: updatedProgress.mistakePoints,
+        progressStatusAfter: updatedProgress.progressStatus,
+        masteryStatusAfter: updatedProgress.masteryStatus,
+        judgedAt: new Date(now).toISOString()
+      });
+
+      currentIndex += 1;
+      if (currentIndex >= quizQuestions.length) finishQuiz(false);
+      else showQuestion();
+    }
+
+    function finishQuiz(interrupted) {
+      clearTimer();
+
+      const session = {
+        id: `session-${Date.now()}`,
+        startedAt: results[0]?.judgedAt || new Date().toISOString(),
+        finishedAt: new Date().toISOString(),
+        interrupted,
+        settings,
+        results
+      };
+
+      lastSession = session;
+      saveSession(session);
+      showResult(session);
+      showScreen("result");
+    }
+
+    function showResult(session) {
+      const total = session.results.length;
+      const correct = session.results.filter(r => r.judgement === "correct").length;
+      const wrong = session.results.filter(r => r.judgement === "wrong").length;
+      const pass = session.results.filter(r => r.judgement === "pass").length;
+      const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+      const avgSec = total > 0
+        ? (session.results.reduce((sum, r) => sum + r.questionTimeMs, 0) / total / 1000).toFixed(1)
+        : "0.0";
+      const reviewPointDelta = session.results.reduce((sum, r) => {
+        if (r.judgement === "wrong") return sum + 2;
+        if (r.judgement === "pass") return sum + 1;
+        if (r.judgement === "correct") return sum - 1;
+        return sum;
+      }, 0);
+
+      resultSummary.innerHTML = `
+        <div class="summary-box"><div class="value">${total}</div><div>回答数</div></div>
+        <div class="summary-box"><div class="value">${correct}</div><div>正解</div></div>
+        <div class="summary-box"><div class="value">${wrong}</div><div>不正解</div></div>
+        <div class="summary-box"><div class="value">${pass}</div><div>パス</div></div>
+        <div class="summary-box"><div class="value">${accuracy}%</div><div>正答率</div></div>
+        <div class="summary-box"><div class="value">${avgSec}s</div><div>平均表示時間</div></div>
+      `;
+
+      const reviewTargets = session.results.filter(r => r.judgement !== "correct");
+      retryWrongButton.disabled = reviewTargets.length === 0;
+
+      const message = reviewPointDelta <= 0
+        ? "復習ポイントを減らせました。いい流れです。"
+        : "復習ポイントが見つかりました。次の復習対象です。";
+
+      if (reviewTargets.length === 0) {
+        reviewArea.innerHTML = `<h3>復習</h3><p>${message}</p><p>全問正解です。</p>`;
+        return;
+      }
+
+      const items = reviewTargets.map(r => `
+        <li>
+          <strong>${escapeHtml(r.question)}</strong><br />
+          答え：${escapeHtml(r.answer)}<br />
+          セット：${escapeHtml(r.setName || "")}<br />
+          判定：${labelJudgement(r.judgement)} / 表示理由：${labelTrigger(r.answerTrigger)} / 現在の復習ポイント：${r.mistakePointsAfter}
+        </li>
+      `).join("");
+
+      reviewArea.innerHTML = `<h3>復習</h3><p>${message}</p><ol class="review-list">${items}</ol>`;
+    }
+
+    function updateQuestionProgress(questionId, judgement, nowMs) {
+      const progressMap = loadProgressMap();
+      const progress = normalizeProgress(progressMap[questionId] || createDefaultProgress(questionId));
+
+      progress.seenCount += 1;
+      progress.lastJudgement = judgement;
+      progress.lastAnsweredAt = new Date(nowMs).toISOString();
+
+      if (judgement === "correct") {
+        progress.correctCount += 1;
+        progress.consecutiveCorrect += 1;
+        progress.mistakePoints = Math.max(0, progress.mistakePoints - 1);
+      } else if (judgement === "wrong") {
+        progress.wrongCount += 1;
+        progress.consecutiveCorrect = 0;
+        progress.mistakePoints += 2;
+      } else if (judgement === "pass") {
+        progress.passCount += 1;
+        progress.consecutiveCorrect = 0;
+        progress.mistakePoints += 1;
+      }
+
+      applyStatus(progress, questionId);
+      progressMap[questionId] = progress;
+      saveProgressMap(progressMap);
+      checkStorageStatus(false);
+      return progress;
+    }
+
+    function applyStatus(progress, questionId) {
+      if (progress.seenCount === 0) {
+        progress.progressStatus = "new";
+        progress.masteryStatus = "new";
+        return;
+      }
+
+      const q = getQuestionById(questionId);
+      const requiredCorrect = getRequiredConsecutiveCorrect(q);
+      const mastered = progress.mistakePoints === 0 && progress.consecutiveCorrect >= requiredCorrect;
+
+      if (mastered) {
+        progress.progressStatus = "mastered";
+        progress.masteryStatus = "mastered";
+      } else {
+        progress.progressStatus = "started";
+        progress.masteryStatus = progress.mistakePoints > 0 ? "review" : "learning";
+      }
+    }
+
+    function getRequiredConsecutiveCorrect(q) {
+      const type = q?.questionType || "";
+      if (type === "read") return 2;
+      return 3;
+    }
+
+    function createDefaultProgress(questionId) {
+      return {
+        questionId,
+        seenCount: 0,
+        correctCount: 0,
+        wrongCount: 0,
+        passCount: 0,
+        consecutiveCorrect: 0,
+        mistakePoints: 0,
+        progressStatus: "new",
+        masteryStatus: "new",
+        lastJudgement: "",
+        lastAnsweredAt: ""
+      };
+    }
+
+    function normalizeProgress(progress) {
+      const normalized = { ...createDefaultProgress(progress.questionId), ...progress };
+      if (normalized.mistakePoints === undefined || normalized.mistakePoints === null) {
+        normalized.mistakePoints = (normalized.wrongCount || 0) * 2 + (normalized.passCount || 0);
+      }
+      if (!normalized.progressStatus) {
+        normalized.progressStatus = normalized.seenCount > 0 ? "started" : "new";
+      }
+      if (normalized.masteryStatus === "mastered") {
+        normalized.progressStatus = "mastered";
+      }
+      return normalized;
+    }
+
+    function getQuestionProgress(questionId) {
+      const progressMap = loadProgressMap();
+      const progress = normalizeProgress(progressMap[questionId] || createDefaultProgress(questionId));
+      applyStatus(progress, questionId);
+      return progress;
+    }
+
+    function loadProgressMap() {
+      try { return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {}; }
+      catch (e) { return {}; }
+    }
+
+    function saveProgressMap(progressMap) {
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progressMap));
+    }
+
+    function retryWrongQuestions() {
+      if (!lastSession) return;
+      const ids = lastSession.results.filter(r => r.judgement !== "correct").map(r => r.questionId);
+      const retryQuestions = QUESTIONS.filter(q => ids.includes(q.id));
+      startQuiz(retryQuestions);
+    }
+
+    function restartWithSameSettings() {
+      if (!settings) return;
+      startQuiz();
+    }
+
+    function backToSetup() {
+      clearTimer();
+      refreshSetupSummary();
+      checkStorageStatus(false);
+      showScreen("setup");
+    }
+
+    function togglePause() {
+      isPaused = !isPaused;
+      pauseButton.textContent = isPaused ? "再開" : "一時停止";
+      timerEl.textContent = isPaused ? "停止中" : remainingSeconds;
+    }
+
+    function showHistory() {
+      const history = loadHistory();
+
+      if (history.length === 0) {
+        historyArea.innerHTML = `<p>履歴はまだありません。</p>`;
+      } else {
+        const items = history.slice().reverse().map(session => {
+          const total = session.results.length;
+          const correct = session.results.filter(r => r.judgement === "correct").length;
+          const wrong = session.results.filter(r => r.judgement === "wrong").length;
+          const pass = session.results.filter(r => r.judgement === "pass").length;
+          const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+          const date = new Date(session.finishedAt).toLocaleString("ja-JP");
+          return `
+            <div class="card">
+              <h3>${date}</h3>
+              <p>${total}問中 ${correct}問正解 / 正答率 ${accuracy}%<br />不正解 ${wrong}問 / パス ${pass}問</p>
+              <p class="muted small">
+                セット ${session.settings.setName || "全部"}<br />
+                問題表示 ${session.settings.questionTimeSec}秒 / 回答表示 ${session.settings.answerTimeSec}秒<br />
+                カテゴリ ${session.settings.category} / 出題タイプ ${session.settings.level || "全部"} / 出題モード ${labelMode(session.settings.mode)}
+              </p>
+            </div>
+          `;
+        }).join("");
+        historyArea.innerHTML = items;
+      }
+      showScreen("history");
+    }
+
+    function showProgressList() {
+      const questions = getFilteredQuestions(setSelect.value, categorySelect.value, levelSelect.value, "all");
+
+      if (questions.length === 0) {
+        progressListArea.innerHTML = `<p>表示できる問題がありません。</p>`;
+        showScreen("progressList");
+        return;
+      }
+
+      const rows = questions.map(q => {
+        const p = getQuestionProgress(q.id);
+        return `
+          <tr>
+            <td>${escapeHtml(q.setName || "")}</td>
+            <td>${escapeHtml(q.id)}</td>
+            <td>${escapeHtml(q.category || "")}</td>
+            <td>${escapeHtml(q.level || "")}</td>
+            <td>${escapeHtml(labelProgressStatus(p.progressStatus))}</td>
+            <td>${p.mistakePoints}</td>
+            <td>${p.seenCount}</td>
+            <td>${p.correctCount}</td>
+            <td>${p.wrongCount}</td>
+            <td>${p.passCount}</td>
+            <td>${p.consecutiveCorrect}</td>
+            <td>${escapeHtml(q.question)}</td>
+          </tr>
+        `;
+      }).join("");
+
+      progressListArea.innerHTML = `
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>セット</th>
+                <th>ID</th>
+                <th>カテゴリ</th>
+                <th>タイプ</th>
+                <th>進捗</th>
+                <th>復習P</th>
+                <th>出題</th>
+                <th>正解</th>
+                <th>不正解</th>
+                <th>パス</th>
+                <th>連続正解</th>
+                <th>問題</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      `;
+      showScreen("progressList");
+    }
+
+    function saveSession(session) {
+      const history = loadHistory();
+      history.push(session);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+      checkStorageStatus(false);
+    }
+
+    function loadHistory() {
+      try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; }
+      catch (e) { return []; }
+    }
+
+    function clearHistory() {
+      const ok = confirm("履歴をすべて削除しますか？問題別進捗は残ります。");
+      if (!ok) return;
+      localStorage.removeItem(HISTORY_KEY);
+      checkStorageStatus();
+      alert("履歴を削除しました。");
+    }
+
+    function clearProgress() {
+      const ok = confirm("問題別進捗をすべてリセットしますか？着手済み・復習ポイント・習得済みも消えます。履歴は残ります。");
+      if (!ok) return;
+      localStorage.removeItem(PROGRESS_KEY);
+      refreshSetupSummary();
+      checkStorageStatus();
+      alert("問題別進捗をリセットしました。");
+    }
+
+    // =====================================================
+    // 永続化・バックアップ機能
+    // =====================================================
+
+    function checkStorageStatus(showAlert = true) {
+      const canUse = testLocalStorage();
+      const history = loadHistory();
+      const progressMap = loadProgressMap();
+      const progressCount = Object.keys(progressMap).length;
+      const lastSession = history.length > 0 ? history[history.length - 1] : null;
+      const lastText = lastSession ? new Date(lastSession.finishedAt).toLocaleString("ja-JP") : "なし";
+
+      if (!canUse) {
+        storageStatus.className = "status-panel bad";
+        storageStatus.textContent = "保存状態：localStorageが利用できません。ブラウザ設定やシークレットモードを確認してください。";
+        if (showAlert) alert("localStorageが利用できません。進捗が保存されない可能性があります。");
+        return;
+      }
+
+      storageStatus.className = "status-panel ok";
+      storageStatus.textContent = `保存状態：利用可能\nセット数：${SETS.length}\n問題数：${QUESTIONS.length} 問\n履歴：${history.length} セッション\n進捗：${progressCount} 問分\n最終履歴：${lastText}\n保存キー：${HISTORY_KEY} / ${PROGRESS_KEY}`;
+
+      if (showAlert) {
+        alert(`保存確認OK\nセット数：${SETS.length}\n問題数：${QUESTIONS.length} 問\n履歴：${history.length} セッション\n進捗：${progressCount} 問分\n最終履歴：${lastText}`);
+      }
+    }
+
+    function testLocalStorage() {
+      try {
+        const key = "timedQuizTrainerStorageTest";
+        localStorage.setItem(key, "ok");
+        const value = localStorage.getItem(key);
+        localStorage.removeItem(key);
+        return value === "ok";
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function exportBackupJson() {
+      const backup = {
+        appName: "timed-quiz-trainer",
+        version: APP_VERSION,
+        exportedAt: new Date().toISOString(),
+        historyKey: HISTORY_KEY,
+        progressKey: PROGRESS_KEY,
+        sets: SETS,
+        questionCount: QUESTIONS.length,
+        questionIds: QUESTIONS.map(q => q.id),
+        history: loadHistory(),
+        progress: loadProgressMap()
+      };
+
+      const json = JSON.stringify(backup, null, 2);
+      const blob = new Blob([json], { type: "application/json;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `timed_quiz_backup_${formatDateForFile(new Date())}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function importBackupJson(event) {
+      const file = event.target.files?.[0];
+      event.target.value = "";
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const backup = JSON.parse(String(reader.result || "{}"));
+          validateBackup(backup);
+
+          const historyCount = Array.isArray(backup.history) ? backup.history.length : 0;
+          const progressCount = backup.progress && typeof backup.progress === "object" ? Object.keys(backup.progress).length : 0;
+          const ok = confirm(
+            `バックアップを読み込みますか？\n\n` +
+            `出力日時：${backup.exportedAt || "不明"}\n` +
+            `履歴：${historyCount} セッション\n` +
+            `進捗：${progressCount} 問分\n\n` +
+            `現在の履歴・進捗は上書きされます。`
+          );
+          if (!ok) return;
+
+          localStorage.setItem(HISTORY_KEY, JSON.stringify(backup.history || []));
+          localStorage.setItem(PROGRESS_KEY, JSON.stringify(backup.progress || {}));
+          refreshSetupSummary();
+          checkStorageStatus(false);
+          alert("バックアップJSONから復元しました。");
+        } catch (e) {
+          alert(`バックアップJSONの読み込みに失敗しました。\n${e.message}`);
+        }
+      };
+      reader.readAsText(file, "utf-8");
+    }
+
+    function validateBackup(backup) {
+      if (!backup || typeof backup !== "object") throw new Error("JSON形式が正しくありません。");
+      if (backup.appName !== "timed-quiz-trainer") throw new Error("このアプリのバックアップJSONではありません。");
+      if (!Array.isArray(backup.history)) throw new Error("history が配列ではありません。");
+      if (!backup.progress || typeof backup.progress !== "object" || Array.isArray(backup.progress)) {
+        throw new Error("progress がオブジェクトではありません。");
+      }
+    }
+
+    // =====================================================
+    // CSV出力
+    // =====================================================
+
+    function exportHistoryCsv() {
+      const history = loadHistory();
+      if (history.length === 0) {
+        alert("出力できる履歴がありません。");
+        return;
+      }
+
+      const rows = [[
+        "session_id", "finished_at", "set_id_setting", "set_name_setting", "category_setting", "level_setting", "mode_setting",
+        "question_time_sec", "answer_time_sec", "question_id", "set_id", "set_name", "domain", "exam", "category",
+        "level", "unit", "question_type", "question", "answer", "judgement", "answer_trigger",
+        "question_time_sec_actual", "mistake_points_after", "progress_status_after", "mastery_status_after"
+      ]];
+
+      history.forEach(session => {
+        session.results.forEach(r => {
+          rows.push([
+            session.id, session.finishedAt, session.settings.setId || "all", session.settings.setName || "全部", session.settings.category, session.settings.level || "all", session.settings.mode || "all",
+            session.settings.questionTimeSec, session.settings.answerTimeSec, r.questionId, r.setId || "", r.setName || "", r.domain || "", r.exam || "", r.category,
+            r.level, r.unit || "", r.questionType || "", r.question, r.answer, r.judgement, r.answerTrigger,
+            (r.questionTimeMs / 1000).toFixed(1), r.mistakePointsAfter ?? "", r.progressStatusAfter ?? "", r.masteryStatusAfter ?? ""
+          ]);
+        });
+      });
+
+      downloadCsv(rows, `timed_quiz_history_${formatDateForFile(new Date())}.csv`);
+    }
+
+    function exportProgressCsv() {
+      const rows = [[
+        "question_id", "set_id", "set_name", "domain", "exam", "category", "level", "unit", "question_type", "question", "answer",
+        "seen_count", "correct_count", "wrong_count", "pass_count", "consecutive_correct",
+        "mistake_points", "progress_status", "last_judgement", "last_answered_at", "mastery_status", "tags", "targets"
+      ]];
+
+      QUESTIONS.forEach(q => {
+        const p = getQuestionProgress(q.id);
+        rows.push([
+          q.id, q.setId || "unset", q.setName || "未設定セット", q.domain || "", q.exam || "", q.category || "", q.level || "", q.unit || "", q.questionType || "",
+          q.question, q.answer, p.seenCount, p.correctCount, p.wrongCount, p.passCount, p.consecutiveCorrect,
+          p.mistakePoints, p.progressStatus, p.lastJudgement, p.lastAnsweredAt, p.masteryStatus,
+          Array.isArray(q.tags) ? q.tags.join("|") : "",
+          Array.isArray(q.targets) ? q.targets.join("|") : ""
+        ]);
+      });
+
+      downloadCsv(rows, `timed_quiz_progress_${formatDateForFile(new Date())}.csv`);
+    }
+
+    function downloadCsv(rows, filename) {
+      const csv = rows.map(row => row.map(csvEscape).join(",")).join("\n");
+      const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // =====================================================
+    // 共通ユーティリティ
+    // =====================================================
+
+    function showScreen(name) {
+      setupScreen.classList.add("hidden");
+      quizScreen.classList.add("hidden");
+      resultScreen.classList.add("hidden");
+      historyScreen.classList.add("hidden");
+      progressListScreen.classList.add("hidden");
+      if (name === "setup") setupScreen.classList.remove("hidden");
+      if (name === "quiz") quizScreen.classList.remove("hidden");
+      if (name === "result") resultScreen.classList.remove("hidden");
+      if (name === "history") historyScreen.classList.remove("hidden");
+      if (name === "progressList") progressListScreen.classList.remove("hidden");
+    }
+
+    function clearTimer() {
+      if (timerId) {
+        clearInterval(timerId);
+        timerId = null;
+      }
+    }
+
+    function shuffleArray(array) {
+      const copied = [...array];
+      for (let i = copied.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copied[i], copied[j]] = [copied[j], copied[i]];
+      }
+      return copied;
+    }
+
+    function getQuestionById(questionId) {
+      return QUESTIONS.find(q => q.id === questionId);
+    }
+
+    function labelJudgement(judgement) {
+      if (judgement === "correct") return "正解";
+      if (judgement === "wrong") return "不正解";
+      if (judgement === "pass") return "パス";
+      return judgement;
+    }
+
+    function labelTrigger(trigger) {
+      if (trigger === "manual") return "手動";
+      if (trigger === "timeout") return "時間切れ";
+      return trigger || "不明";
+    }
+
+    function labelMode(mode) {
+      if (mode === "all") return "全部から出題";
+      if (mode === "new") return "未着手だけ";
+      if (mode === "not_mastered") return "習得済みを除く";
+      if (mode === "review_points") return "復習ポイントあり";
+      if (mode === "wrong_before") return "過去に不正解あり";
+      return mode || "全部から出題";
+    }
+
+    function labelProgressStatus(status) {
+      if (status === "new") return "未着手";
+      if (status === "started") return "着手済み";
+      if (status === "mastered") return "習得済み";
+      return status;
+    }
+
+    function csvEscape(value) {
+      const text = String(value ?? "");
+      return `"${text.replaceAll('"', '""')}"`;
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatDateForFile(date) {
+      const yyyy = date.getFullYear();
+      const mm = String(date.getMonth() + 1).padStart(2, "0");
+      const dd = String(date.getDate()).padStart(2, "0");
+      const hh = String(date.getHours()).padStart(2, "0");
+      const mi = String(date.getMinutes()).padStart(2, "0");
+      return `${yyyy}${mm}${dd}_${hh}${mi}`;
+    }
+  </script>
+</body>
+</html>
