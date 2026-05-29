@@ -10,6 +10,7 @@
 
 ## 直近作業
 
+- [x] 漢検5級用の docs/materials と data 配置先を作成する
 - [x] docs/concept/project_overview.md を作成する
 - [x] docs/concept/category_policy.md を作成する
 - [x] 初回コミットを作成する
