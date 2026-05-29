@@ -192,11 +192,14 @@ docs/concept/category_policy.md
 ### 汎用設計
 
 ```text
+docs/design/design_overview_v0_6.md
 docs/design/progress_design.md
 docs/design/progress_model_motivation.md
 docs/design/persistence_policy.md
 ```
 
+design_overview_v0_6.md は、現行 v0.6 時点の設計入口です。
+既存の progress_design.md、progress_model_motivation.md、persistence_policy.md は、過去バージョンの設計判断を含む設計メモとして扱います。
 進捗管理、モチベーション設計、保存・バックアップ方針を管理します。
 
 ### 漢検5級教材設計
