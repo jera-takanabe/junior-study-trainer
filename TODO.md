@@ -10,6 +10,7 @@
 
 ## 直近作業
 
+- [x] 既存設計書を docs/design と漢検5級教材フォルダに取り込む
 - [x] 漢検5級用の docs/materials と data 配置先を作成する
 - [x] docs/concept/project_overview.md を作成する
 - [x] docs/concept/category_policy.md を作成する
@@ -27,6 +28,7 @@
 
 ## 将来検討
 
+- [ ] docs/design 配下の設計書を現行 v0.6 実装に合わせて見直す
 - [ ] 数学カテゴリの追加方針を決める
 - [ ] 理科カテゴリの追加方針を決める
 - [ ] 英検カテゴリの追加方針を決める
