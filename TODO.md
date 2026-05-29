@@ -10,9 +10,9 @@
 
 ## 直近作業
 
-- [ ] docs/concept/project_overview.md を作成する
-- [ ] docs/concept/category_policy.md を作成する
-- [ ] 初回コミットを作成する
+- [x] docs/concept/project_overview.md を作成する
+- [x] docs/concept/category_policy.md を作成する
+- [x] 初回コミットを作成する
 - [ ] app/index.html を配置する
 - [ ] app/questions.js を配置する
 
