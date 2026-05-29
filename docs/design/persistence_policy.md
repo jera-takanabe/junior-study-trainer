@@ -161,3 +161,71 @@ timed_quiz_trainer_v0_5_persistence
 ・設定画面への保存状態表示
 ```
 
+---
+
+## 10. GitHub Pages公開時の進捗保存方針
+
+GitHub Pagesで公開した場合も、当面は `localStorage` を進捗保存先として利用する。
+
+ただし、GitHub Pagesは静的サイト配信であり、ユーザーごとの進捗データをGitHub側に保存する仕組みではない。
+
+そのため、進捗データは以下の単位で保存される。
+
+```text
+端末 × ブラウザ × サイトURL
+```
+
+例えば、以下の進捗はそれぞれ別データとして扱われる。
+
+```text
+自宅PCのChromeで学習した進捗
+iPhoneのSafariで学習した進捗
+別PCのChromeで学習した進捗
+```
+
+## 11. ローカル版とGitHub Pages版の違い
+
+ローカル版は、以下のようなURLで動作する。
+
+```text
+file:///D:/work/junior-study-trainer/app/index.html
+```
+
+GitHub Pages版は、以下のようなURLで動作する。
+
+```text
+https://jera-takanabe.github.io/junior-study-trainer/
+```
+
+この2つは保存領域が異なるため、ローカル版で保存した進捗はGitHub Pages版には自動では引き継がれない。
+
+進捗を移行する場合は、以下の手順を使う。
+
+```text
+1. 移行元でバックアップJSONを出力する
+2. 移行先でアプリを開く
+3. バックアップJSONを読み込む
+4. 進捗が反映されたことを確認する
+```
+
+## 12. 当面の運用方針
+
+GitHub Pages公開後も、当面は以下の方針で運用する。
+
+```text
+進捗保存：
+localStorage
+
+端末間同期：
+行わない
+
+端末間移行：
+JSONバックアップ／復元で対応する
+
+サーバー保存：
+将来検討とする
+```
+
+この方針により、まずはスマホや別PCからアプリを利用できる状態を優先する。
+
+自動同期や複数ユーザー管理が必要になった場合は、Firebase、Supabase、AWS、自作APIなどのサーバー保存方式を別途検討する。
