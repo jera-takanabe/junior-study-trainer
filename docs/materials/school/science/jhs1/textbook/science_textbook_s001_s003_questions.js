@@ -1,0 +1,4233 @@
+// 中1理科 教科書 一問一答 S001〜S003
+// 出典確認用: docs/materials/school/science/jhs1/textbook/science_textbook_s001_s003_review.md
+// 生成日: 2026-06-11
+
+const questions = [
+  {
+    "id": "science_textbook_s001_q001",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001a",
+    "unit": "観察の基本・観察器具",
+    "topic": "観察の進め方・スケッチ",
+    "level": "basic",
+    "question": "自然の中で「不思議だ」と思ったことをもとに、調べたいことを決めることを何というか。",
+    "answer": "課題を設定する",
+    "explanation": "探究では、まず何を明らかにしたいのかをはっきりさせる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.6"
+    },
+    "reviewHint": "教科書 p.6 の「観察の進め方・スケッチ」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q002",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001a",
+    "unit": "観察の基本・観察器具",
+    "topic": "観察の進め方・スケッチ",
+    "level": "basic",
+    "question": "課題に対して、「こうなるのではないか」と考えることを何というか。",
+    "answer": "予想・仮説",
+    "explanation": "観察前に考えをもつと、結果と比べて考察しやすい。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.6"
+    },
+    "reviewHint": "教科書 p.6 の「観察の進め方・スケッチ」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q003",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001a",
+    "unit": "観察の基本・観察器具",
+    "topic": "観察の進め方・スケッチ",
+    "level": "basic",
+    "question": "観察を行う前に、場所・時期・条件などを考えて決めることを何というか。",
+    "answer": "計画",
+    "explanation": "どこで、いつ、何を、どのように観察するかを決める。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.6"
+    },
+    "reviewHint": "教科書 p.6 の「観察の進め方・スケッチ」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q004",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001a",
+    "unit": "観察の基本・観察器具",
+    "topic": "観察の進め方・スケッチ",
+    "level": "basic",
+    "question": "観察で実際に見たり調べたりして得られた事実を何というか。",
+    "answer": "結果",
+    "explanation": "結果は、観察してわかった事実を書く。考えとは分ける。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.6"
+    },
+    "reviewHint": "教科書 p.6 の「観察の進め方・スケッチ」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q005",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001a",
+    "unit": "観察の基本・観察器具",
+    "topic": "観察の進め方・スケッチ",
+    "level": "basic",
+    "question": "観察結果をもとに、課題に対して何がわかったかを考えることを何というか。",
+    "answer": "考察",
+    "explanation": "考察では、結果を根拠にして説明する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.6"
+    },
+    "reviewHint": "教科書 p.6 の「観察の進め方・スケッチ」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q006",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001a",
+    "unit": "観察の基本・観察器具",
+    "topic": "観察の進め方・スケッチ",
+    "level": "basic",
+    "question": "観察したことを他の人にわかりやすく伝えることを何というか。",
+    "answer": "表現",
+    "explanation": "レポート、図、表、スケッチなどでまとめる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.6"
+    },
+    "reviewHint": "教科書 p.6 の「観察の進め方・スケッチ」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q007",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001a",
+    "unit": "観察の基本・観察器具",
+    "topic": "観察の進め方・スケッチ",
+    "level": "basic",
+    "question": "スケッチでは、観察対象でないものも詳しく描くべきか。",
+    "answer": "描かない",
+    "explanation": "観察対象の特徴がわかるように、必要な部分をはっきり描く。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.6"
+    },
+    "reviewHint": "教科書 p.6 の「観察の進め方・スケッチ」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q008",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001a",
+    "unit": "観察の基本・観察器具",
+    "topic": "観察の進め方・スケッチ",
+    "level": "basic",
+    "question": "スケッチでは、線を何度も重ねたり影をつけたりするのがよいか。",
+    "answer": "よくない",
+    "explanation": "細い線ではっきり描く方が、形や特徴を正確に表せる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.6"
+    },
+    "reviewHint": "教科書 p.6 の「観察の進め方・スケッチ」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q009",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001a",
+    "unit": "観察の基本・観察器具",
+    "topic": "観察の進め方・スケッチ",
+    "level": "basic",
+    "question": "スケッチで、特に注目した部分をわかりやすくするにはどうすればよいか。",
+    "answer": "拡大して描く",
+    "explanation": "全体だけでなく、特徴のある部分を拡大して描くとよい。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.6"
+    },
+    "reviewHint": "教科書 p.6 の「観察の進め方・スケッチ」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q010",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001a",
+    "unit": "観察の基本・観察器具",
+    "topic": "観察の進め方・スケッチ",
+    "level": "standard",
+    "question": "観察記録に日時や天気を書くのはなぜか。",
+    "answer": "観察した条件を残すため",
+    "explanation": "生物のようすは、季節・時刻・天気などで変わることがある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.6"
+    },
+    "reviewHint": "教科書 p.6 の「観察の進め方・スケッチ」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q011",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001a",
+    "unit": "観察の基本・観察器具",
+    "topic": "観察の進め方・スケッチ",
+    "level": "standard",
+    "question": "写真で観察記録を残すとき、大きさをわかりやすくするために一緒に写すとよいものは何か。",
+    "answer": "ものさしなど大きさの目安になるもの",
+    "explanation": "比較できるものを写すと、あとで大きさを判断しやすい。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.6"
+    },
+    "reviewHint": "教科書 p.6 の「観察の進め方・スケッチ」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q012",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001a",
+    "unit": "観察の基本・観察器具",
+    "topic": "観察の進め方・スケッチ",
+    "level": "standard",
+    "question": "観察の「結果」と「考察」はなぜ分けて書くのか。",
+    "answer": "事実と考えを区別するため",
+    "explanation": "結果は観察した事実、考察はその事実から考えたこと。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.6"
+    },
+    "reviewHint": "教科書 p.6 の「観察の進め方・スケッチ」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q013",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "basic",
+    "question": "手に持って使い、小さなものを拡大して見る道具は何か。",
+    "answer": "ルーペ",
+    "explanation": "花、葉、岩石などをその場で観察するときに使う。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q014",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "basic",
+    "question": "ルーペは目に近づけて使うか、観察物に近づけて使うか。",
+    "answer": "目に近づけて使う",
+    "explanation": "ルーペは目に近づけた状態でピントを合わせる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q015",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "basic",
+    "question": "ルーペで動かせるものを見るとき、ピントはどう合わせるか。",
+    "answer": "観察するものを動かす",
+    "explanation": "ルーペを目に近づけ、観察物を前後に動かして合わせる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q016",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "basic",
+    "question": "ルーペで動かせないものを見るとき、ピントはどう合わせるか。",
+    "answer": "顔やルーペを動かす",
+    "explanation": "地面の植物などは動かせないため、自分が動いて見やすい位置を探す。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q017",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "basic",
+    "question": "ルーペで絶対に見てはいけないものは何か。",
+    "answer": "太陽",
+    "explanation": "目を傷める危険がある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q018",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "basic",
+    "question": "観察物をそのまま立体的に見ることができる顕微鏡は何か。",
+    "answer": "双眼実体顕微鏡",
+    "explanation": "プレパラートを作らなくても、立体的に観察できる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q019",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "basic",
+    "question": "双眼実体顕微鏡の倍率はおよそ何倍程度か。",
+    "answer": "20〜40倍程度",
+    "explanation": "高倍率ではないが、立体的に見えるのが特徴。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q020",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "basic",
+    "question": "双眼実体顕微鏡で、目でのぞく側のレンズを何というか。",
+    "answer": "接眼レンズ",
+    "explanation": "目に近い方のレンズ。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q021",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "basic",
+    "question": "双眼実体顕微鏡で、観察物に近い側のレンズを何というか。",
+    "answer": "対物レンズ",
+    "explanation": "観察物に近い方のレンズ。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q022",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "basic",
+    "question": "双眼実体顕微鏡で、観察物をのせる台を何というか。",
+    "answer": "ステージ",
+    "explanation": "観察物を置く部分。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q023",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "standard",
+    "question": "双眼実体顕微鏡で、左右の視野が1つに見えるようにする調節を何というか。",
+    "answer": "眼幅調節",
+    "explanation": "両目でのぞいたとき、左右の像が重なるようにする。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q024",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "standard",
+    "question": "双眼実体顕微鏡で、左右の目の見え方の差を調節する部分を何というか。",
+    "answer": "視度調節リング",
+    "explanation": "片方の目だけぼやけるときなどに調節する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q025",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "basic",
+    "question": "双眼実体顕微鏡で、大まかにピントを合わせるねじを何というか。",
+    "answer": "粗動ねじ",
+    "explanation": "鏡筒を大きく上下させて、おおまかにピントを合わせる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q026",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "basic",
+    "question": "双眼実体顕微鏡で、細かくピントを合わせるねじを何というか。",
+    "answer": "微動ねじ",
+    "explanation": "最後に細かく調節して、はっきり見えるようにする。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q027",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "standard",
+    "question": "双眼実体顕微鏡で、白っぽい観察物を見るときに見やすいステージの色は何色か。",
+    "answer": "黒",
+    "explanation": "白っぽいものは黒い背景の方が見やすい。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q028",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "standard",
+    "question": "双眼実体顕微鏡で、黒っぽい観察物を見るときに見やすいステージの色は何色か。",
+    "answer": "白",
+    "explanation": "黒っぽいものは白い背景の方が見やすい。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q029",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001b",
+    "unit": "観察の基本・観察器具",
+    "topic": "ルーペ・双眼実体顕微鏡",
+    "level": "standard",
+    "question": "双眼実体顕微鏡で、透明なものを見るときに使いやすい板は何か。",
+    "answer": "すりガラス",
+    "explanation": "光を通しやすく、透明なものを観察しやすい。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.10"
+    },
+    "reviewHint": "教科書 p.10 の「ルーペ・双眼実体顕微鏡」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q030",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "小さな生物や細胞などを高い倍率で見る道具は何か。",
+    "answer": "顕微鏡",
+    "explanation": "肉眼やルーペでは見えにくいものを観察する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q031",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "顕微鏡で、目に近い方のレンズを何というか。",
+    "answer": "接眼レンズ",
+    "explanation": "目でのぞく側のレンズ。倍率計算にも使う。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q032",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "顕微鏡で、観察物に近い方のレンズを何というか。",
+    "answer": "対物レンズ",
+    "explanation": "プレパラートに近い側のレンズ。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q033",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "顕微鏡で、対物レンズを取り付けて回転させる部分を何というか。",
+    "answer": "レボルバー",
+    "explanation": "回して対物レンズを切り替える。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q034",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "顕微鏡で、プレパラートをのせる台を何というか。",
+    "answer": "ステージ",
+    "explanation": "プレパラートを置く部分。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q035",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "顕微鏡で、プレパラートを固定する部分を何というか。",
+    "answer": "クリップ",
+    "explanation": "プレパラートが動かないように押さえる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q036",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "顕微鏡で、視野の明るさを調節する部分を何というか。",
+    "answer": "しぼり",
+    "explanation": "光の量を調節し、見やすくする。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q037",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "顕微鏡で、光を取り入れるために使う鏡や装置を何というか。",
+    "answer": "反射鏡または光源",
+    "explanation": "観察物に光を当てて見やすくする。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q038",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "顕微鏡で、大きく鏡筒を動かしてピントを合わせるねじを何というか。",
+    "answer": "粗動ねじ",
+    "explanation": "はじめに大まかにピントを合わせる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q039",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "顕微鏡で、細かくピントを合わせるねじを何というか。",
+    "answer": "微動ねじ",
+    "explanation": "最後に少しずつ動かして、はっきり見えるようにする。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q040",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "顕微鏡で観察するために、スライドガラスとカバーガラスで作るものを何というか。",
+    "answer": "プレパラート",
+    "explanation": "観察するものを薄くして、光が通るようにする。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11〜12"
+    },
+    "reviewHint": "教科書 p.11〜12 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q041",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "プレパラートで、観察物をのせるガラスを何というか。",
+    "answer": "スライドガラス",
+    "explanation": "観察物や水をのせる下側のガラス。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11〜12"
+    },
+    "reviewHint": "教科書 p.11〜12 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q042",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "プレパラートで、観察物の上にかける薄いガラスを何というか。",
+    "answer": "カバーガラス",
+    "explanation": "観察物をおさえ、厚さをうすくして見やすくする。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11〜12"
+    },
+    "reviewHint": "教科書 p.11〜12 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q043",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "顕微鏡で観察を始めるとき、低倍率と高倍率のどちらから見るか。",
+    "answer": "低倍率",
+    "explanation": "低倍率は視野が広く、観察したいものを見つけやすい。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q044",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "standard",
+    "question": "顕微鏡で対物レンズとプレパラートを近づけるとき、どこを見ながら行うか。",
+    "answer": "横から見る",
+    "explanation": "のぞきながら近づけると、対物レンズがプレパラートにぶつかる危険がある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q045",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "standard",
+    "question": "顕微鏡でピントを合わせるとき、対物レンズをプレパラートから遠ざけながら合わせるのはなぜか。",
+    "answer": "レンズやプレパラートを傷つけないため",
+    "explanation": "近づけながらピントを合わせると、ぶつける危険がある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q046",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "standard",
+    "question": "顕微鏡の倍率は、何と何をかけて求めるか。",
+    "answer": "接眼レンズの倍率 × 対物レンズの倍率",
+    "explanation": "例：接眼10倍、対物40倍なら400倍。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q047",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "接眼レンズ10倍、対物レンズ10倍のとき、顕微鏡の倍率は何倍か。",
+    "answer": "100倍",
+    "explanation": "10 × 10 = 100倍。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q048",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "接眼レンズ10倍、対物レンズ40倍のとき、顕微鏡の倍率は何倍か。",
+    "answer": "400倍",
+    "explanation": "10 × 40 = 400倍。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q049",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "standard",
+    "question": "顕微鏡で倍率を高くすると、見える範囲は広くなるか狭くなるか。",
+    "answer": "狭くなる",
+    "explanation": "高倍率では細かく見えるが、視野は狭くなる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q050",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "standard",
+    "question": "顕微鏡で倍率を高くすると、視野は明るくなるか暗くなるか。",
+    "answer": "暗くなる",
+    "explanation": "高倍率では入る光が少なくなり、暗く見えやすい。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q051",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "standard",
+    "question": "顕微鏡で見えているものを視野の中央に動かしたいとき、プレパラートは見えている向きと同じ方向に動かすか、反対方向に動かすか。",
+    "answer": "反対方向",
+    "explanation": "顕微鏡では上下左右が逆に見えるため、動きも逆になる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.11"
+    },
+    "reviewHint": "教科書 p.11 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q052",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "池や川の水を顕微鏡で見るとき、水はスライドガラスにどのくらいのせるか。",
+    "answer": "1滴",
+    "explanation": "水を1滴のせ、カバーガラスをかけてプレパラートを作る。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.12"
+    },
+    "reviewHint": "教科書 p.12 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q053",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "水中の小さな生物を観察するとき、名前だけでなく記録したいことは何か。",
+    "answer": "形・大きさ・動きなどの特徴",
+    "explanation": "生物を比べるには、特徴を観察して記録することが大切。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.12"
+    },
+    "reviewHint": "教科書 p.12 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s001_q054",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s001",
+    "subSet": "science_textbook_s001c",
+    "unit": "観察の基本・観察器具",
+    "topic": "顕微鏡・プレパラート・水中の小さな生物",
+    "level": "basic",
+    "question": "池や川の水を採集した後、手を洗うなどの注意が必要なのはなぜか。",
+    "answer": "安全・衛生のため",
+    "explanation": "自然の水には目に見えない生物や汚れが含まれることがある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.12"
+    },
+    "reviewHint": "教科書 p.12 の「顕微鏡・プレパラート・水中の小さな生物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q001",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "花の中で、花びらにあたる部分を中学校では何というか。",
+    "answer": "花弁",
+    "explanation": "小学校で「花びら」と呼んでいた部分を、中学校では花弁という。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.20"
+    },
+    "reviewHint": "教科書 p.20 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q002",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "花の中心付近にあり、先端に花粉がつく部分をもつつくりを何というか。",
+    "answer": "めしべ",
+    "explanation": "めしべは柱頭・花柱・子房などからなる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.20〜22"
+    },
+    "reviewHint": "教科書 p.20〜22 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q003",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "めしべの先端で、花粉がつく部分を何というか。",
+    "answer": "柱頭",
+    "explanation": "花粉が柱頭につくことを受粉という。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22"
+    },
+    "reviewHint": "教科書 p.22 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q004",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "めしべのふくらんだ部分を何というか。",
+    "answer": "子房",
+    "explanation": "受粉後、子房は果実になる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22〜24"
+    },
+    "reviewHint": "教科書 p.22〜24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q005",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "子房の中にある小さな粒のような部分を何というか。",
+    "answer": "胚珠",
+    "explanation": "受粉後、胚珠は種子になる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22〜24"
+    },
+    "reviewHint": "教科書 p.22〜24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q006",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "花粉をつくる部分をもつつくりを何というか。",
+    "answer": "おしべ",
+    "explanation": "おしべの先のやくで花粉がつくられる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22"
+    },
+    "reviewHint": "教科書 p.22 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q007",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "おしべの先にあり、花粉が入っている部分を何というか。",
+    "answer": "やく",
+    "explanation": "やくの中で花粉がつくられる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22"
+    },
+    "reviewHint": "教科書 p.22 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q008",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "花粉がめしべの柱頭につくことを何というか。",
+    "answer": "受粉",
+    "explanation": "受粉は、種子ができるための重要な過程。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.20〜24"
+    },
+    "reviewHint": "教科書 p.20〜24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q009",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "受粉後、子房は何になるか。",
+    "answer": "果実",
+    "explanation": "子房が成長して果実になる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.24"
+    },
+    "reviewHint": "教科書 p.24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q010",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "受粉後、胚珠は何になるか。",
+    "answer": "種子",
+    "explanation": "胚珠が成長して種子になる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.24"
+    },
+    "reviewHint": "教科書 p.24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q011",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "種子が子房の中にできる植物を何というか。",
+    "answer": "被子植物",
+    "explanation": "アブラナやツツジなどは被子植物。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22〜24"
+    },
+    "reviewHint": "教科書 p.22〜24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q012",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "被子植物では、胚珠はどこにあるか。",
+    "answer": "子房の中",
+    "explanation": "胚珠が子房に包まれているのが被子植物の特徴。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22〜24"
+    },
+    "reviewHint": "教科書 p.22〜24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q013",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "アブラナの花で、外側にあり花を保護するような部分を何というか。",
+    "answer": "がく",
+    "explanation": "がくは花の外側にあり、花を支える。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22"
+    },
+    "reviewHint": "教科書 p.22 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q014",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "アブラナの花で、黄色く目立つ部分を何というか。",
+    "answer": "花弁",
+    "explanation": "花弁は昆虫などを引き寄せるはたらきにも関係する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.20〜22"
+    },
+    "reviewHint": "教科書 p.20〜22 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q015",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "アブラナの花で、花粉をつくるのはめしべか、おしべか。",
+    "answer": "おしべ",
+    "explanation": "おしべのやくで花粉がつくられる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22"
+    },
+    "reviewHint": "教科書 p.22 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q016",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "アブラナの花で、花粉がつくのはめしべのどの部分か。",
+    "answer": "柱頭",
+    "explanation": "柱頭に花粉がつくと受粉が起こる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22"
+    },
+    "reviewHint": "教科書 p.22 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q017",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "花弁が目立つ花では、花粉を運ぶのに関わることが多いものは何か。",
+    "answer": "昆虫や鳥などの動物",
+    "explanation": "目立つ花弁や蜜などで動物を引き寄せる花がある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.24"
+    },
+    "reviewHint": "教科書 p.24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q018",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "花弁などが目立たない花では、花粉は何によって運ばれることがあるか。",
+    "answer": "風",
+    "explanation": "イネなど、風で花粉が運ばれる植物もある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22〜24"
+    },
+    "reviewHint": "教科書 p.22〜24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q019",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "花が咲いたあと、花弁は多くの場合どうなるか。",
+    "answer": "しおれたり落ちたりする",
+    "explanation": "受粉後は、子房や胚珠が果実や種子へ変化していく。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.24"
+    },
+    "reviewHint": "教科書 p.24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q020",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "果実の中にできるものは何か。",
+    "answer": "種子",
+    "explanation": "果実の中には、胚珠からできた種子が入る。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.24"
+    },
+    "reviewHint": "教科書 p.24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q021",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "果実は、花のどの部分が変化したものか。",
+    "answer": "子房",
+    "explanation": "子房がふくらんで果実になる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.24"
+    },
+    "reviewHint": "教科書 p.24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q022",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "種子は、花のどの部分が変化したものか。",
+    "answer": "胚珠",
+    "explanation": "胚珠が成長して種子になる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.24"
+    },
+    "reviewHint": "教科書 p.24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q023",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "advanced",
+    "question": "花粉が柱頭についたあと、種子ができるために必要な過程は何か。",
+    "answer": "受精",
+    "explanation": "受粉のあとに受精が起こり、種子ができる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.24"
+    },
+    "reviewHint": "教科書 p.24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q024",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "basic",
+    "question": "果実や種子ができる前に必要な、花粉が柱頭につく過程を何というか。",
+    "answer": "受粉",
+    "explanation": "受粉は、果実や種子ができる前段階。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.24"
+    },
+    "reviewHint": "教科書 p.24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q025",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "standard",
+    "question": "花のつくりを調べるとき、外側から順に観察するとよい主な部分は何か。",
+    "answer": "がく、花弁、おしべ、めしべ",
+    "explanation": "花のつくりを順に分解して観察すると、各部分の役割がわかりやすい。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.20〜22"
+    },
+    "reviewHint": "教科書 p.20〜22 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q026",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002a",
+    "unit": "植物の特徴",
+    "topic": "花のつくり・受粉・果実と種子",
+    "level": "standard",
+    "question": "アブラナのように、めしべの中に子房があり、子房の中に胚珠がある植物は何植物か。",
+    "answer": "被子植物",
+    "explanation": "胚珠が子房に包まれている植物を被子植物という。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22〜24"
+    },
+    "reviewHint": "教科書 p.22〜24 の「花のつくり・受粉・果実と種子」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q027",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "basic",
+    "question": "マツのように、種子でふえる植物を何というか。",
+    "answer": "種子植物",
+    "explanation": "種子をつくってふえる植物を種子植物という。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25〜27"
+    },
+    "reviewHint": "教科書 p.25〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q028",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "basic",
+    "question": "マツには、アブラナのような花弁があるか。",
+    "answer": "ない",
+    "explanation": "マツの花には目立つ花弁やがくがない。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25〜27"
+    },
+    "reviewHint": "教科書 p.25〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q029",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "basic",
+    "question": "マツの花には、雄花と何があるか。",
+    "answer": "雌花",
+    "explanation": "マツには雄花と雌花がある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25"
+    },
+    "reviewHint": "教科書 p.25 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q030",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "basic",
+    "question": "マツの雄花でつくられるものは何か。",
+    "answer": "花粉",
+    "explanation": "雄花の花粉のうで花粉がつくられる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25"
+    },
+    "reviewHint": "教科書 p.25 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q031",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "basic",
+    "question": "マツの雌花にある、将来種子になる部分を何というか。",
+    "answer": "胚珠",
+    "explanation": "マツの胚珠は子房に包まれていない。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25〜27"
+    },
+    "reviewHint": "教科書 p.25〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q032",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "basic",
+    "question": "マツの胚珠は、子房に包まれているか。",
+    "answer": "包まれていない",
+    "explanation": "胚珠がむき出しになっているのが裸子植物の特徴。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25〜27"
+    },
+    "reviewHint": "教科書 p.25〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q033",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "basic",
+    "question": "胚珠が子房に包まれず、むき出しになっている植物を何というか。",
+    "answer": "裸子植物",
+    "explanation": "マツやソテツ、イチョウなどが裸子植物。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25〜27"
+    },
+    "reviewHint": "教科書 p.25〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q034",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "basic",
+    "question": "マツは被子植物か、裸子植物か。",
+    "answer": "裸子植物",
+    "explanation": "胚珠が子房に包まれていないため、裸子植物に分類される。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25〜27"
+    },
+    "reviewHint": "教科書 p.25〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q035",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "basic",
+    "question": "アブラナは被子植物か、裸子植物か。",
+    "answer": "被子植物",
+    "explanation": "胚珠が子房の中にあるため、被子植物に分類される。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22〜27"
+    },
+    "reviewHint": "教科書 p.22〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q036",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "advanced",
+    "question": "マツの花粉には、空気の入った袋のような部分がある。これは何に役立つか。",
+    "answer": "風で運ばれやすくなること",
+    "explanation": "マツの花粉は風で運ばれやすい形をしている。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25"
+    },
+    "reviewHint": "教科書 p.25 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q037",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "basic",
+    "question": "マツの雌花が成長して、種子ができるかさのような部分を何というか。",
+    "answer": "まつかさ",
+    "explanation": "雌花が成長してまつかさになり、種子ができる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25〜27"
+    },
+    "reviewHint": "教科書 p.25〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q038",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "standard",
+    "question": "マツとアブラナの共通点は何か。",
+    "answer": "種子をつくること",
+    "explanation": "どちらも種子でふえる種子植物。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25〜27"
+    },
+    "reviewHint": "教科書 p.25〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q039",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "standard",
+    "question": "マツとアブラナの大きな違いは、胚珠が何に包まれているかどうかである。何に包まれているか。",
+    "answer": "子房",
+    "explanation": "アブラナは胚珠が子房に包まれ、マツは包まれていない。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25〜27"
+    },
+    "reviewHint": "教科書 p.25〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q040",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "basic",
+    "question": "裸子植物に分類される植物を1つ答えなさい。",
+    "answer": "マツ",
+    "explanation": "ほかにソテツ、イチョウなども裸子植物。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25〜27"
+    },
+    "reviewHint": "教科書 p.25〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q041",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "basic",
+    "question": "被子植物に分類される植物を1つ答えなさい。",
+    "answer": "アブラナ",
+    "explanation": "ツツジなど、多くの花を咲かせる植物は被子植物。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.22〜27"
+    },
+    "reviewHint": "教科書 p.22〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q042",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002b",
+    "unit": "植物の特徴",
+    "topic": "マツの花・裸子植物",
+    "level": "standard",
+    "question": "種子植物は、大きく被子植物と何に分けられるか。",
+    "answer": "裸子植物",
+    "explanation": "胚珠が子房に包まれているかどうかで分類する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.25〜27"
+    },
+    "reviewHint": "教科書 p.25〜27 の「マツの花・裸子植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q043",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "種子から最初に出る葉を何というか。",
+    "answer": "子葉",
+    "explanation": "発芽したときに最初に出る葉。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.28"
+    },
+    "reviewHint": "教科書 p.28 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q044",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "子葉が1枚の植物のなかまを何というか。",
+    "answer": "単子葉類",
+    "explanation": "トウモロコシ、ツユクサ、イネなどが例。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.28〜30"
+    },
+    "reviewHint": "教科書 p.28〜30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q045",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "子葉が2枚の植物のなかまを何というか。",
+    "answer": "双子葉類",
+    "explanation": "アサガオ、ホウセンカ、アブラナなどが例。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.28〜30"
+    },
+    "reviewHint": "教科書 p.28〜30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q046",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "トウモロコシは単子葉類か、双子葉類か。",
+    "answer": "単子葉類",
+    "explanation": "子葉が1枚の植物。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.28"
+    },
+    "reviewHint": "教科書 p.28 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q047",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "アサガオは単子葉類か、双子葉類か。",
+    "answer": "双子葉類",
+    "explanation": "子葉が2枚の植物。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.28"
+    },
+    "reviewHint": "教科書 p.28 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q048",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "ツユクサは単子葉類か、双子葉類か。",
+    "answer": "単子葉類",
+    "explanation": "子葉が1枚の植物として扱われる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.28"
+    },
+    "reviewHint": "教科書 p.28 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q049",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "タンポポは単子葉類か、双子葉類か。",
+    "answer": "双子葉類",
+    "explanation": "子葉が2枚の植物のなかま。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.28"
+    },
+    "reviewHint": "教科書 p.28 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q050",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "葉に見られるすじのようなつくりを何というか。",
+    "answer": "葉脈",
+    "explanation": "葉の中を水や養分が通るすじのようなつくり。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.28〜30"
+    },
+    "reviewHint": "教科書 p.28〜30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q051",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "単子葉類に多い、平行に並んだ葉脈を何というか。",
+    "answer": "平行脈",
+    "explanation": "イネやツユクサなどに見られる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q052",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "双子葉類に多い、網の目のように広がる葉脈を何というか。",
+    "answer": "網状脈",
+    "explanation": "アブラナやホウセンカなどに見られる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q053",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "単子葉類の葉脈は、平行脈か網状脈か。",
+    "answer": "平行脈",
+    "explanation": "葉脈が平行に並ぶことが多い。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q054",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "双子葉類の葉脈は、平行脈か網状脈か。",
+    "answer": "網状脈",
+    "explanation": "葉脈が網の目のように広がることが多い。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q055",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "単子葉類の根に多い、細い根がたくさん出るつくりを何というか。",
+    "answer": "ひげ根",
+    "explanation": "太い主根が目立たず、細い根が多数出る。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q056",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "双子葉類の根で、中心に太く伸びる根を何というか。",
+    "answer": "主根",
+    "explanation": "主根から側根が枝分かれする。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q057",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "双子葉類の根で、主根から枝分かれする根を何というか。",
+    "answer": "側根",
+    "explanation": "主根から横に伸びる根。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q058",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "双子葉類の根は、主根と何からなるか。",
+    "answer": "側根",
+    "explanation": "双子葉類では主根と側根が見られることが多い。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q059",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "根の先端近くにある、細い毛のようなつくりを何というか。",
+    "answer": "根毛",
+    "explanation": "水や水に溶けた養分を吸収しやすくする。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q060",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "根毛があることで、根の表面積はどうなるか。",
+    "answer": "大きくなる",
+    "explanation": "表面積が大きくなり、水や養分を吸収しやすくなる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q061",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "standard",
+    "question": "根から吸収されるものを2つ答えなさい。",
+    "answer": "水と水に溶けた養分",
+    "explanation": "根毛などから水や養分を吸収する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q062",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "植物のからだの中で、水や養分などが通る束のようなつくりを何というか。",
+    "answer": "維管束",
+    "explanation": "水や養分の通り道が集まった部分。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q063",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "単子葉類の茎の維管束は、どのように並ぶことが多いか。",
+    "answer": "散らばって並ぶ",
+    "explanation": "単子葉類では維管束が散在する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q064",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "basic",
+    "question": "双子葉類の茎の維管束は、どのように並ぶことが多いか。",
+    "answer": "輪のように並ぶ",
+    "explanation": "双子葉類では維管束が輪状に並ぶ。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.30"
+    },
+    "reviewHint": "教科書 p.30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q065",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "standard",
+    "question": "単子葉類と双子葉類を分ける観点を3つ答えなさい。",
+    "answer": "子葉の数、葉脈、根",
+    "explanation": "ほかに茎の維管束の並び方も分類の観点になる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.28〜30"
+    },
+    "reviewHint": "教科書 p.28〜30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q066",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "standard",
+    "question": "子葉1枚、平行脈、ひげ根の植物は、単子葉類か双子葉類か。",
+    "answer": "単子葉類",
+    "explanation": "単子葉類の代表的な特徴。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.28〜30"
+    },
+    "reviewHint": "教科書 p.28〜30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q067",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002c",
+    "unit": "植物の特徴",
+    "topic": "単子葉類・双子葉類・葉脈・根・維管束",
+    "level": "standard",
+    "question": "子葉2枚、網状脈、主根と側根の植物は、単子葉類か双子葉類か。",
+    "answer": "双子葉類",
+    "explanation": "双子葉類の代表的な特徴。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.28〜30"
+    },
+    "reviewHint": "教科書 p.28〜30 の「単子葉類・双子葉類・葉脈・根・維管束」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q068",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "basic",
+    "question": "種子ではなく、胞子でふえる植物にはどのようなものがあるか。",
+    "answer": "シダ植物やコケ植物",
+    "explanation": "種子植物とは異なり、胞子でふえる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.31〜32"
+    },
+    "reviewHint": "教科書 p.31〜32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q069",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "basic",
+    "question": "シダ植物やコケ植物がつくる、ふえるための小さな粒を何というか。",
+    "answer": "胞子",
+    "explanation": "胞子によってなかまをふやす。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.31〜32"
+    },
+    "reviewHint": "教科書 p.31〜32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q070",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "basic",
+    "question": "シダ植物で、胞子が入っている袋のような部分を何というか。",
+    "answer": "胞子のう",
+    "explanation": "胞子のうの中に胞子ができる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.31〜32"
+    },
+    "reviewHint": "教科書 p.31〜32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q071",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "basic",
+    "question": "シダ植物には、根・茎・葉の区別があるか。",
+    "answer": "ある",
+    "explanation": "シダ植物は根・茎・葉の区別があるが、種子はつくらない。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.31〜32"
+    },
+    "reviewHint": "教科書 p.31〜32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q072",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "advanced",
+    "question": "コケ植物には、根・茎・葉の区別がはっきりあるか。",
+    "answer": "はっきりしない",
+    "explanation": "コケ植物では、根・茎・葉の区別がはっきりしない。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.32"
+    },
+    "reviewHint": "教科書 p.32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q073",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "advanced",
+    "question": "コケ植物で、体を地面などに固定するはたらきをする根のような部分を何というか。",
+    "answer": "仮根",
+    "explanation": "仮根は水を吸収する主な根ではなく、体を固定する役割が中心。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.32"
+    },
+    "reviewHint": "教科書 p.32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q074",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "advanced",
+    "question": "コケ植物には、雄株と何があるか。",
+    "answer": "雌株",
+    "explanation": "コケ植物には雄株と雌株があるものがある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.32"
+    },
+    "reviewHint": "教科書 p.32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q075",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "advanced",
+    "question": "コケ植物の胞子は、どちらの株にできるか。",
+    "answer": "雌株",
+    "explanation": "胞子は雌株にできる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.32"
+    },
+    "reviewHint": "教科書 p.32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q076",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "basic",
+    "question": "シダ植物とコケ植物の共通点は何か。",
+    "answer": "胞子でふえること",
+    "explanation": "どちらも種子ではなく胞子でふえる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.31〜32"
+    },
+    "reviewHint": "教科書 p.31〜32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q077",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "basic",
+    "question": "種子植物とシダ植物・コケ植物の大きな違いは何か。",
+    "answer": "種子をつくるかどうか",
+    "explanation": "種子植物は種子でふえ、シダ植物・コケ植物は胞子でふえる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.31〜32"
+    },
+    "reviewHint": "教科書 p.31〜32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q078",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "basic",
+    "question": "ゼンマイやワラビは、種子植物・シダ植物・コケ植物のどれに近いなかまか。",
+    "answer": "シダ植物",
+    "explanation": "ゼンマイやワラビはシダ植物の例。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.31〜32"
+    },
+    "reviewHint": "教科書 p.31〜32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q079",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "basic",
+    "question": "スギゴケは、種子植物・シダ植物・コケ植物のどれに近いなかまか。",
+    "answer": "コケ植物",
+    "explanation": "スギゴケはコケ植物の例。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.32"
+    },
+    "reviewHint": "教科書 p.32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s002_q080",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s002",
+    "subSet": "science_textbook_s002d",
+    "unit": "植物の特徴",
+    "topic": "種子をつくらない植物・シダ植物・コケ植物",
+    "level": "standard",
+    "question": "種子をつくらない植物を分類するとき、重要な観点は何か。",
+    "answer": "胞子でふえること、根・茎・葉の区別",
+    "explanation": "シダ植物とコケ植物を分けるときは、からだのつくりも見る。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.31〜32"
+    },
+    "reviewHint": "教科書 p.31〜32 の「種子をつくらない植物・シダ植物・コケ植物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q001",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003a",
+    "unit": "動物の分類",
+    "topic": "動物のからだ・食べ物による違い",
+    "level": "standard",
+    "question": "動物を分類するときに注目する観点には、からだのつくりのほかに何があるか。",
+    "answer": "食べ物、生活場所、呼吸、体表など",
+    "explanation": "動物はさまざまな特徴をもとに分類できる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.36〜38"
+    },
+    "reviewHint": "教科書 p.36〜38 の「動物のからだ・食べ物による違い」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q002",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003a",
+    "unit": "動物の分類",
+    "topic": "動物のからだ・食べ物による違い",
+    "level": "basic",
+    "question": "動物を食べ物によって分けると、動物を食べる動物を何というか。",
+    "answer": "肉食動物",
+    "explanation": "ライオンなど、他の動物を食べる動物。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.38"
+    },
+    "reviewHint": "教科書 p.38 の「動物のからだ・食べ物による違い」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q003",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003a",
+    "unit": "動物の分類",
+    "topic": "動物のからだ・食べ物による違い",
+    "level": "basic",
+    "question": "植物を食べる動物を何というか。",
+    "answer": "草食動物",
+    "explanation": "シマウマなど、草や木の葉などを食べる動物。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.38"
+    },
+    "reviewHint": "教科書 p.38 の「動物のからだ・食べ物による違い」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q004",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003a",
+    "unit": "動物の分類",
+    "topic": "動物のからだ・食べ物による違い",
+    "level": "basic",
+    "question": "ライオンは肉食動物か、草食動物か。",
+    "answer": "肉食動物",
+    "explanation": "動物を捕らえて食べる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.38"
+    },
+    "reviewHint": "教科書 p.38 の「動物のからだ・食べ物による違い」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q005",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003a",
+    "unit": "動物の分類",
+    "topic": "動物のからだ・食べ物による違い",
+    "level": "basic",
+    "question": "シマウマは肉食動物か、草食動物か。",
+    "answer": "草食動物",
+    "explanation": "草などの植物を食べる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.38"
+    },
+    "reviewHint": "教科書 p.38 の「動物のからだ・食べ物による違い」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q006",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003a",
+    "unit": "動物の分類",
+    "topic": "動物のからだ・食べ物による違い",
+    "level": "standard",
+    "question": "肉食動物の目は、顔の前向きについていることが多い。これは何に役立つか。",
+    "answer": "獲物までの距離を正確にとらえること",
+    "explanation": "両目で同じ方向を見ることで、距離感をつかみやすい。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.38"
+    },
+    "reviewHint": "教科書 p.38 の「動物のからだ・食べ物による違い」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q007",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003a",
+    "unit": "動物の分類",
+    "topic": "動物のからだ・食べ物による違い",
+    "level": "standard",
+    "question": "草食動物の目は、顔の横についていることが多い。これは何に役立つか。",
+    "answer": "広い範囲を見ること",
+    "explanation": "敵を早く見つけるのに役立つ。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.38"
+    },
+    "reviewHint": "教科書 p.38 の「動物のからだ・食べ物による違い」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q008",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003a",
+    "unit": "動物の分類",
+    "topic": "動物のからだ・食べ物による違い",
+    "level": "standard",
+    "question": "肉食動物のあしには、どのような特徴があることが多いか。",
+    "answer": "獲物を捕らえやすい",
+    "explanation": "鋭いつめや速く走るためのつくりが見られる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.38"
+    },
+    "reviewHint": "教科書 p.38 の「動物のからだ・食べ物による違い」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q009",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003a",
+    "unit": "動物の分類",
+    "topic": "動物のからだ・食べ物による違い",
+    "level": "standard",
+    "question": "草食動物のあしには、どのような特徴があることが多いか。",
+    "answer": "逃げる・走るのに適している",
+    "explanation": "敵から逃げるため、速く走るつくりが見られる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.38"
+    },
+    "reviewHint": "教科書 p.38 の「動物のからだ・食べ物による違い」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q010",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003a",
+    "unit": "動物の分類",
+    "topic": "動物のからだ・食べ物による違い",
+    "level": "basic",
+    "question": "動物のからだのつくりは、何と関係していることが多いか。",
+    "answer": "食べ物や生活のしかた",
+    "explanation": "食べるものや生活場所に合うような特徴がある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.36〜38"
+    },
+    "reviewHint": "教科書 p.36〜38 の「動物のからだ・食べ物による違い」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q011",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "背骨をもつ動物を何というか。",
+    "answer": "脊椎動物",
+    "explanation": "ヒト、魚、鳥などは背骨をもつ。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.40〜42"
+    },
+    "reviewHint": "教科書 p.40〜42 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q012",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "背骨をもたない動物を何というか。",
+    "answer": "無脊椎動物",
+    "explanation": "昆虫、貝、イカなどは背骨をもたない。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.48〜52"
+    },
+    "reviewHint": "教科書 p.48〜52 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q013",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "脊椎動物は大きく何種類のなかまに分けられるか。",
+    "answer": "5種類",
+    "explanation": "魚類、両生類、は虫類、鳥類、哺乳類に分けられる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q014",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "standard",
+    "question": "脊椎動物の5つのなかまをすべて答えなさい。",
+    "answer": "魚類、両生類、は虫類、鳥類、哺乳類",
+    "explanation": "体表、呼吸、子のうまれ方、体温などで分類する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q015",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "フナやメダカは、脊椎動物の何類か。",
+    "answer": "魚類",
+    "explanation": "水中で生活し、えらで呼吸する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q016",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "カエルやサンショウウオは、脊椎動物の何類か。",
+    "answer": "両生類",
+    "explanation": "子は水中、親は陸上や水辺で生活するものが多い。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q017",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "トカゲやヘビ、カメは、脊椎動物の何類か。",
+    "answer": "は虫類",
+    "explanation": "体表はうろこなどでおおわれる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q018",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "ワシやペンギンは、脊椎動物の何類か。",
+    "answer": "鳥類",
+    "explanation": "体表が羽毛でおおわれる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q019",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "ウサギやクジラ、ヒトは、脊椎動物の何類か。",
+    "answer": "哺乳類",
+    "explanation": "子を母乳で育てる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q020",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "魚類の生活場所は主にどこか。",
+    "answer": "水中",
+    "explanation": "魚類は水中で生活する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q021",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "魚類は主に何で呼吸するか。",
+    "answer": "えら",
+    "explanation": "水中の酸素をえらで取り入れる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q022",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "魚類の体表は何でおおわれていることが多いか。",
+    "answer": "うろこ",
+    "explanation": "体表がうろこでおおわれるものが多い。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44〜46"
+    },
+    "reviewHint": "教科書 p.44〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q023",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "魚類の子のうまれ方は、卵生か胎生か。",
+    "answer": "卵生",
+    "explanation": "多くは卵を産んでふえる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q024",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "両生類の子は、主にどこで生活するか。",
+    "answer": "水中",
+    "explanation": "オタマジャクシのように、子は水中で生活するものが多い。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q025",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "両生類の親は、主にどこで生活するか。",
+    "answer": "陸上や水辺",
+    "explanation": "成長すると陸上でも生活できるものが多い。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q026",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "両生類の子は主に何で呼吸するか。",
+    "answer": "えら",
+    "explanation": "オタマジャクシなどはえらで呼吸する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q027",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "両生類の親は主に何で呼吸するか。",
+    "answer": "肺と皮膚",
+    "explanation": "カエルの成体は肺と皮膚で呼吸する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q028",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "両生類の体表にはどのような特徴があるか。",
+    "answer": "うすく湿った皮膚",
+    "explanation": "皮膚でも呼吸するため、湿っている必要がある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44〜46"
+    },
+    "reviewHint": "教科書 p.44〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q029",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "カエルのように、成長にともなってからだのつくりや生活のしかたが大きく変わることを何というか。",
+    "answer": "変態",
+    "explanation": "オタマジャクシからカエルになる変化など。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42"
+    },
+    "reviewHint": "教科書 p.42 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q030",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "は虫類は主に何で呼吸するか。",
+    "answer": "肺",
+    "explanation": "陸上生活に適した呼吸をする。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q031",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "は虫類の体表は何でおおわれていることが多いか。",
+    "answer": "うろこやこうら",
+    "explanation": "乾燥を防ぎやすい体表をもつ。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44〜46"
+    },
+    "reviewHint": "教科書 p.44〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q032",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "は虫類の子のうまれ方は、卵生か胎生か。",
+    "answer": "卵生",
+    "explanation": "多くは陸上に卵を産む。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q033",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "鳥類は主に何で呼吸するか。",
+    "answer": "肺",
+    "explanation": "鳥類は肺で呼吸する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q034",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "鳥類の体表は何でおおわれているか。",
+    "answer": "羽毛",
+    "explanation": "羽毛は体温保持や飛行などに関係する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44"
+    },
+    "reviewHint": "教科書 p.44 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q035",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "鳥類の子のうまれ方は、卵生か胎生か。",
+    "answer": "卵生",
+    "explanation": "鳥類は卵を産む。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q036",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "哺乳類は主に何で呼吸するか。",
+    "answer": "肺",
+    "explanation": "哺乳類は肺で呼吸する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q037",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "哺乳類の体表は何でおおわれていることが多いか。",
+    "answer": "体毛",
+    "explanation": "体毛は体温を保つことなどに役立つ。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44〜46"
+    },
+    "reviewHint": "教科書 p.44〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q038",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "哺乳類の子のうまれ方は、卵生か胎生か。",
+    "answer": "胎生",
+    "explanation": "多くの哺乳類は子を体内で育ててから産む。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q039",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "哺乳類の子は、親の何で育つか。",
+    "answer": "母乳",
+    "explanation": "哺乳類は子に乳を与えて育てる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q040",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "魚類、両生類、は虫類、鳥類の多くに共通する子のうまれ方は何か。",
+    "answer": "卵生",
+    "explanation": "卵を産んでふえる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q041",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003b",
+    "unit": "動物の分類",
+    "topic": "脊椎動物と5つのなかま",
+    "level": "basic",
+    "question": "哺乳類に多い子のうまれ方は何か。",
+    "answer": "胎生",
+    "explanation": "子を体内である程度育ててから産む。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「脊椎動物と5つのなかま」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q042",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "まわりの温度にともなって体温が変化する動物を何というか。",
+    "answer": "変温動物",
+    "explanation": "魚類、両生類、は虫類などがあてはまる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44"
+    },
+    "reviewHint": "教科書 p.44 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q043",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "まわりの温度が変わっても、体温をほぼ一定に保つ動物を何というか。",
+    "answer": "恒温動物",
+    "explanation": "鳥類や哺乳類があてはまる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44"
+    },
+    "reviewHint": "教科書 p.44 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q044",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "魚類、両生類、は虫類は、変温動物か恒温動物か。",
+    "answer": "変温動物",
+    "explanation": "周囲の温度の影響を受けやすい。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44"
+    },
+    "reviewHint": "教科書 p.44 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q045",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "鳥類と哺乳類は、変温動物か恒温動物か。",
+    "answer": "恒温動物",
+    "explanation": "体温をほぼ一定に保つ。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44"
+    },
+    "reviewHint": "教科書 p.44 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q046",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "魚類の体表に多い特徴を答えなさい。",
+    "answer": "うろこ",
+    "explanation": "水中生活に適した体表をもつ。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44〜46"
+    },
+    "reviewHint": "教科書 p.44〜46 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q047",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "両生類の体表に多い特徴を答えなさい。",
+    "answer": "うすく湿った皮膚",
+    "explanation": "皮膚でも呼吸する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44〜46"
+    },
+    "reviewHint": "教科書 p.44〜46 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q048",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "は虫類の体表に多い特徴を答えなさい。",
+    "answer": "うろこやこうら",
+    "explanation": "乾燥しにくい体表をもつ。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44〜46"
+    },
+    "reviewHint": "教科書 p.44〜46 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q049",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "鳥類の体表に多い特徴を答えなさい。",
+    "answer": "羽毛",
+    "explanation": "羽毛で体が覆われる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44〜46"
+    },
+    "reviewHint": "教科書 p.44〜46 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q050",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "哺乳類の体表に多い特徴を答えなさい。",
+    "answer": "体毛",
+    "explanation": "体毛で体が覆われるものが多い。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.44〜46"
+    },
+    "reviewHint": "教科書 p.44〜46 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q051",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "動物を5つの脊椎動物のなかまに分けるとき、見る観点を3つ答えなさい。",
+    "answer": "呼吸、体表、子のうまれ方",
+    "explanation": "生活場所や体温も分類の観点になる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q052",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "「えらで呼吸し、水中で生活し、体表がうろこ」の脊椎動物は何類か。",
+    "answer": "魚類",
+    "explanation": "魚類の代表的な特徴。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q053",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "「子はえら、親は肺と皮膚で呼吸する」脊椎動物は何類か。",
+    "answer": "両生類",
+    "explanation": "成長にともなって呼吸のしかたが変わる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q054",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "「肺で呼吸し、体表がうろこやこうら」の脊椎動物は何類か。",
+    "answer": "は虫類",
+    "explanation": "トカゲ、ヘビ、カメなど。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q055",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "「肺で呼吸し、体表が羽毛」の脊椎動物は何類か。",
+    "answer": "鳥類",
+    "explanation": "ワシ、ペンギンなど。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q056",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003c",
+    "unit": "動物の分類",
+    "topic": "体温・体表・分類の観点",
+    "level": "standard",
+    "question": "「肺で呼吸し、体表が体毛、子を母乳で育てる」の脊椎動物は何類か。",
+    "answer": "哺乳類",
+    "explanation": "ウサギ、ヒト、クジラなど。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.42〜46"
+    },
+    "reviewHint": "教科書 p.42〜46 の「体温・体表・分類の観点」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q057",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "背骨をもたない動物を何というか。",
+    "answer": "無脊椎動物",
+    "explanation": "昆虫や貝、イカなどが含まれる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.48"
+    },
+    "reviewHint": "教科書 p.48 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q058",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "無脊椎動物は、現在確認されている動物全体のうち、多いか少ないか。",
+    "answer": "多い",
+    "explanation": "動物の多くは無脊椎動物とされる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.48"
+    },
+    "reviewHint": "教科書 p.48 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q059",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "からだやあしに節がある無脊椎動物を何というか。",
+    "answer": "節足動物",
+    "explanation": "昆虫類、甲殻類、クモ類、ムカデ類などが含まれる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.48〜52"
+    },
+    "reviewHint": "教科書 p.48〜52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q060",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "節足動物の体の外側をおおうかたいつくりを何というか。",
+    "answer": "外骨格",
+    "explanation": "からだを支えたり守ったりする。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.48"
+    },
+    "reviewHint": "教科書 p.48 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q061",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "外骨格は、からだの内側にあるか外側にあるか。",
+    "answer": "外側",
+    "explanation": "節足動物は外骨格で体を支える。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.48"
+    },
+    "reviewHint": "教科書 p.48 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q062",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "節足動物の筋肉は、外骨格の内側と外側のどちらについているか。",
+    "answer": "内側",
+    "explanation": "外骨格の内側に筋肉がついて動く。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.48"
+    },
+    "reviewHint": "教科書 p.48 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q063",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "昆虫類のからだは、大きく何・何・何に分かれるか。",
+    "answer": "頭部、胸部、腹部",
+    "explanation": "昆虫を分類する重要な特徴。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50〜52"
+    },
+    "reviewHint": "教科書 p.50〜52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q064",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "昆虫類のあしは何本か。",
+    "answer": "6本",
+    "explanation": "胸部に3対、合計6本のあしがある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50〜52"
+    },
+    "reviewHint": "教科書 p.50〜52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q065",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "昆虫類のあしは、からだのどの部分についているか。",
+    "answer": "胸部",
+    "explanation": "胸部に3対のあしがある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50〜52"
+    },
+    "reviewHint": "教科書 p.50〜52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q066",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "昆虫類には、はねがあるものが多い。はねはどの部分についているか。",
+    "answer": "胸部",
+    "explanation": "はねも胸部についている。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50〜52"
+    },
+    "reviewHint": "教科書 p.50〜52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q067",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "バッタやチョウ、カブトムシは何類か。",
+    "answer": "昆虫類",
+    "explanation": "からだが頭部・胸部・腹部に分かれ、あしが6本。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50〜52"
+    },
+    "reviewHint": "教科書 p.50〜52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q068",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "advanced",
+    "question": "昆虫類は、何という穴から空気を取り入れるか。",
+    "answer": "気門",
+    "explanation": "体の側面などにある気門から空気を取り入れる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.52"
+    },
+    "reviewHint": "教科書 p.52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q069",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "advanced",
+    "question": "気門から取り入れた空気は、何という管を通るか。",
+    "answer": "気管",
+    "explanation": "気管を通って体の中に酸素が運ばれる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.52"
+    },
+    "reviewHint": "教科書 p.52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q070",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "エビやカニ、ダンゴムシは節足動物の何類か。",
+    "answer": "甲殻類",
+    "explanation": "多くは水中や湿った場所で生活する。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.52"
+    },
+    "reviewHint": "教科書 p.52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q071",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "クモは昆虫類か。",
+    "answer": "昆虫類ではない",
+    "explanation": "クモはあしが8本で、昆虫類とは異なる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.52"
+    },
+    "reviewHint": "教科書 p.52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q072",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "basic",
+    "question": "ムカデは昆虫類か。",
+    "answer": "昆虫類ではない",
+    "explanation": "あしの数やからだの分かれ方が昆虫類と異なる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.52"
+    },
+    "reviewHint": "教科書 p.52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q073",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "standard",
+    "question": "昆虫類を見分ける基本的な特徴を2つ答えなさい。",
+    "answer": "からだが頭部・胸部・腹部に分かれる、あしが6本",
+    "explanation": "はねの有無だけでは昆虫かどうかは決められない。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50〜52"
+    },
+    "reviewHint": "教科書 p.50〜52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q074",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003d",
+    "unit": "動物の分類",
+    "topic": "無脊椎動物・節足動物",
+    "level": "standard",
+    "question": "はねがない昆虫もいるか。",
+    "answer": "いる",
+    "explanation": "昆虫の特徴は、はねの有無だけではなく、からだの分かれ方やあしの数で見る。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50〜52"
+    },
+    "reviewHint": "教科書 p.50〜52 の「無脊椎動物・節足動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q075",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "basic",
+    "question": "アサリ、イカ、タコなどは無脊椎動物の何動物か。",
+    "answer": "軟体動物",
+    "explanation": "やわらかい体をもち、内臓が外とう膜でおおわれる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50"
+    },
+    "reviewHint": "教科書 p.50 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q076",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "basic",
+    "question": "軟体動物の内臓をおおう膜を何というか。",
+    "answer": "外とう膜",
+    "explanation": "軟体動物を見分ける重要な特徴。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50"
+    },
+    "reviewHint": "教科書 p.50 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q077",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "basic",
+    "question": "アサリは脊椎動物か、無脊椎動物か。",
+    "answer": "無脊椎動物",
+    "explanation": "背骨をもたない。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50"
+    },
+    "reviewHint": "教科書 p.50 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q078",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "basic",
+    "question": "アサリは何動物か。",
+    "answer": "軟体動物",
+    "explanation": "貝のなかまは軟体動物に含まれる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50"
+    },
+    "reviewHint": "教科書 p.50 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q079",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "basic",
+    "question": "イカやタコは何動物か。",
+    "answer": "軟体動物",
+    "explanation": "貝殻が目立たないものもあるが、軟体動物に含まれる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50"
+    },
+    "reviewHint": "教科書 p.50 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q080",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "basic",
+    "question": "アサリのような水中で生活する軟体動物は、主に何で呼吸するか。",
+    "answer": "えら",
+    "explanation": "水中の酸素をえらで取り入れる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50"
+    },
+    "reviewHint": "教科書 p.50 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q081",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "advanced",
+    "question": "アサリのからだで、水を取り入れる管を何というか。",
+    "answer": "入水管",
+    "explanation": "水を取り入れ、えらで呼吸などを行う。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50"
+    },
+    "reviewHint": "教科書 p.50 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q082",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "advanced",
+    "question": "アサリのからだで、水を出す管を何というか。",
+    "answer": "出水管",
+    "explanation": "体内を通った水を外へ出す。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50"
+    },
+    "reviewHint": "教科書 p.50 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q083",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "advanced",
+    "question": "アサリのからだを殻に固定する筋肉を何というか。",
+    "answer": "貝柱",
+    "explanation": "貝柱によって殻を閉じることができる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50"
+    },
+    "reviewHint": "教科書 p.50 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q084",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "standard",
+    "question": "軟体動物と節足動物の大きな違いは何か。",
+    "answer": "節足動物には外骨格と節のあるあしがある",
+    "explanation": "軟体動物はやわらかい体をもち、外とう膜がある。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.48〜50"
+    },
+    "reviewHint": "教科書 p.48〜50 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q085",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "basic",
+    "question": "ミミズ、クラゲ、ヒトデなどは、脊椎動物か無脊椎動物か。",
+    "answer": "無脊椎動物",
+    "explanation": "背骨をもたない動物。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.50〜52"
+    },
+    "reviewHint": "教科書 p.50〜52 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q086",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "standard",
+    "question": "動物を大きく2つに分けるとき、背骨の有無で何と何に分けられるか。",
+    "answer": "脊椎動物と無脊椎動物",
+    "explanation": "背骨があるかないかは大きな分類の観点。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.48〜52"
+    },
+    "reviewHint": "教科書 p.48〜52 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q087",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "basic",
+    "question": "節足動物と軟体動物は、どちらも脊椎動物か無脊椎動物か。",
+    "answer": "無脊椎動物",
+    "explanation": "どちらも背骨をもたない。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.48〜52"
+    },
+    "reviewHint": "教科書 p.48〜52 の「軟体動物・その他の無脊椎動物」を確認する。"
+  },
+  {
+    "id": "science_textbook_s003_q088",
+    "category": "school",
+    "subject": "science",
+    "grade": "jhs1",
+    "set": "science_textbook_s003",
+    "subSet": "science_textbook_s003e",
+    "unit": "動物の分類",
+    "topic": "軟体動物・その他の無脊椎動物",
+    "level": "standard",
+    "question": "無脊椎動物を分類するときの観点を2つ答えなさい。",
+    "answer": "外骨格、あしの節、外とう膜など",
+    "explanation": "節足動物か軟体動物かを見分ける手がかりになる。",
+    "source": {
+      "material": "理科教科書",
+      "page": "p.48〜52"
+    },
+    "reviewHint": "教科書 p.48〜52 の「軟体動物・その他の無脊椎動物」を確認する。"
+  }
+];
+
+if (typeof window !== 'undefined') {
+  window.questions = questions;
+  window.QUESTIONS = questions;
+}
+
+if (typeof module !== 'undefined') {
+  module.exports = questions;
+}
