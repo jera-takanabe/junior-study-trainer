@@ -456,12 +456,12 @@
       }
     ];
 
-    const QUESTIONS = Array.isArray(window.QUIZ_QUESTIONS) && window.QUIZ_QUESTIONS.length > 0
+    let QUESTIONS = Array.isArray(window.QUIZ_QUESTIONS) && window.QUIZ_QUESTIONS.length > 0
       ? window.QUIZ_QUESTIONS
       : SAMPLE_QUESTIONS;
 
-    const SETS = buildSetManifest();
-    const QUESTION_SET_PROFILE = buildQuestionSetProfile();
+    let SETS = buildSetManifest();
+    let QUESTION_SET_PROFILE = buildQuestionSetProfile();
 
     // 教材切り替えに備えて、進捗・履歴は教材IDごとの保存キーに分離します。
     const HISTORY_KEY_BASE = "timedQuizTrainerHistoryV04";
