@@ -608,8 +608,11 @@
         return;
       }
 
+      const currentItem = manifest.find(item => item.questionSetId === QUESTION_SET_PROFILE.questionSetId);
       const selectedItem = manifest.find(item => item.questionSetId === selectedQuestionSetId);
       const selectedName = selectedItem ? selectedItem.questionSetName : "未選択";
+      const currentSourceFile = currentItem ? currentItem.sourceFile : "未登録";
+      const selectedSourceFile = selectedItem ? selectedItem.sourceFile : "未選択";
 
       const items = manifest.map(item => {
         const isCurrent = item.questionSetId === QUESTION_SET_PROFILE.questionSetId;
@@ -630,6 +633,8 @@
       questionSetsManifestPanel.innerHTML =
         `<strong>登録教材一覧：</strong>${manifest.length}件<br />` +
         `<span class="small">現在読み込み中：${escapeHtml(QUESTION_SET_PROFILE.questionSetName)} / 選択中：${escapeHtml(selectedName || "未選択")}</span><br />` +
+        `<span class="small">現在読み込み中sourceFile：${escapeHtml(currentSourceFile)}</span><br />` +
+        `<span class="small">選択中sourceFile：${escapeHtml(selectedSourceFile)}</span><br />` +
         `<span class="small">※この段階では、教材を選択しても実際の出題教材はまだ切り替わりません。</span>` +
         `<ul style="margin: 6px 0 0 18px; padding: 0;">${items}</ul>`;
 
