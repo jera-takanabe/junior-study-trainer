@@ -5,7 +5,7 @@
 このファイルは、教材全体の一覧を整理するためのドラフトである。
 
 現時点では、アプリ本体からは読み込まない。  
-将来 `app/question_sets_manifest.js` を作成する前の、運用確認用の一覧として使う。
+運用確認用の一覧として作成し、その内容をもとに `app/question_sets_manifest.js` を作成済み。
 
 ## 前提
 
@@ -60,7 +60,9 @@
 
 現時点では、`question_sets_manifest_draft.md` は運用資料であり、アプリ本体からは読み込まない。
 
-次の段階で正式化する場合は、`app/question_sets_manifest.js` を作成する。
+`app/question_sets_manifest.js` は作成済み。
+
+ただし、まだ `index.html` からは読み込ませていない。
 
 ### manifest 形式の暫定判断
 
@@ -107,11 +109,12 @@
 
 ### 現時点の結論
 
-Phase 4 では、以下までを完了範囲とする。
+Phase 4 では、以下までを完了範囲とし、完了済みとする。
 
 1. 教材全体IDの一覧化
 2. 教材名・教科・学年・範囲・問題数の整理
 3. 主ファイルパスの整理
 4. manifest 正式化前の判断事項の記録
+5. `app/question_sets_manifest.js` の作成
 
 アプリが manifest を読み込む実装は、Phase 5 以降とする。
