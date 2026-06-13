@@ -1254,11 +1254,26 @@
           const backup = JSON.parse(String(reader.result || "{}"));
           validateBackup(backup);
 
+          if (backup.questionSetId && backup.questionSetId !== QUESTION_SET_PROFILE.questionSetId) {
+            const proceed = confirm(
+              `教材が一致しないバックアップです。\n\n` +
+              `現在の教材：${QUESTION_SET_PROFILE.questionSetName}\n` +
+              `現在の教材ID：${QUESTION_SET_PROFILE.questionSetId}\n\n` +
+              `バックアップの教材：${backup.questionSetName || "不明"}\n` +
+              `バックアップの教材ID：${backup.questionSetId}\n\n` +
+              `このまま読み込むと、現在の履歴・進捗が別教材の内容で上書きされる可能性があります。\n` +
+              `続行しますか？`
+            );
+            if (!proceed) return;
+          }
+
           const historyCount = Array.isArray(backup.history) ? backup.history.length : 0;
           const progressCount = backup.progress && typeof backup.progress === "object" ? Object.keys(backup.progress).length : 0;
           const ok = confirm(
             `バックアップを読み込みますか？\n\n` +
             `出力日時：${backup.exportedAt || "不明"}\n` +
+            `教材：${backup.questionSetName || "旧形式または不明"}\n` +
+            `教材ID：${backup.questionSetId || "旧形式または不明"}\n` +
             `履歴：${historyCount} セッション\n` +
             `進捗：${progressCount} 問分\n\n` +
             `現在の履歴・進捗は上書きされます。`
