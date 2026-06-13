@@ -1217,9 +1217,13 @@
       const backup = {
         appName: "timed-quiz-trainer",
         version: APP_VERSION,
+        backupVersion: 2,
         exportedAt: new Date().toISOString(),
         historyKey: HISTORY_KEY,
         progressKey: PROGRESS_KEY,
+        questionSetId: QUESTION_SET_PROFILE.questionSetId,
+        questionSetName: QUESTION_SET_PROFILE.questionSetName,
+        questionSetSource: QUESTION_SET_PROFILE.source,
         sets: SETS,
         questionCount: QUESTIONS.length,
         questionIds: QUESTIONS.map(q => q.id),
