@@ -657,6 +657,22 @@
       catch (e) { alert("選択中教材IDを保存できませんでした。"); }
     }
 
+    function rebuildQuestionDataState() {
+      QUESTIONS = Array.isArray(window.QUIZ_QUESTIONS) && window.QUIZ_QUESTIONS.length > 0
+        ? window.QUIZ_QUESTIONS
+        : SAMPLE_QUESTIONS;
+
+      SETS = buildSetManifest();
+      QUESTION_SET_PROFILE = buildQuestionSetProfile();
+
+      return {
+        questionSetId: QUESTION_SET_PROFILE.questionSetId,
+        questionSetName: QUESTION_SET_PROFILE.questionSetName,
+        questionCount: QUESTIONS.length,
+        setCount: SETS.length
+      };
+    }
+
     function loadQuestionDataScript(sourceFile) {
       return new Promise((resolve, reject) => {
         if (!sourceFile || typeof sourceFile !== "string") {
