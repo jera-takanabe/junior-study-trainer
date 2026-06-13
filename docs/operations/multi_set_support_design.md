@@ -299,9 +299,92 @@ Phase 4 で実装するかどうかを判断する前に、以下を決める。
 3. sourceFile を GitHub Pages から直接読めるパスにするか、リポジトリ内の相対パスにするか
 4. 将来、教材JSを `app/data/` 配下へ移すか
 
+### 現時点の結論
+
+Phase 4 は完了済み。
+
+完了済み：
+
+1. `docs/operations/question_sets_manifest_draft.md` の作成
+2. 教材一覧・問題数・主ファイルパスの整理
+3. `app/question_sets_manifest.js` の作成
+4. ただし、`app/question_sets_manifest.js` はまだ `index.html` から読み込ませていない
+
+次は Phase 5 として、アプリ内問題セット選択に向けた最小実装方針を検討する。
+
+
+## Phase 5 詳細設計: アプリ内問題セット選択
+
+### 目的
+
+アプリ画面上で教材全体を選択できるようにする。
+
+現在は、学習したい教材に応じて `app/questions.js` を手動で上書きしている。  
+Phase 5 では、この手動上書き運用から将来的に脱却するため、教材選択UIと読み込み方式を検討する。
+
+### 前提
+
+Phase 4 で以下を作成済み。
+
+- `app/question_sets_manifest.js`
+
+ただし、現時点ではまだ `index.html` から読み込ませていない。
+
+また、各教材JSファイルは現在 docs 配下にあり、`app/questions.js` 上書き方式で利用している。
+
+### 最小実装方針
+
+Phase 5 は一気に完成形を目指さない。
+
+最初の実装候補は、以下の順序とする。
+
+1. `index.html` で `app/question_sets_manifest.js` を読み込む
+2. 設定画面に教材一覧を表示する
+3. ただし、最初は選択しても教材切り替えは行わない
+4. 現在読み込まれている教材と manifest 上の教材を照合して表示する
+5. その後、教材切り替え方法を検討する
+
+### 最初にやらないこと
+
+Phase 5 の初期段階では、以下はまだ行わない。
+
+- 複数教材JSの動的読み込み
+- `app/questions.js` 上書き方式の廃止
+- 教材ごとの進捗保存キー分離
+- 履歴の教材別分離
+- 既存進捗データの移行
+- クラウド同期
+
+### UIの初期案
+
+設定画面に、以下のような表示を追加する。
+
+- 利用可能な教材一覧
+- 現在読み込まれている教材
+- manifest 登録済みかどうか
+- 問題数
+
+最初は「選択ボタン」ではなく、「一覧表示」だけにする。
+
+### 安全性
+
+この段階では、`window.QUIZ_QUESTIONS` の内容は変更しない。
+
+そのため、現在の学習画面・出題・採点・バックアップ機能には影響を与えない想定とする。
+
+### 次の判断ポイント
+
+Phase 5 の最初の実装前に、以下を確認する。
+
+1. `app/question_sets_manifest.js` を `index.html` から読み込ませても既存動作に影響がないか
+2. manifest の `questionSetId` と、現在の `QUESTION_SET_PROFILE.questionSetId` を照合できるか
+3. 設定画面に教材一覧を表示する位置
+4. 教材切り替えを実装する前に、一覧表示だけで十分か
+
 ### 現時点の推奨
 
-まずは `docs/operations/question_sets_manifest_draft.md` として、運用資料ベースのドラフトを作る。
+まずは、`app/question_sets_manifest.js` を `index.html` から読み込ませるだけにする。
 
-その後、内容が固まったら `app/question_sets_manifest.js` へ移行する。
+そのうえで、画面にはまだ表示せず、ブラウザコンソールまたは簡単な確認表示で `window.QUESTION_SETS_MANIFEST` が存在することを確認する。
 
+その後、設定画面への一覧表示に進む。
