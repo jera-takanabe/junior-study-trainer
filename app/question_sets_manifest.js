@@ -14,7 +14,7 @@ window.QUESTION_SETS_MANIFEST = [
     grade: "中1",
     range: "S001-S003",
     questionCount: 222,
-    sourceFile: "docs/materials/school/science/jhs1/textbook/science_textbook_s001_s003_app_questions.js",
+    sourceFile: "app/data/science_textbook_s001_s003.js",
     status: "registered"
   },
   {
@@ -24,7 +24,7 @@ window.QUESTION_SETS_MANIFEST = [
     grade: "中1",
     range: "地理 p10-p53",
     questionCount: 347,
-    sourceFile: "docs/materials/school/social/geography/p10_p53/social_geography_p10_p53_questions.js",
+    sourceFile: "app/data/social_geography_p10_p53.js",
     status: "registered"
   },
   {
@@ -34,7 +34,7 @@ window.QUESTION_SETS_MANIFEST = [
     grade: "中1",
     range: "歴史 p24-p27",
     questionCount: 97,
-    sourceFile: "docs/materials/school/social/history/p24_p27/history_p24_p27_questions.js",
+    sourceFile: "app/data/social_history_p24_p27.js",
     status: "registered"
   }
 ];
