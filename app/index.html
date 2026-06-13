@@ -646,6 +646,16 @@
       });
     }
 
+    function getQuestionSetsManifest() {
+      return Array.isArray(window.QUESTION_SETS_MANIFEST) ? window.QUESTION_SETS_MANIFEST : [];
+    }
+
+    function getSelectedQuestionSetItem() {
+      const selectedQuestionSetId = loadSelectedQuestionSetId();
+      if (!selectedQuestionSetId) return null;
+      return getQuestionSetsManifest().find(item => item.questionSetId === selectedQuestionSetId) || null;
+    }
+
     function loadSelectedQuestionSetId() {
       try { return localStorage.getItem("timedQuizTrainerSelectedQuestionSetId") || ""; }
       catch (e) { return ""; }
