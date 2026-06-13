@@ -21,9 +21,9 @@
 
 | 教材全体ID | 教材名 | 教科 | 学年 | 範囲 | 問題数 | 主ファイル | 状態 |
 |---|---|---|---|---|---:|---|---|
-| `school_science_jhs1_textbook_s001_s003` | 理科 中1 教科書 S001-S003 | 理科 | 中1 | S001-S003 | 未確認 | `docs/materials/school/science/jhs1/textbook/science_textbook_s001_s003_app_questions.js` | 登録済み |
+| `school_science_jhs1_textbook_s001_s003` | 理科 中1 教科書 S001-S003 | 理科 | 中1 | S001-S003 | 222 | `docs/materials/school/science/jhs1/textbook/science_textbook_s001_s003_app_questions.js` | 登録済み |
 | `school_social_geography_jhs1_textbook_p10_p53` | 社会 地理 p10-p53 | 社会 | 中1 | 地理 p10-p53 | 347 | `docs/materials/school/social/geography/p10_p53/social_geography_p10_p53_questions.js` | 登録済み |
-| `school_social_history_jhs1_textbook_p24_p27` | 社会 歴史 p24-p27 | 社会 | 中1 | 歴史 p24-p27 | 未確認 | `docs/materials/school/social/history/p24_p27/history_p24_p27_questions.js` | 登録済み |
+| `school_social_history_jhs1_textbook_p24_p27` | 社会 歴史 p24-p27 | 社会 | 中1 | 歴史 p24-p27 | 97 | `docs/materials/school/social/history/p24_p27/history_p24_p27_questions.js` | 登録済み |
 
 ## 将来の manifest JS 形式案
 
@@ -42,7 +42,7 @@
 
 - このファイルはドラフトであり、アプリ本体からは読み込まない
 - `app/questions.js` 上書き方式はまだ継続する
-- 問題数が未確認の教材は、後で実ファイルから確認する
+- 問題数は各教材JSファイル冒頭の収録問題数をもとに記録する
 - `sourceFile` は現時点ではリポジトリ内の相対パスで記録する
 - GitHub Pages で直接読み込むパスにするかは、Phase 5 以降で判断する
 
