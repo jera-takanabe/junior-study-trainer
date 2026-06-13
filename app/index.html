@@ -673,6 +673,13 @@
       };
     }
 
+    function resolveQuestionDataScriptSrc(sourceFile) {
+      if (sourceFile.startsWith("app/data/")) {
+        return sourceFile.slice("app/".length);
+      }
+      return sourceFile;
+    }
+
     function loadQuestionDataScript(sourceFile) {
       return new Promise((resolve, reject) => {
         if (!sourceFile || typeof sourceFile !== "string") {
@@ -686,7 +693,7 @@
         }
 
         const script = document.createElement("script");
-        script.src = sourceFile;
+        script.src = resolveQuestionDataScriptSrc(sourceFile);
         script.dataset.questionDataLoader = "true";
         script.onload = () => resolve(sourceFile);
         script.onerror = () => reject(new Error(`教材JSの読み込みに失敗しました: ${sourceFile}`));
