@@ -59,3 +59,23 @@
 | 表示名 | 社会 地理 p10-p53 |
 | コピー元ファイル | `docs/materials/school/social/geography/p10_p53/social_geography_p10_p53_questions.js` |
 | 形式 | `timed_quiz_trainer_v0_6_set_switching` 互換、`window.QUIZ_SETS` 形式 |
+
+## 進捗保存の現状メモ
+
+現行アプリでは、進捗はブラウザの `localStorage` に保存される。
+
+| 項目 | 内容 |
+|---|---|
+| 保存キー | `timedQuizTrainerProgressV04` |
+| 保存単位 | 問題ID（`questionId`）単位 |
+| 保存場所 | ブラウザ内の `localStorage` |
+| 複数デバイス同期 | なし |
+| 現行運用 | 学習前に進捗をインポートし、学習後にバックアップJSONをエクスポートする |
+
+## 問題ID衝突リスク
+
+| 問題セットID | 問題ID例 | 現時点の判断 |
+|---|---|---|
+| `school_science_jhs1_textbook_s001_s003` | `science_textbook_s001_q001` | 接頭辞付きのため、衝突リスクは低い |
+| `school_social_geography_jhs1_textbook_p10_p53` | `social_geography_s001_q001` | 接頭辞付きのため、衝突リスクは低い |
+| `school_social_history_jhs1_textbook_p24_p27` | `h001_a_q001` | 現時点では衝突なし。ただし将来拡張時は、より明示的な接頭辞を検討する |
