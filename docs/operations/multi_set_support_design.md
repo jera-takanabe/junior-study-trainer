@@ -848,3 +848,73 @@ Phase 5 の最小実装として、以下を完了した。
 ### 次の作業候補
 
 次は、アプリ本体で保存キーを組み立てている箇所を確認し、変更対象を洗い出す。
+
+## Phase 5 実装メモ: 教材別保存キーの導入完了
+
+### 完了済み
+
+進捗・履歴の保存キーを、教材IDつきのキーへ分離した。
+
+変更前：
+
+- `timedQuizTrainerProgressV04`
+- `timedQuizTrainerHistoryV04`
+
+変更後：
+
+- `timedQuizTrainerProgressV04__{questionSetId}`
+- `timedQuizTrainerHistoryV04__{questionSetId}`
+
+### 実装内容
+
+`app/index.html` で、保存キーを固定文字列ではなく、現在の教材IDから組み立てるように変更した。
+
+基本形：
+
+- `HISTORY_KEY_BASE`
+- `PROGRESS_KEY_BASE`
+- `buildStorageKey(baseKey)`
+
+現在の教材が `school_social_geography_jhs1_textbook_p10_p53` の場合、保存キーは以下になる。
+
+- `timedQuizTrainerHistoryV04__school_social_geography_jhs1_textbook_p10_p53`
+- `timedQuizTrainerProgressV04__school_social_geography_jhs1_textbook_p10_p53`
+
+### 確認済み
+
+ブラウザで以下を確認した。
+
+- アプリが開く
+- 保存状態の表示に教材IDつき保存キーが出る
+- クイズ開始ができる
+- 1問解答後に履歴が保存される
+- 進捗が保存される
+- 履歴が 0 セッションから 1 セッションになる
+- 進捗が 0 問分から 1 問分になる
+
+### 旧キーの扱い
+
+旧キーからの自動移行は行っていない。
+
+そのため、導入直後は旧キーに残っていた履歴・進捗は画面上に表示されない。
+
+これは設計通りである。
+
+旧キーは削除せず、必要に応じて手動確認・手動退避する。
+
+### 現時点の状態
+
+保存領域は教材別に分離された。
+
+ただし、教材切り替え機能そのものはまだ未実装である。
+
+現在の学習対象は、引き続き `app/questions.js` に読み込まれている教材である。
+
+### 次の作業候補
+
+次は、教材切り替え機能の実装前に、以下を検討する。
+
+1. 画面上で教材を選択するUIをどうするか
+2. 教材JSを動的に読み込む方式にするか
+3. `app/questions.js` 手動差し替え運用を残すか
+4. 教材切り替え時に画面を再読み込みする方式にするか
