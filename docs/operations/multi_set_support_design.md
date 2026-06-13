@@ -566,3 +566,59 @@ Phase 5 の最小実装として、以下を完了した。
 次は、`app/data/` 配下への教材JSコピーを行う。
 
 その後、コピー元とコピー先の問題数・先頭ID・末尾IDが一致することを確認する。
+
+## Phase 5 実装メモ: app/data 配下への教材JSコピー
+
+### 完了済み
+
+教材切り替え機能の準備として、アプリ実行用の教材JSを `app/data/` 配下へコピーした。
+
+追加済みファイル：
+
+- `app/data/science_textbook_s001_s003.js`
+- `app/data/social_geography_p10_p53.js`
+- `app/data/social_history_p24_p27.js`
+
+### コピー元
+
+コピー元は以下である。
+
+- `docs/materials/school/science/jhs1/textbook/science_textbook_s001_s003_app_questions.js`
+- `docs/materials/school/social/geography/p10_p53/social_geography_p10_p53_questions.js`
+- `docs/materials/school/social/history/p24_p27/history_p24_p27_questions.js`
+
+### 確認済み
+
+コピー直後に、コピー元とコピー先が一致していることを確認した。
+
+確認結果：
+
+- science: OK
+- geography: OK
+- history: OK
+
+### manifest の更新
+
+`app/question_sets_manifest.js` の `sourceFile` を、`app/data/` 配下のファイルへ更新した。
+
+更新後：
+
+- `app/data/science_textbook_s001_s003.js`
+- `app/data/social_geography_p10_p53.js`
+- `app/data/social_history_p24_p27.js`
+
+### 現時点の状態
+
+`app/data/` 配下に教材JSは存在するが、まだ `index.html` から教材JSとして動的読み込みはしていない。
+
+現在の出題対象は、引き続き `app/questions.js` に読み込まれている教材である。
+
+### 次の検討候補
+
+次に進む場合は、以下を検討する。
+
+1. manifest の `sourceFile` が画面上または内部確認で参照できるようにする
+2. 教材切り替え機能の設計に進む
+3. 教材JSを動的に読み込む方式を検討する
+
+ただし、教材切り替えを実装する前に、進捗保存キー・履歴保存キーを教材別に分けるかどうかを検討する必要がある。
