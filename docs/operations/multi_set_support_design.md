@@ -471,3 +471,98 @@ Phase 5 の最小実装として、以下を完了した。
 2. 教材切り替え機能の設計に進む
 
 ただし、教材切り替え機能に進む前に、教材JSファイルを `docs/` 配下のまま参照するか、`app/data/` 配下へ集約するかを決める。
+
+## Phase 5 設計メモ: 教材JSファイルの配置方針
+
+### 背景
+
+教材切り替え機能を実装するには、アプリが教材JSファイルを安定して読み込める必要がある。
+
+現在、教材JSファイルは `docs/materials/` 配下に保存されている。  
+これは教材作成・保管・レビュー用の場所としては適切だが、アプリから直接読み込むファイル置き場としては、やや分かりにくい。
+
+### 現在の配置
+
+現在の主ファイルは以下である。
+
+- `docs/materials/school/science/jhs1/textbook/science_textbook_s001_s003_app_questions.js`
+- `docs/materials/school/social/geography/p10_p53/social_geography_p10_p53_questions.js`
+- `docs/materials/school/social/history/p24_p27/history_p24_p27_questions.js`
+
+### 課題
+
+`docs/` 配下の教材JSを直接アプリから読み込む場合、以下の課題がある。
+
+- アプリ用ファイルと資料用ファイルの境界が分かりにくい
+- GitHub Pages 上の参照パスを慎重に扱う必要がある
+- 将来、教材を追加したときにアプリ用ファイルの一覧性が下がる
+- `app/question_sets_manifest.js` の `sourceFile` が長くなりやすい
+
+### 配置方針の候補
+
+候補は以下の2つとする。
+
+#### 候補A: docs 配下の教材JSをそのまま参照する
+
+メリット：
+
+- ファイルの重複がない
+- 既存ファイルを移動しなくてよい
+- 教材作成時の成果物をそのまま使える
+
+デメリット：
+
+- アプリ用の読み込みファイルとしてはパスが長い
+- 資料保管場所とアプリ実行用ファイルが混在する
+- 将来の教材切り替え実装が分かりにくくなる可能性がある
+
+#### 候補B: app/data 配下に教材JSをコピーする
+
+メリット：
+
+- アプリが読み込む教材ファイルを `app/` 配下に集約できる
+- manifest の `sourceFile` が短くなる
+- 教材切り替え実装時の見通しがよい
+- GitHub Pages 上での静的配信対象として分かりやすい
+
+デメリット：
+
+- docs 配下と app/data 配下で教材JSが二重管理になる
+- 教材を修正した場合、コピー先も更新する必要がある
+- コピー元とコピー先の不一致確認が必要になる
+
+### 現時点の推奨
+
+現時点では、候補Bを優先する。
+
+つまり、教材切り替え機能に進む前に、まず `app/data/` 配下へ教材JSをコピーする。
+
+ただし、`docs/materials/` 配下の教材JSは原本として残す。  
+`app/data/` 配下は、アプリ実行用のコピーとして扱う。
+
+### 初期コピー候補
+
+初期コピー候補は以下とする。
+
+| 教材 | コピー元 | コピー先 |
+|---|---|---|
+| 理科 S001-S003 | `docs/materials/school/science/jhs1/textbook/science_textbook_s001_s003_app_questions.js` | `app/data/science_textbook_s001_s003.js` |
+| 社会 地理 p10-p53 | `docs/materials/school/social/geography/p10_p53/social_geography_p10_p53_questions.js` | `app/data/social_geography_p10_p53.js` |
+| 社会 歴史 p24-p27 | `docs/materials/school/social/history/p24_p27/history_p24_p27_questions.js` | `app/data/social_history_p24_p27.js` |
+
+### 注意点
+
+この段階では、まだ教材切り替えは実装しない。
+
+まずは以下を行う。
+
+1. `app/data/` ディレクトリを作成する
+2. 3教材JSをコピーする
+3. `app/question_sets_manifest.js` の `sourceFile` を `app/data/` 配下へ更新する
+4. ただし、`index.html` はまだ `app/data/` の教材JSを読み込まない
+
+### 次の作業候補
+
+次は、`app/data/` 配下への教材JSコピーを行う。
+
+その後、コピー元とコピー先の問題数・先頭ID・末尾IDが一致することを確認する。
