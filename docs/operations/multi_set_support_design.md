@@ -1526,3 +1526,68 @@ Phase 6-3a では、`sourceFile` の表示だけを実装した。
 次は Phase 6-3b として、指定された `sourceFile` の教材JSを読み込む関数だけを追加する。
 
 ただし、その関数を実際のアプリ初期化にはまだ使わない。
+
+## Phase 6-3b 実装メモ: 教材JS読み込み関数の追加
+
+### 完了済み
+
+指定された `sourceFile` の教材JSを読み込むための関数を追加した。
+
+追加した関数：
+
+- `loadQuestionDataScript(sourceFile)`
+
+### 実装内容
+
+`app/index.html` に、script タグを動的に追加して教材JSを読み込む関数を追加した。
+
+この関数は Promise を返す。
+
+成功時：
+
+- 指定した `sourceFile` を読み込み、resolve する
+
+失敗時：
+
+- `sourceFile` が未指定の場合はエラー
+- `sourceFile` が `app/data/` 配下の `.js` でない場合はエラー
+- script 読み込みに失敗した場合はエラー
+
+### 安全確認
+
+この段階では、`loadQuestionDataScript(sourceFile)` はまだアプリ初期化には使っていない。
+
+つまり、実際の出題教材はまだ切り替わらない。
+
+ブラウザ Console で以下を確認した。
+
+- `typeof loadQuestionDataScript` が `"function"` になる
+- `document.querySelectorAll('script[data-question-data-loader="true"]').length` が `0` になる
+
+これは、関数は定義されているが、まだ実行されていないことを示す。
+
+### 動作確認
+
+ブラウザで以下を確認した。
+
+- アプリが開く
+- 登録教材一覧が表示される
+- sourceFile 表示が残っている
+- クイズ開始ができる
+
+### 現時点の状態
+
+Phase 6-3b では、教材JS読み込み関数だけを追加した。
+
+まだ以下は行っていない。
+
+- 選択中教材IDに応じた教材JS読み込み
+- `QUESTIONS` / `SETS` / `QUESTION_SET_PROFILE` の動的再構成
+- `initialize()` の実行タイミング変更
+- 実際の教材切り替え
+
+### 次の作業候補
+
+次は Phase 6-3c として、アプリ初期化順序の変更準備を行う。
+
+具体的には、`QUESTIONS` / `SETS` / `QUESTION_SET_PROFILE` を、教材JS読み込み後に決定できる構造へ変更する。
