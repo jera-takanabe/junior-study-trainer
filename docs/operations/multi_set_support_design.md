@@ -1485,3 +1485,44 @@ Phase 6-3 実装時は、各段階で以下を確認する。
 次は Phase 6-3a として、現在読み込み中教材と選択中教材の `sourceFile` を画面に表示する。
 
 この段階では、実際の教材JS読み込み切り替えはまだ行わない。
+
+## Phase 6-3a 実装メモ: sourceFile 表示
+
+### 完了済み
+
+登録教材一覧に、現在読み込み中教材と選択中教材の `sourceFile` を表示するようにした。
+
+### 実装内容
+
+`app/index.html` の登録教材一覧表示で、manifest から以下を取得して表示する。
+
+- 現在読み込み中教材の `sourceFile`
+- 選択中教材の `sourceFile`
+
+表示例：
+
+- 現在読み込み中sourceFile：`app/data/social_geography_p10_p53.js`
+- 選択中sourceFile：`app/data/science_textbook_s001_s003.js`
+
+### 確認済み
+
+ブラウザで以下を確認した。
+
+- アプリが開く
+- 現在読み込み中sourceFile が表示される
+- 理科を選択すると、選択中sourceFile が `app/data/science_textbook_s001_s003.js` になる
+- 社会地理を選択すると、選択中sourceFile が `app/data/social_geography_p10_p53.js` になる
+- 現在読み込み中教材は、引き続き `社会 地理 p10-p53` のままである
+- クイズ開始はこれまで通りできる
+
+### 現時点の状態
+
+Phase 6-3a では、`sourceFile` の表示だけを実装した。
+
+教材JSの読み込み切り替えはまだ未実装である。
+
+### 次の作業候補
+
+次は Phase 6-3b として、指定された `sourceFile` の教材JSを読み込む関数だけを追加する。
+
+ただし、その関数を実際のアプリ初期化にはまだ使わない。
