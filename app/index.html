@@ -597,6 +597,7 @@
 
     function renderQuestionSetsManifestPanel() {
       const manifest = Array.isArray(window.QUESTION_SETS_MANIFEST) ? window.QUESTION_SETS_MANIFEST : [];
+      const selectedQuestionSetId = loadSelectedQuestionSetId();
 
       if (!questionSetsManifestPanel) return;
 
@@ -607,21 +608,48 @@
         return;
       }
 
+      const selectedItem = manifest.find(item => item.questionSetId === selectedQuestionSetId);
+      const selectedName = selectedItem ? selectedItem.questionSetName : "未選択";
+
       const items = manifest.map(item => {
         const isCurrent = item.questionSetId === QUESTION_SET_PROFILE.questionSetId;
-        const marker = isCurrent ? "現在の教材" : "登録済み";
+        const isSelected = item.questionSetId === selectedQuestionSetId;
+        const marker = [
+          isCurrent ? "現在読み込み中" : "登録済み",
+          isSelected ? "選択中" : ""
+        ].filter(Boolean).join(" / ");
         return (
           `<li>` +
           `${escapeHtml(item.questionSetName || "名称未設定")} ` +
-          `<span class="small">(${escapeHtml(item.questionSetId || "ID未設定")} / ${Number(item.questionCount || 0)}問 / ${marker})</span>` +
+          `<span class="small">(${escapeHtml(item.questionSetId || "ID未設定")} / ${Number(item.questionCount || 0)}問 / ${marker})</span> ` +
+          `<button type="button" data-question-set-id="${escapeHtml(item.questionSetId || "")}" class="select-question-set-button">この教材を選択</button>` +
           `</li>`
         );
       }).join("");
 
       questionSetsManifestPanel.innerHTML =
         `<strong>登録教材一覧：</strong>${manifest.length}件<br />` +
-        `<span class="small">※教材切り替えはまだ未対応です。現在の学習対象は上の「教材」に表示されているものです。</span>` +
+        `<span class="small">現在読み込み中：${escapeHtml(QUESTION_SET_PROFILE.questionSetName)} / 選択中：${escapeHtml(selectedName || "未選択")}</span><br />` +
+        `<span class="small">※この段階では、教材を選択しても実際の出題教材はまだ切り替わりません。</span>` +
         `<ul style="margin: 6px 0 0 18px; padding: 0;">${items}</ul>`;
+
+      questionSetsManifestPanel.querySelectorAll(".select-question-set-button").forEach(button => {
+        button.addEventListener("click", () => {
+          saveSelectedQuestionSetId(button.dataset.questionSetId || "");
+          renderQuestionSetsManifestPanel();
+        });
+      });
+    }
+
+    function loadSelectedQuestionSetId() {
+      try { return localStorage.getItem("timedQuizTrainerSelectedQuestionSetId") || ""; }
+      catch (e) { return ""; }
+    }
+
+    function saveSelectedQuestionSetId(questionSetId) {
+      if (!questionSetId) return;
+      try { localStorage.setItem("timedQuizTrainerSelectedQuestionSetId", questionSetId); }
+      catch (e) { alert("選択中教材IDを保存できませんでした。"); }
     }
 
     function buildSetManifest() {
