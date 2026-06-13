@@ -1843,3 +1843,59 @@ sourceFile の表示と実行時パス変換を分離できた。
 選択中教材IDから manifest 上の教材情報を取得できるようになった。
 
 実際の教材JS切り替えはまだ未実装である。
+
+## Phase 6-3c 実装メモ: 選択中教材 sourceFile helper の追加
+
+### 完了済み
+
+選択中教材の `sourceFile` を取得するための補助関数を追加した。
+
+追加した関数：
+
+- `getSelectedQuestionSetSourceFile()`
+
+### 実装内容
+
+`app/index.html` に、選択中教材の `sourceFile` を取得する helper を追加した。
+
+`getSelectedQuestionSetSourceFile()` は、`getSelectedQuestionSetItem()` で選択中教材オブジェクトを取得し、その `sourceFile` を返す。
+
+選択中教材がない場合、または `sourceFile` がない場合は空文字列を返す。
+
+### 目的
+
+今後、次の処理に進むための準備である。
+
+1. 選択中教材IDを取得する
+2. manifest から選択中教材の情報を取得する
+3. 選択中教材の `sourceFile` を取得する
+4. 教材JSを読み込む
+5. 教材データ状態を再構成する
+
+### 今回変更していないこと
+
+この段階では、教材JSの読み込みはまだ実行していない。
+
+まだ以下は行っていない。
+
+- 選択中教材の `sourceFile` 読み込み
+- 教材JS読み込み後の自動再構成
+- `initialize()` の実行タイミング変更
+- 実際の教材切り替え
+
+### 動作確認
+
+ブラウザで以下を確認した。
+
+- アプリが開く
+- 登録教材一覧が表示される
+- 教材選択ボタンがこれまで通り動く
+- クイズ開始ができる
+- Console で `typeof getSelectedQuestionSetSourceFile` が `"function"` になる
+- Console で `getSelectedQuestionSetSourceFile()` が `app/data/...` 形式の選択中教材 sourceFile を返す
+
+### 現時点の状態
+
+選択中教材IDから、manifest 上の教材情報を経由して `sourceFile` まで取得できるようになった。
+
+実際の教材JS切り替えはまだ未実装である。
