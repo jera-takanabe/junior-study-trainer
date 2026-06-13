@@ -228,3 +228,76 @@
 - 複数教材の履歴分離
 - クラウド同期
 
+
+## Phase 4 詳細設計: 問題セット一覧ファイルの導入
+
+### 目的
+
+複数の教材ファイルを、アプリ側で一覧管理できるようにする。
+
+現時点では、問題セットを切り替えるたびに `app/questions.js` を手動で上書きしている。  
+Phase 4 では、この手動運用をすぐに廃止するのではなく、まず教材全体の一覧情報を機械的に扱える形で整理する。
+
+### 位置づけ
+
+Phase 4 は、アプリ内問題セット選択に進む前の準備段階とする。
+
+この段階では、まだ複数の教材JSを同時に読み込まない。  
+まず、どの教材が存在し、それぞれどのファイルから読み込むべきかを一覧化する。
+
+### 候補ファイル
+
+候補は以下のどちらかとする。
+
+- `app/question_sets_manifest.js`
+- `app/question_sets_manifest.json`
+
+GitHub Pages 上で静的に扱いやすく、既存アプリとの相性がよいため、当面は `.js` 形式を優先候補とする。
+
+### 想定する形式
+
+`app/question_sets_manifest.js` に、以下のような配列を定義する。
+
+- `questionSetId`
+- `questionSetName`
+- `subject`
+- `grade`
+- `range`
+- `sourceFile`
+- `questionCount`
+- `status`
+
+### 初期登録対象
+
+初期登録対象は、現在台帳化済みの3教材とする。
+
+| 教材全体ID | 教材名 | sourceFile |
+|---|---|---|
+| `school_science_jhs1_textbook_s001_s003` | 理科 中1 教科書 S001-S003 | `docs/materials/school/science/jhs1/textbook/science_textbook_s001_s003_app_questions.js` |
+| `school_social_geography_jhs1_textbook_p10_p53` | 社会 地理 p10-p53 | `docs/materials/school/social/geography/p10_p53/social_geography_p10_p53_questions.js` |
+| `school_social_history_jhs1_textbook_p24_p27` | 社会 歴史 p24-p27 | `docs/materials/school/social/history/p24_p27/history_p24_p27_questions.js` |
+
+### 注意点
+
+- Phase 4 では、`app/questions.js` 上書き方式はまだ残す
+- manifest は最初は参照用・設計用として作成する
+- アプリ内で manifest を読み込む実装は、Phase 5 以降で検討する
+- 既存の `window.QUIZ_SETS` と混同しない
+- `window.QUIZ_SETS` は教材ファイル内の小単元セット
+- `question_sets_manifest` は教材全体の一覧
+
+### 判断ポイント
+
+Phase 4 で実装するかどうかを判断する前に、以下を決める。
+
+1. manifest を `app/` に置くか、`docs/operations/` に置くか
+2. 最初からアプリが読む形式にするか、まずは運用資料として作るか
+3. sourceFile を GitHub Pages から直接読めるパスにするか、リポジトリ内の相対パスにするか
+4. 将来、教材JSを `app/data/` 配下へ移すか
+
+### 現時点の推奨
+
+まずは `docs/operations/question_sets_manifest_draft.md` として、運用資料ベースのドラフトを作る。
+
+その後、内容が固まったら `app/question_sets_manifest.js` へ移行する。
+
