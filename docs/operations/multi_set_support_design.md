@@ -1591,3 +1591,70 @@ Phase 6-3b では、教材JS読み込み関数だけを追加した。
 次は Phase 6-3c として、アプリ初期化順序の変更準備を行う。
 
 具体的には、`QUESTIONS` / `SETS` / `QUESTION_SET_PROFILE` を、教材JS読み込み後に決定できる構造へ変更する。
+
+## Phase 6-3c 準備メモ: 教材データ状態の再代入を可能にする
+
+### 完了済み
+
+教材JSの動的読み込みに備えて、以下の3つを `const` から `let` に変更した。
+
+- `QUESTIONS`
+- `SETS`
+- `QUESTION_SET_PROFILE`
+
+### 目的
+
+今後、選択中教材の `sourceFile` を読み込んだ後に、教材データを再構成できるようにするため。
+
+具体的には、将来的に以下のような流れに変更する準備である。
+
+1. 選択中教材IDを取得する
+2. manifest から対象教材の `sourceFile` を取得する
+3. 教材JSを読み込む
+4. `window.QUIZ_QUESTIONS` / `window.QUIZ_SETS` をもとに、`QUESTIONS` / `SETS` / `QUESTION_SET_PROFILE` を再構成する
+5. その後にアプリを初期化する
+
+### 今回変更したこと
+
+今回の変更では、宣言方法だけを変更した。
+
+変更前：
+
+- `const QUESTIONS`
+- `const SETS`
+- `const QUESTION_SET_PROFILE`
+
+変更後：
+
+- `let QUESTIONS`
+- `let SETS`
+- `let QUESTION_SET_PROFILE`
+
+### 今回変更していないこと
+
+この段階では、値の作成タイミングは変更していない。
+
+そのため、現在の動作は従来と同じである。
+
+まだ以下は行っていない。
+
+- `questions.js` の読み込み順序変更
+- 選択中教材の `sourceFile` 読み込み
+- `initialize()` の実行タイミング変更
+- 実際の教材切り替え
+
+### 動作確認
+
+ブラウザで以下を確認した。
+
+- アプリが開く
+- 登録教材一覧が表示される
+- sourceFile 表示が残っている
+- クイズ開始ができる
+- 1問解答しても保存状態が壊れない
+
+### 現時点の状態
+
+Phase 6-3c 準備では、教材データ状態を将来再代入できるようにしただけである。
+
+実際の教材JS切り替えはまだ未実装である。
