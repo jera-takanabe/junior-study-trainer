@@ -1209,3 +1209,82 @@ Phase 6-2 時点では、候補Cを最終候補とする。
 - `window.QUIZ_SETS` の有無
 - ファイル末尾の閉じ方
 - 3教材の形式差分
+
+## Phase 6-2 調査メモ: 教材JS形式の確認
+
+### 確認対象
+
+以下の教材JSを確認した。
+
+- `app/questions.js`
+- `app/data/science_textbook_s001_s003.js`
+- `app/data/social_geography_p10_p53.js`
+- `app/data/social_history_p24_p27.js`
+
+### 確認結果
+
+4ファイルとも、基本的には以下の形式である。
+
+- `window.QUIZ_SETS = [...]`
+- `window.QUIZ_QUESTIONS = [...]`
+
+### app/questions.js
+
+現在の `app/questions.js` は、社会 地理 p10-p53 の教材である。
+
+確認結果：
+
+- `window.QUIZ_SETS` あり
+- `window.QUIZ_QUESTIONS` あり
+- 収録問題数は 347問
+
+### app/data/science_textbook_s001_s003.js
+
+理科教材JS。
+
+確認結果：
+
+- `window.QUIZ_SETS` あり
+- `window.QUIZ_QUESTIONS` あり
+- 互換用エイリアスあり
+  - `window.questions`
+  - `window.QUESTIONS`
+  - `window.questionSets`
+  - `window.QUESTION_SETS`
+- `module.exports` あり
+
+### app/data/social_geography_p10_p53.js
+
+社会 地理教材JS。
+
+確認結果：
+
+- `window.QUIZ_SETS` あり
+- `window.QUIZ_QUESTIONS` あり
+
+### app/data/social_history_p24_p27.js
+
+社会 歴史教材JS。
+
+確認結果：
+
+- `window.QUIZ_SETS` あり
+- `window.QUIZ_QUESTIONS` あり
+
+### 判断
+
+3教材とも、選択中教材だけを読み込めば `window.QUIZ_SETS` と `window.QUIZ_QUESTIONS` を使ってアプリを初期化できる形式である。
+
+ただし、各教材JSはいずれも同じグローバル変数を定義する。
+
+そのため、複数教材JSを同時に読み込むと、後から読み込んだ教材で `window.QUIZ_SETS` と `window.QUIZ_QUESTIONS` が上書きされる。
+
+### 方針
+
+Phase 6 では、全教材JSを同時読み込みする方式は採用しない。
+
+選択中教材IDに対応する `sourceFile` を manifest から取得し、その教材JSだけを読み込む方式を基本とする。
+
+### 次の作業候補
+
+次は、`index.html` の読み込み順序を確認し、教材JSを動的に読み込む場合の最小変更範囲を整理する。
