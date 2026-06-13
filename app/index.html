@@ -656,6 +656,11 @@
       return getQuestionSetsManifest().find(item => item.questionSetId === selectedQuestionSetId) || null;
     }
 
+    function getSelectedQuestionSetSourceFile() {
+      const selectedItem = getSelectedQuestionSetItem();
+      return selectedItem ? selectedItem.sourceFile || "" : "";
+    }
+
     function loadSelectedQuestionSetId() {
       try { return localStorage.getItem("timedQuizTrainerSelectedQuestionSetId") || ""; }
       catch (e) { return ""; }
