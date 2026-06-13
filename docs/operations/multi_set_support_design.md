@@ -755,3 +755,96 @@ Phase 5 の最小実装として、以下を完了した。
 ### 次の作業候補
 
 次は、教材別保存キーを導入する場合の具体的なキー名と、既存キーからの移行方針を設計する。
+
+## Phase 5 設計メモ: 教材別保存キーの具体案と移行方針
+
+### 採用候補
+
+教材別保存キーは、候補Bの方式を基本とする。
+
+つまり、現在の保存キーに `questionSetId` を付けたキーを使う。
+
+### 具体的なキー名
+
+進捗保存キー：
+
+- `timedQuizTrainerProgressV04__{questionSetId}`
+
+履歴保存キー：
+
+- `timedQuizTrainerHistoryV04__{questionSetId}`
+
+例：
+
+- `timedQuizTrainerProgressV04__school_science_jhs1_textbook_s001_s003`
+- `timedQuizTrainerHistoryV04__school_science_jhs1_textbook_s001_s003`
+- `timedQuizTrainerProgressV04__school_social_geography_jhs1_textbook_p10_p53`
+- `timedQuizTrainerHistoryV04__school_social_geography_jhs1_textbook_p10_p53`
+- `timedQuizTrainerProgressV04__school_social_history_jhs1_textbook_p24_p27`
+- `timedQuizTrainerHistoryV04__school_social_history_jhs1_textbook_p24_p27`
+
+### 既存キー
+
+現在の既存キーは以下である。
+
+- `timedQuizTrainerProgressV04`
+- `timedQuizTrainerHistoryV04`
+
+これらは、教材別保存キー導入後は「旧キー」として扱う。
+
+### 移行方針
+
+初回実装では、自動移行は行わない。
+
+理由：
+
+- 現在の既存キーには、過去の複数教材の履歴が混在している可能性がある
+- 自動移行すると、誤った教材に進捗や履歴を紐づける危険がある
+- 既にバックアップJSONに `questionSetId` を含める設計になっているため、必要なデータは手動で退避できる
+
+### 既存キーの扱い
+
+教材別保存キー導入後も、旧キーはすぐには削除しない。
+
+ただし、アプリが通常利用で読み書きするキーは、教材別保存キーへ切り替える。
+
+旧キーは以下の扱いにする。
+
+- 読み込み対象にはしない
+- 書き込み対象にはしない
+- 手動確認・手動退避のために残す
+- 必要なら将来の整理作業で削除を検討する
+
+### バックアップJSONの扱い
+
+バックアップJSONは、引き続き1教材分の進捗・履歴を保存する。
+
+バックアップ対象は、現在選択中の教材の教材別保存キーから読み込んだデータとする。
+
+インポート時は、バックアップJSON内の `questionSetId` と現在の教材IDを比較する。
+
+- 一致する場合：通常インポート
+- 不一致の場合：警告を出す
+- 不一致でもユーザーが明示的に続行した場合のみインポートを許可する
+
+### 実装時の最小変更方針
+
+保存キー分離を実装する場合、まずは以下の最小変更にする。
+
+1. 現在の `QUESTION_SET_PROFILE.questionSetId` を使って保存キーを組み立てる
+2. 進捗読み込み・保存を教材別保存キーへ変更する
+3. 履歴読み込み・保存を教材別保存キーへ変更する
+4. バックアップJSONの出力対象を教材別保存キーのデータにする
+5. 既存キーからの自動移行は行わない
+
+### 注意点
+
+保存キーを教材別に分けると、導入直後は現在の画面上で進捗・履歴が空に見える可能性がある。
+
+これは、旧キーに保存されていたデータを自動移行しないためである。
+
+必要な場合は、旧バックアップJSONからインポートする運用にする。
+
+### 次の作業候補
+
+次は、アプリ本体で保存キーを組み立てている箇所を確認し、変更対象を洗い出す。
