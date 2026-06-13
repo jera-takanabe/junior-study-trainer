@@ -1658,3 +1658,60 @@ Phase 6-3b では、教材JS読み込み関数だけを追加した。
 Phase 6-3c 準備では、教材データ状態を将来再代入できるようにしただけである。
 
 実際の教材JS切り替えはまだ未実装である。
+
+## Phase 6-3c 実装メモ: 教材データ状態再構成関数の追加
+
+### 完了済み
+
+教材JS読み込み後に、教材データ状態を再構成するための関数を追加した。
+
+追加した関数：
+
+- `rebuildQuestionDataState()`
+
+### 実装内容
+
+`app/index.html` に、以下を再構成する関数を追加した。
+
+- `QUESTIONS`
+- `SETS`
+- `QUESTION_SET_PROFILE`
+
+この関数は、現在の `window.QUIZ_QUESTIONS` / `window.QUIZ_SETS` をもとに、アプリ内部で参照する教材データ状態を作り直す。
+
+### 関数の役割
+
+`rebuildQuestionDataState()` は、次の処理を行う。
+
+1. `window.QUIZ_QUESTIONS` が存在すれば `QUESTIONS` に反映する
+2. `window.QUIZ_QUESTIONS` が存在しない場合は `SAMPLE_QUESTIONS` を使う
+3. `buildSetManifest()` で `SETS` を再構成する
+4. `buildQuestionSetProfile()` で `QUESTION_SET_PROFILE` を再構成する
+5. 確認用に教材ID・教材名・問題数・セット数を返す
+
+### 今回変更していないこと
+
+この段階では、`rebuildQuestionDataState()` はまだアプリ初期化には使っていない。
+
+まだ以下は行っていない。
+
+- 選択中教材IDに応じた教材JS読み込み
+- 教材JS読み込み後の自動再構成
+- `initialize()` の実行タイミング変更
+- 実際の教材切り替え
+
+### 動作確認
+
+ブラウザで以下を確認した。
+
+- アプリが開く
+- 登録教材一覧が表示される
+- sourceFile 表示が残っている
+- クイズ開始ができる
+- Console で `typeof rebuildQuestionDataState` が `"function"` になる
+
+### 現時点の状態
+
+Phase 6-3c では、教材データを再構成するための補助関数まで追加した。
+
+実際の教材JS切り替えはまだ未実装である。
