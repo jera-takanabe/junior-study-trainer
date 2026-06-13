@@ -79,3 +79,28 @@
 | `school_science_jhs1_textbook_s001_s003` | `science_textbook_s001_q001` | 接頭辞付きのため、衝突リスクは低い |
 | `school_social_geography_jhs1_textbook_p10_p53` | `social_geography_s001_q001` | 接頭辞付きのため、衝突リスクは低い |
 | `school_social_history_jhs1_textbook_p24_p27` | `h001_a_q001` | 現時点では衝突なし。ただし将来拡張時は、より明示的な接頭辞を検討する |
+
+## 進捗バックアップJSONの命名ルール案
+
+現行運用では、問題セットを切り替えるたびに、対応する進捗JSONを手動でインポート・エクスポートする。
+
+進捗ファイルと問題セットの対応を分かりやすくするため、バックアップJSONは以下の命名を推奨する。
+
+推奨形式：
+
+progress_<問題セットID>_<YYYYMMDD>.json
+
+例：
+
+- progress_school_science_jhs1_textbook_s001_s003_20260613.json
+- progress_school_social_geography_jhs1_textbook_p10_p53_20260613.json
+- progress_school_social_history_jhs1_textbook_p24_p27_20260613.json
+
+同じ日に複数回保存する場合は、末尾に連番または時刻を付ける。
+
+例：
+
+- progress_school_social_geography_jhs1_textbook_p10_p53_20260613_01.json
+- progress_school_social_geography_jhs1_textbook_p10_p53_20260613_2130.json
+
+この命名ルールにより、現行アプリを改修しなくても、問題セットと進捗ファイルの対応関係を人間が判断しやすくなる。
