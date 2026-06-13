@@ -48,3 +48,14 @@
 1. 進捗ファイルとの対応方針を決める
 2. 現在の `app/questions.js` がどの問題セット由来か確認する
 3. 現行運用を壊さない改善案を検討する
+
+## 現在の app/questions.js
+
+2026-06-13 時点の `app/questions.js` は、以下の問題セット由来である。
+
+| 項目 | 内容 |
+|---|---|
+| 問題セットID | `school_social_geography_jhs1_textbook_p10_p53` |
+| 表示名 | 社会 地理 p10-p53 |
+| コピー元ファイル | `docs/materials/school/social/geography/p10_p53/social_geography_p10_p53_questions.js` |
+| 形式 | `timed_quiz_trainer_v0_6_set_switching` 互換、`window.QUIZ_SETS` 形式 |
