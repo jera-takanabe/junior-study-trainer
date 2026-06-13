@@ -657,6 +657,27 @@
       catch (e) { alert("選択中教材IDを保存できませんでした。"); }
     }
 
+    function loadQuestionDataScript(sourceFile) {
+      return new Promise((resolve, reject) => {
+        if (!sourceFile || typeof sourceFile !== "string") {
+          reject(new Error("教材JSのsourceFileが指定されていません。"));
+          return;
+        }
+
+        if (!sourceFile.startsWith("app/data/") || !sourceFile.endsWith(".js")) {
+          reject(new Error(`教材JSのsourceFileが不正です: ${sourceFile}`));
+          return;
+        }
+
+        const script = document.createElement("script");
+        script.src = sourceFile;
+        script.dataset.questionDataLoader = "true";
+        script.onload = () => resolve(sourceFile);
+        script.onerror = () => reject(new Error(`教材JSの読み込みに失敗しました: ${sourceFile}`));
+        document.head.appendChild(script);
+      });
+    }
+
     function buildSetManifest() {
       if (Array.isArray(window.QUIZ_SETS) && window.QUIZ_SETS.length > 0) {
         return window.QUIZ_SETS
