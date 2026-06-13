@@ -274,6 +274,7 @@
       </p>
 
       <div id="storageStatus" class="status-panel">保存状態を確認中...</div>
+      <div id="questionSetProfile" class="status-panel" style="margin-top: 8px;">教材情報を確認中...</div>
 
       <div class="form-grid" style="margin-top: 16px;">
         <div>
@@ -458,6 +459,7 @@
       : SAMPLE_QUESTIONS;
 
     const SETS = buildSetManifest();
+    const QUESTION_SET_PROFILE = buildQuestionSetProfile();
 
     // v0.4/v0.5の進捗を引き継ぐため、保存キーは同じにしています。
     const HISTORY_KEY = "timedQuizTrainerHistoryV04";
@@ -493,6 +495,7 @@
     const questionCountInfo = document.getElementById("questionCountInfo");
     const progressSummary = document.getElementById("progressSummary");
     const storageStatus = document.getElementById("storageStatus");
+    const questionSetProfile = document.getElementById("questionSetProfile");
 
     const progressText = document.getElementById("progressText");
     const categoryText = document.getElementById("categoryText");
@@ -517,6 +520,7 @@
       populateCategories();
       populateLevels();
       refreshSetupSummary();
+      renderQuestionSetProfile();
       checkStorageStatus(false);
 
       setSelect.addEventListener("change", () => {
@@ -533,6 +537,52 @@
       levelSelect.addEventListener("change", refreshSetupSummary);
       modeSelect.addEventListener("change", refreshSetupSummary);
       questionCountSelect.addEventListener("change", refreshSetupSummary);
+    }
+
+    function buildQuestionSetProfile() {
+      const firstQuestionId = QUESTIONS[0]?.id || "";
+      const firstSeriesName = SETS[0]?.seriesName || "";
+      const totalQuestionCount = QUESTIONS.length;
+
+      if (firstQuestionId.startsWith("science_textbook_")) {
+        return {
+          questionSetId: "school_science_jhs1_textbook_s001_s003",
+          questionSetName: "理科 中1 教科書 S001-S003",
+          source: "questionId",
+          totalQuestionCount
+        };
+      }
+
+      if (firstQuestionId.startsWith("social_geography_")) {
+        return {
+          questionSetId: "school_social_geography_jhs1_textbook_p10_p53",
+          questionSetName: "社会 地理 p10-p53",
+          source: "questionId",
+          totalQuestionCount
+        };
+      }
+
+      if (firstQuestionId.startsWith("h001_a_")) {
+        return {
+          questionSetId: "school_social_history_jhs1_textbook_p24_p27",
+          questionSetName: "社会 歴史 p24-p27",
+          source: "questionId",
+          totalQuestionCount
+        };
+      }
+
+      return {
+        questionSetId: "unknown",
+        questionSetName: firstSeriesName || "未判定の教材",
+        source: firstSeriesName ? "seriesName" : "unknown",
+        totalQuestionCount
+      };
+    }
+
+    function renderQuestionSetProfile() {
+      questionSetProfile.innerHTML =
+        `<strong>教材：</strong>${escapeHtml(QUESTION_SET_PROFILE.questionSetName)}<br />` +
+        `<span class="small">教材ID：${escapeHtml(QUESTION_SET_PROFILE.questionSetId)} / 問題数：${QUESTION_SET_PROFILE.totalQuestionCount}問</span>`;
     }
 
     function buildSetManifest() {
