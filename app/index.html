@@ -276,6 +276,7 @@
 
       <div id="storageStatus" class="status-panel">保存状態を確認中...</div>
       <div id="questionSetProfile" class="status-panel" style="margin-top: 8px;">教材情報を確認中...</div>
+      <div id="questionSetsManifestPanel" class="status-panel" style="margin-top: 8px;">教材一覧を確認中...</div>
 
       <div class="form-grid" style="margin-top: 16px;">
         <div>
@@ -497,6 +498,7 @@
     const progressSummary = document.getElementById("progressSummary");
     const storageStatus = document.getElementById("storageStatus");
     const questionSetProfile = document.getElementById("questionSetProfile");
+    const questionSetsManifestPanel = document.getElementById("questionSetsManifestPanel");
 
     const progressText = document.getElementById("progressText");
     const categoryText = document.getElementById("categoryText");
@@ -522,6 +524,7 @@
       populateLevels();
       refreshSetupSummary();
       renderQuestionSetProfile();
+      renderQuestionSetsManifestPanel();
       checkStorageStatus(false);
 
       setSelect.addEventListener("change", () => {
@@ -584,6 +587,34 @@
       questionSetProfile.innerHTML =
         `<strong>教材：</strong>${escapeHtml(QUESTION_SET_PROFILE.questionSetName)}<br />` +
         `<span class="small">教材ID：${escapeHtml(QUESTION_SET_PROFILE.questionSetId)} / 問題数：${QUESTION_SET_PROFILE.totalQuestionCount}問</span>`;
+    }
+
+    function renderQuestionSetsManifestPanel() {
+      const manifest = Array.isArray(window.QUESTION_SETS_MANIFEST) ? window.QUESTION_SETS_MANIFEST : [];
+
+      if (!questionSetsManifestPanel) return;
+
+      if (manifest.length === 0) {
+        questionSetsManifestPanel.innerHTML =
+          `<strong>登録教材一覧：</strong>未読み込み<br />` +
+          `<span class="small">question_sets_manifest.js が読み込まれていません。</span>`;
+        return;
+      }
+
+      const items = manifest.map(item => {
+        const isCurrent = item.questionSetId === QUESTION_SET_PROFILE.questionSetId;
+        const marker = isCurrent ? "現在の教材" : "登録済み";
+        return (
+          `<li>` +
+          `${escapeHtml(item.questionSetName || "名称未設定")} ` +
+          `<span class="small">(${escapeHtml(item.questionSetId || "ID未設定")} / ${Number(item.questionCount || 0)}問 / ${marker})</span>` +
+          `</li>`
+        );
+      }).join("");
+
+      questionSetsManifestPanel.innerHTML =
+        `<strong>登録教材一覧：</strong>${manifest.length}件<br />` +
+        `<ul style="margin: 6px 0 0 18px; padding: 0;">${items}</ul>`;
     }
 
     function buildSetManifest() {
