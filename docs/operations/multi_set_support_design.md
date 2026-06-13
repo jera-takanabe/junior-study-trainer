@@ -1715,3 +1715,70 @@ Phase 6-3c 準備では、教材データ状態を将来再代入できるよう
 Phase 6-3c では、教材データを再構成するための補助関数まで追加した。
 
 実際の教材JS切り替えはまだ未実装である。
+
+## Phase 6-3c 実装メモ: 教材JSの実行時パス変換
+
+### 完了済み
+
+manifest の `sourceFile` を、画面表示用の表記と script 読み込み用の実行時パスに分けて扱うための関数を追加した。
+
+追加した関数：
+
+- `resolveQuestionDataScriptSrc(sourceFile)`
+
+### 背景
+
+`app/question_sets_manifest.js` の `sourceFile` は、リポジトリルート基準で以下のように記録している。
+
+- `app/data/science_textbook_s001_s003.js`
+- `app/data/social_geography_p10_p53.js`
+- `app/data/social_history_p24_p27.js`
+
+この表記は、資料上・一覧表示上は分かりやすい。
+
+一方で、`app/index.html` から script として読み込む場合、実行時には `app/index.html` から見た相対パスにする必要がある。
+
+そのため、`app/data/...` を `data/...` に変換してから script に指定する。
+
+### 実装内容
+
+`app/index.html` に `resolveQuestionDataScriptSrc(sourceFile)` を追加した。
+
+この関数は、`sourceFile` が `app/data/` で始まる場合、先頭の `app/` を取り除いて `data/...` に変換する。
+
+例：
+
+- 入力：`app/data/science_textbook_s001_s003.js`
+- 出力：`data/science_textbook_s001_s003.js`
+
+また、`loadQuestionDataScript(sourceFile)` 内では、直接 `script.src = sourceFile` とせず、以下のように実行時パスへ変換してから設定するようにした。
+
+- `script.src = resolveQuestionDataScriptSrc(sourceFile)`
+
+### 今回変更していないこと
+
+この段階では、教材JSの実読み込みはまだアプリ初期化には使っていない。
+
+まだ以下は行っていない。
+
+- 選択中教材IDに応じた教材JS読み込み
+- 教材JS読み込み後の自動再構成
+- `initialize()` の実行タイミング変更
+- 実際の教材切り替え
+
+### 動作確認
+
+ブラウザで以下を確認した。
+
+- アプリが開く
+- 登録教材一覧が表示される
+- sourceFile 表示は `app/data/...` のまま残っている
+- クイズ開始ができる
+- Console で `typeof resolveQuestionDataScriptSrc` が `"function"` になる
+- Console で `resolveQuestionDataScriptSrc("app/data/science_textbook_s001_s003.js")` が `"data/science_textbook_s001_s003.js"` になる
+
+### 現時点の状態
+
+sourceFile の表示と実行時パス変換を分離できた。
+
+実際の教材JS切り替えはまだ未実装である。
