@@ -716,6 +716,17 @@
       });
     }
 
+    async function loadSelectedQuestionSetData() {
+      const sourceFile = getSelectedQuestionSetSourceFile();
+
+      if (!sourceFile) {
+        return rebuildQuestionDataState();
+      }
+
+      await loadQuestionDataScript(sourceFile);
+      return rebuildQuestionDataState();
+    }
+
     function buildSetManifest() {
       if (Array.isArray(window.QUIZ_SETS) && window.QUIZ_SETS.length > 0) {
         return window.QUIZ_SETS
