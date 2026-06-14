@@ -1899,3 +1899,66 @@ sourceFile の表示と実行時パス変換を分離できた。
 選択中教材IDから、manifest 上の教材情報を経由して `sourceFile` まで取得できるようになった。
 
 実際の教材JS切り替えはまだ未実装である。
+
+## Phase 6-3c 実装メモ: 選択中教材データ loader helper の追加
+
+### 完了済み
+
+選択中教材の `sourceFile` を取得し、教材JSを読み込み、教材データ状態を再構成するための準備関数を追加した。
+
+追加した関数：
+
+- `loadSelectedQuestionSetData()`
+
+### 実装内容
+
+`app/index.html` に、選択中教材データを読み込むための helper を追加した。
+
+`loadSelectedQuestionSetData()` は、以下の流れで動作する。
+
+1. `getSelectedQuestionSetSourceFile()` で選択中教材の `sourceFile` を取得する
+2. `sourceFile` がない場合は、現在の `window.QUIZ_QUESTIONS` / `window.QUIZ_SETS` をもとに `rebuildQuestionDataState()` を実行する
+3. `sourceFile` がある場合は、`loadQuestionDataScript(sourceFile)` で教材JSを読み込む
+4. 読み込み後に `rebuildQuestionDataState()` を実行する
+5. 再構成後の教材ID・教材名・問題数・セット数を返す
+
+### 目的
+
+今後、選択中教材を実際に読み込んでからアプリを初期化するための準備である。
+
+最終的には、以下の流れにする予定である。
+
+1. 選択中教材IDを取得する
+2. manifest から選択中教材の `sourceFile` を取得する
+3. 教材JSを読み込む
+4. 教材データ状態を再構成する
+5. その後に `initialize()` を実行する
+
+### 今回変更していないこと
+
+この段階では、`loadSelectedQuestionSetData()` はまだ自動実行していない。
+
+まだ以下は行っていない。
+
+- アプリ起動時の自動教材JS読み込み
+- `initialize()` の実行タイミング変更
+- `questions.js` の読み込み除外
+- 実際の教材切り替え
+
+### 動作確認
+
+ブラウザで以下を確認した。
+
+- アプリが開く
+- 登録教材一覧が表示される
+- 教材選択ボタンがこれまで通り動く
+- クイズ開始ができる
+- Console で `typeof loadSelectedQuestionSetData` が `"function"` になる
+
+### 現時点の状態
+
+選択中教材の `sourceFile` を起点に、教材JS読み込みと教材データ状態再構成を行う準備関数まで追加できた。
+
+ただし、この関数はまだアプリ起動時には使っていない。
+
+実際の教材JS切り替えはまだ未実装である。
