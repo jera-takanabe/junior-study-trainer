@@ -466,12 +466,22 @@
     // 教材切り替えに備えて、進捗・履歴は教材IDごとの保存キーに分離します。
     const HISTORY_KEY_BASE = "timedQuizTrainerHistoryV04";
     const PROGRESS_KEY_BASE = "timedQuizTrainerProgressV04";
-    const HISTORY_KEY = buildStorageKey(HISTORY_KEY_BASE);
-    const PROGRESS_KEY = buildStorageKey(PROGRESS_KEY_BASE);
+    let HISTORY_KEY = buildStorageKey(HISTORY_KEY_BASE);
+    let PROGRESS_KEY = buildStorageKey(PROGRESS_KEY_BASE);
     const APP_VERSION = "v0.6";
 
     function buildStorageKey(baseKey) {
       return `${baseKey}__${QUESTION_SET_PROFILE.questionSetId || "unknown_question_set"}`;
+    }
+
+    function rebuildStorageKeys() {
+      HISTORY_KEY = buildStorageKey(HISTORY_KEY_BASE);
+      PROGRESS_KEY = buildStorageKey(PROGRESS_KEY_BASE);
+
+      return {
+        historyKey: HISTORY_KEY,
+        progressKey: PROGRESS_KEY
+      };
     }
 
     let settings = null;
