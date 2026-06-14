@@ -2026,3 +2026,66 @@ Console で以下を実行した。
 `loadSelectedQuestionSetData()` の手動実行テストは成功した。
 
 ただし、アプリ起動時の自動読み込みや、実際の教材切り替えはまだ未実装である。
+
+## Phase 6-3c 実装メモ: 教材JS重複読み込み対策
+
+### 完了済み
+
+`loadSelectedQuestionSetData()` を複数回実行した場合に、動的に追加される教材JSの script タグが増え続けないようにした。
+
+### 実装内容
+
+`loadQuestionDataScript(sourceFile)` 内で、新しい教材JS script を追加する前に、既存の動的教材JS script を削除するようにした。
+
+対象は以下の属性を持つ script タグである。
+
+- `script[data-question-data-loader="true"]`
+
+追加前に以下の処理を行う。
+
+- 既存の `script[data-question-data-loader="true"]` を取得する
+- 取得した script タグを削除する
+- その後、新しい教材JS script を追加する
+
+### 目的
+
+今後、アプリ起動時や教材切り替え時に `loadSelectedQuestionSetData()` を実行する可能性がある。
+
+その際、同じ教材JSや別教材JSを読み込むたびに script タグが増え続けると、状態確認やデバッグが難しくなる。
+
+そのため、動的教材JS script は常に1つまでに抑える方針とした。
+
+### 動作確認
+
+ブラウザでページ再読み込み後、Console から以下を確認した。
+
+1. 実行前の動的 script 数
+2. `await loadSelectedQuestionSetData()` を1回実行
+3. 実行後の動的 script 数
+4. `await loadSelectedQuestionSetData()` をもう1回実行
+5. 再実行後の動的 script 数
+
+確認結果：
+
+- 初回 script 数：`0`
+- 1回目実行後：`1`
+- 2回目実行後：`1`
+
+### 確認できたこと
+
+`loadSelectedQuestionSetData()` を複数回実行しても、動的教材JS script タグは増え続けない。
+
+### 今回変更していないこと
+
+この段階では、まだ以下は行っていない。
+
+- アプリ起動時の自動教材JS読み込み
+- `initialize()` の実行タイミング変更
+- `questions.js` の読み込み除外
+- 実際の教材切り替え
+
+### 現時点の状態
+
+教材JSの重複読み込み対策まで完了した。
+
+実際の教材JS切り替えはまだ未実装である。
