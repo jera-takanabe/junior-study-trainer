@@ -707,6 +707,10 @@
           return;
         }
 
+        document.querySelectorAll('script[data-question-data-loader="true"]').forEach(script => {
+          script.remove();
+        });
+
         const script = document.createElement("script");
         script.src = resolveQuestionDataScriptSrc(sourceFile);
         script.dataset.questionDataLoader = "true";
