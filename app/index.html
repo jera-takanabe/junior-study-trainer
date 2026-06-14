@@ -531,7 +531,19 @@
     const historyArea = document.getElementById("historyArea");
     const progressListArea = document.getElementById("progressListArea");
 
-    initialize();
+    startApplication();
+
+    async function startApplication() {
+      try {
+        await loadSelectedQuestionSetData();
+      } catch (error) {
+        console.error(error);
+        rebuildQuestionDataState();
+      }
+
+      rebuildStorageKeys();
+      initialize();
+    }
 
     function initialize() {
       validateQuestionIds();
