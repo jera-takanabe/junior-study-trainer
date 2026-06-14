@@ -1962,3 +1962,67 @@ sourceFile の表示と実行時パス変換を分離できた。
 ただし、この関数はまだアプリ起動時には使っていない。
 
 実際の教材JS切り替えはまだ未実装である。
+
+## Phase 6-3c 検証メモ: loadSelectedQuestionSetData() の手動実行確認
+
+### 実施内容
+
+ブラウザ Console から、`loadSelectedQuestionSetData()` を手動実行した。
+
+この段階では、アプリ起動時の自動実行はまだ行っていない。
+
+### 実行前の状態
+
+手動実行前に、以下を確認した。
+
+- 現在読み込み中教材ID：`school_social_geography_jhs1_textbook_p10_p53`
+- 選択中教材 sourceFile：`app/data/social_geography_p10_p53.js`
+- 動的読み込み済み script 数：`0`
+
+現在読み込み中教材と選択中教材が同じだったため、比較的安全な状態で手動実行できた。
+
+### 実行したコマンド
+
+Console で以下を実行した。
+
+- `await loadSelectedQuestionSetData()`
+
+### 実行結果
+
+以下の結果が返った。
+
+- `questionSetId`: `school_social_geography_jhs1_textbook_p10_p53`
+- `questionCount`: `347`
+- `setCount`: `3`
+
+### 実行後の確認
+
+実行後に、以下を確認した。
+
+- `QUESTION_SET_PROFILE.questionSetId`: `school_social_geography_jhs1_textbook_p10_p53`
+- `QUESTION_SET_PROFILE.totalQuestionCount`: `347`
+- `SETS.length`: `3`
+- `QUESTIONS.length`: `347`
+- 動的読み込み済み script 数：`1`
+
+### 確認できたこと
+
+現在選択中と同じ教材であれば、以下の流れが正常に動作することを確認できた。
+
+1. 選択中教材の `sourceFile` を取得する
+2. `loadQuestionDataScript(sourceFile)` で教材JSを読み込む
+3. `rebuildQuestionDataState()` で教材データ状態を再構成する
+
+### 注意点
+
+手動実行すると、`script[data-question-data-loader="true"]` が1つ追加される。
+
+同じ関数を再実行すると、動的 script タグが増える可能性がある。
+
+そのため、自動実行に進む前に、重複読み込みをどう扱うかを整理する必要がある。
+
+### 現時点の状態
+
+`loadSelectedQuestionSetData()` の手動実行テストは成功した。
+
+ただし、アプリ起動時の自動読み込みや、実際の教材切り替えはまだ未実装である。
