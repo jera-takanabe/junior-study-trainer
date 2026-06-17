@@ -36,5 +36,15 @@ window.QUESTION_SETS_MANIFEST = [
     questionCount: 97,
     sourceFile: "app/data/social_history_p24_p27.js",
     status: "registered"
+  },
+  {
+    questionSetId: "school_japanese_jhs1_test1",
+    questionSetName: "国語 第1回定期テスト",
+    subject: "国語",
+    grade: "中1",
+    range: "第1回定期テスト",
+    questionCount: 112,
+    sourceFile: "app/data/japanese_test1.js",
+    status: "registered"
   }
 ];

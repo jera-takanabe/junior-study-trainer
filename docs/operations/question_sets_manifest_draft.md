@@ -24,6 +24,7 @@
 | `school_science_jhs1_textbook_s001_s003` | 理科 中1 教科書 S001-S003 | 理科 | 中1 | S001-S003 | 222 | `docs/materials/school/science/jhs1/textbook/science_textbook_s001_s003_app_questions.js` | 登録済み |
 | `school_social_geography_jhs1_textbook_p10_p53` | 社会 地理 p10-p53 | 社会 | 中1 | 地理 p10-p53 | 347 | `docs/materials/school/social/geography/p10_p53/social_geography_p10_p53_questions.js` | 登録済み |
 | `school_social_history_jhs1_textbook_p24_p27` | 社会 歴史 p24-p27 | 社会 | 中1 | 歴史 p24-p27 | 97 | `docs/materials/school/social/history/p24_p27/history_p24_p27_questions.js` | 登録済み |
+| `school_japanese_jhs1_test1` | 国語 第1回定期テスト | 国語 | 中1 | 第1回定期テスト | 112 | `app/data/japanese_test1.js` | 登録済み |
 
 ## 将来の manifest JS 形式案
 

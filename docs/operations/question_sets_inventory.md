@@ -20,6 +20,7 @@
 | `school_science_jhs1_textbook_s001_s003` | 理科 中1 教科書 S001-S003 | `docs/materials/school/science/jhs1/textbook/science_textbook_s001_s003_app_questions.js` | 学校教科 | 理科 | S001-S003 | yes | 未整理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式 |
 | `school_social_geography_jhs1_textbook_p10_p53` | 社会 地理 p10-p53 | `docs/materials/school/social/geography/p10_p53/social_geography_p10_p53_questions.js` | 学校教科 | 社会 | p10-p53 | yes | 未整理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式 |
 | `school_social_history_jhs1_textbook_p24_p27` | 社会 歴史 p24-p27 | `docs/materials/school/social/history/p24_p27/history_p24_p27_questions.js` | 学校教科 | 社会 | p24-p27 | yes | 未整理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式 |
+| `school_japanese_jhs1_test1` | 国語 第1回定期テスト | `app/data/japanese_test1.js` | 学校教科 | 国語 | 第1回定期テスト | yes | 未整理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式。作成過程資料は `docs/materials/school/japanese/jhs1/test1/` |
 
 ## 補助資料・確認資料
 
@@ -33,6 +34,7 @@
 | `school_social_geography_jhs1_textbook_p10_p53` | `docs/materials/school/social/geography/p10_p53/README.md` | README | 当該問題セットの説明 |
 | `school_social_history_jhs1_textbook_p24_p27` | `docs/materials/school/social/history/p24_p27/history_p24_p27_complete_qa.md` | 確認資料 | 完成Q&A確認用 |
 | `school_social_history_jhs1_textbook_p24_p27` | `docs/materials/school/social/history/p24_p27/README.md` | README | 当該問題セットの説明 |
+| `school_japanese_jhs1_test1` | `docs/materials/school/japanese/jhs1/test1/kokugo_test1_ichimon_itto_review.md` | 確認資料 | 一問一答の正式確認用Markdown |
 
 ## 今回はいったん対象外
 
