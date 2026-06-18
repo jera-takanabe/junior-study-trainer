@@ -6,21 +6,24 @@
 
 ## 現在の運用
 
-1. 使用する問題セットファイルを探す
-2. その内容を `app/questions.js` に上書きコピーする
-3. アプリを起動する
-4. その問題セットの進捗があればインポートする
-5. 学習する
-6. 学習終了後に進捗をエクスポートする
+1. 教材データを `app/data/*.js` に配置する
+2. `app/question_sets_manifest.js` に教材を登録する
+3. 必要に応じて `app/index.html` に問題ID prefixによる教材判定を追加する
+4. アプリの教材選択画面から使用する教材を選ぶ
+5. 教材ごとに分離された進捗・履歴を使って学習する
+6. 必要に応じて全教材分のバックアップJSONをエクスポートする
+
+通常、新教材の登録で `app/questions.js` は変更しない。
 
 ## 今回の整理対象
 
 | ID候補 | 表示名 | 主ファイル | 種別 | 教科 | 範囲 | アプリ投入可 | 対応進捗 | 備考 |
 |---|---|---|---|---|---|---|---|---|
-| `school_science_jhs1_textbook_s001_s003` | 理科 中1 教科書 S001-S003 | `docs/materials/school/science/jhs1/textbook/science_textbook_s001_s003_app_questions.js` | 学校教科 | 理科 | S001-S003 | yes | 未整理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式 |
-| `school_social_geography_jhs1_textbook_p10_p53` | 社会 地理 p10-p53 | `docs/materials/school/social/geography/p10_p53/social_geography_p10_p53_questions.js` | 学校教科 | 社会 | p10-p53 | yes | 未整理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式 |
-| `school_social_history_jhs1_textbook_p24_p27` | 社会 歴史 p24-p27 | `docs/materials/school/social/history/p24_p27/history_p24_p27_questions.js` | 学校教科 | 社会 | p24-p27 | yes | 未整理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式 |
-| `school_japanese_jhs1_test1` | 国語 第1回定期テスト | `app/data/japanese_test1.js` | 学校教科 | 国語 | 第1回定期テスト | yes | 未整理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式。作成過程資料は `docs/materials/school/japanese/jhs1/test1/` |
+| `school_science_jhs1_textbook_s001_s003` | 理科 中1 教科書 S001-S003 | `app/data/science_textbook_s001_s003.js` | 学校教科 | 理科 | S001-S003 | yes | 教材別管理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式 |
+| `school_social_geography_jhs1_textbook_p10_p53` | 社会 地理 p10-p53 | `app/data/social_geography_p10_p53.js` | 学校教科 | 社会 | p10-p53 | yes | 教材別管理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式 |
+| `school_social_history_jhs1_textbook_p24_p27` | 社会 歴史 p24-p27 | `app/data/social_history_p24_p27.js` | 学校教科 | 社会 | p24-p27 | yes | 教材別管理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式 |
+| `school_japanese_jhs1_test1` | 国語 第1回定期テスト | `app/data/japanese_test1.js` | 学校教科 | 国語 | 第1回定期テスト | yes | 教材別管理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式。作成過程資料は `docs/materials/school/japanese/jhs1/test1/` |
+| `school_english_jhs1_test1` | 英語 第1回定期テスト | `app/data/english_test1.js` | 学校教科 | 英語 | 第1回定期テスト | yes | 教材別管理 | 273問。作成過程資料は `docs/materials/school/english/jhs1/test1/` |
 
 ## 補助資料・確認資料
 
@@ -35,6 +38,10 @@
 | `school_social_history_jhs1_textbook_p24_p27` | `docs/materials/school/social/history/p24_p27/history_p24_p27_complete_qa.md` | 確認資料 | 完成Q&A確認用 |
 | `school_social_history_jhs1_textbook_p24_p27` | `docs/materials/school/social/history/p24_p27/README.md` | README | 当該問題セットの説明 |
 | `school_japanese_jhs1_test1` | `docs/materials/school/japanese/jhs1/test1/kokugo_test1_ichimon_itto_review.md` | 確認資料 | 一問一答の正式確認用Markdown |
+| `school_english_jhs1_test1` | `docs/materials/school/english/jhs1/test1/README.md` | README | 教材作成メモと著作権上の扱い |
+| `school_english_jhs1_test1` | `docs/materials/school/english/jhs1/test1/source_scope.md` | 対象範囲 | 出題範囲と原本の扱い |
+| `school_english_jhs1_test1` | `docs/materials/school/english/jhs1/test1/question_design.md` | 設計資料 | セット構成と出題形式 |
+| `school_english_jhs1_test1` | `docs/materials/school/english/jhs1/test1/generation_review.md` | レビュー記録 | 問題数と機械チェック結果 |
 
 ## 今回はいったん対象外
 
@@ -43,66 +50,45 @@
 | 漢検5級 | 検定試験終了のため | 必要になったら再整理する |
 | `.local/` 配下 | 作業用・退避用のため | 正式台帳の対象外 |
 | クラウド同期 | まだ設計前のため | AWS等は後で検討 |
-| アプリ本体改修 | まず棚卸しを優先するため | 現行運用を壊さない |
 
-## 次に確認すること
+## 継続して確認すること
 
-1. 進捗ファイルとの対応方針を決める
-2. 現在の `app/questions.js` がどの問題セット由来か確認する
-3. 現行運用を壊さない改善案を検討する
+新教材を登録するときは、次の対応関係を確認する。
 
-## 現在の app/questions.js
+- `app/data/*.js` の問題数とManifestの `questionCount`
+- `sourceFile` と実際のファイルパス
+- 問題ID prefixと `questionSetId`
+- `app/index.html` の教材単位判定
+- `docs/materials/` 配下の作成過程資料
+- 教材選択、進捗、履歴、バックアップの動作
 
-2026-06-13 時点の `app/questions.js` は、以下の問題セット由来である。
+## app/questions.js の位置づけ
 
-| 項目 | 内容 |
+`app/questions.js` は旧方式との互換・参照用として残している。
+
+現在の新教材登録では、通常は変更しない。
+教材データは `app/data/*.js` に配置し、Manifestから動的に読み込む。
+
+## 進捗・履歴・バックアップ
+
+| 項目 | 現在の扱い |
 |---|---|
-| 問題セットID | `school_social_geography_jhs1_textbook_p10_p53` |
-| 表示名 | 社会 地理 p10-p53 |
-| コピー元ファイル | `docs/materials/school/social/geography/p10_p53/social_geography_p10_p53_questions.js` |
-| 形式 | `timed_quiz_trainer_v0_6_set_switching` 互換、`window.QUIZ_SETS` 形式 |
+| 進捗 | 教材の `questionSetId` ごとに分離して管理する |
+| 履歴 | 教材の `questionSetId` ごとに表示・管理する |
+| 進捗リセット | 選択中の教材を対象とする |
+| バックアップ | 登録済み教材の進捗・履歴をまとめて扱う |
+| 保存場所 | ブラウザの `localStorage` |
+| 複数デバイス同期 | なし。必要に応じてバックアップJSONを移動する |
 
-## 進捗保存の現状メモ
+## 問題ID prefix
 
-現行アプリでは、進捗はブラウザの `localStorage` に保存される。
-
-| 項目 | 内容 |
+| 問題セットID | 問題ID prefix |
 |---|---|
-| 保存キー | `timedQuizTrainerProgressV04` |
-| 保存単位 | 問題ID（`questionId`）単位 |
-| 保存場所 | ブラウザ内の `localStorage` |
-| 複数デバイス同期 | なし |
-| 現行運用 | 学習前に進捗をインポートし、学習後にバックアップJSONをエクスポートする |
+| `school_science_jhs1_textbook_s001_s003` | `science_textbook_` |
+| `school_social_geography_jhs1_textbook_p10_p53` | `social_geography_` |
+| `school_social_history_jhs1_textbook_p24_p27` | `h001_a_` |
+| `school_japanese_jhs1_test1` | `japanese_test1_` |
+| `school_english_jhs1_test1` | `english_test1_` |
 
-## 問題ID衝突リスク
-
-| 問題セットID | 問題ID例 | 現時点の判断 |
-|---|---|---|
-| `school_science_jhs1_textbook_s001_s003` | `science_textbook_s001_q001` | 接頭辞付きのため、衝突リスクは低い |
-| `school_social_geography_jhs1_textbook_p10_p53` | `social_geography_s001_q001` | 接頭辞付きのため、衝突リスクは低い |
-| `school_social_history_jhs1_textbook_p24_p27` | `h001_a_q001` | 現時点では衝突なし。ただし将来拡張時は、より明示的な接頭辞を検討する |
-
-## 進捗バックアップJSONの命名ルール案
-
-現行運用では、問題セットを切り替えるたびに、対応する進捗JSONを手動でインポート・エクスポートする。
-
-進捗ファイルと問題セットの対応を分かりやすくするため、バックアップJSONは以下の命名を推奨する。
-
-推奨形式：
-
-progress_<問題セットID>_<YYYYMMDD>.json
-
-例：
-
-- progress_school_science_jhs1_textbook_s001_s003_20260613.json
-- progress_school_social_geography_jhs1_textbook_p10_p53_20260613.json
-- progress_school_social_history_jhs1_textbook_p24_p27_20260613.json
-
-同じ日に複数回保存する場合は、末尾に連番または時刻を付ける。
-
-例：
-
-- progress_school_social_geography_jhs1_textbook_p10_p53_20260613_01.json
-- progress_school_social_geography_jhs1_textbook_p10_p53_20260613_2130.json
-
-この命名ルールにより、現行アプリを改修しなくても、問題セットと進捗ファイルの対応関係を人間が判断しやすくなる。
+問題IDは教材間で重複させない。
+新教材では、教材内容を判別できる固有のprefixを使用する。

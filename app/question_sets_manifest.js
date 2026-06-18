@@ -46,5 +46,15 @@ window.QUESTION_SETS_MANIFEST = [
     questionCount: 112,
     sourceFile: "app/data/japanese_test1.js",
     status: "registered"
+  },
+  {
+    questionSetId: "school_english_jhs1_test1",
+    questionSetName: "英語 第1回定期テスト",
+    subject: "英語",
+    grade: "中1",
+    range: "第1回定期テスト: 教科書 p.39 まで / めきめき p.2-p.45 / 単元テスト PROGRAM 1 & 2",
+    questionCount: 273,
+    sourceFile: "app/data/english_test1.js",
+    status: "registered"
   }
 ];

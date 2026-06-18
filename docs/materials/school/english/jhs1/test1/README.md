@@ -23,7 +23,7 @@
 - `question_design.md`
 - `generation_review.md`
 
-## アプリ登録予定
+## アプリ登録
 
 - questionSetId: `school_english_jhs1_test1`
 - questionSetName: `英語 第1回定期テスト`

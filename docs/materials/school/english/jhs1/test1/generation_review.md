@@ -3,7 +3,7 @@
 ## 作成済み問題データ
 
 - ファイル名: `english_test1.js`
-- 登録先予定: `app/data/english_test1.js`
+- 登録先: `app/data/english_test1.js`
 - questionSetId: `school_english_jhs1_test1`
 - questionSetName: `英語 第1回定期テスト`
 - 問題ID prefix: `english_test1_`
