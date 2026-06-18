@@ -621,6 +621,15 @@
         };
       }
 
+      if (firstQuestionId.startsWith("math_test1_")) {
+        return {
+          questionSetId: "school_math_jhs1_test1",
+          questionSetName: "数学 第1回定期テスト",
+          source: "questionId",
+          totalQuestionCount
+        };
+      }
+
       return {
         questionSetId: "unknown",
         questionSetName: firstSeriesName || "未判定の教材",

@@ -25,6 +25,7 @@
 | `school_social_history_jhs1_textbook_p24_p27` | 社会 歴史 p24-p27 | 社会 | 中1 | 歴史 p24-p27 | 97 | `app/data/social_history_p24_p27.js` | 登録済み |
 | `school_japanese_jhs1_test1` | 国語 第1回定期テスト | 国語 | 中1 | 第1回定期テスト | 112 | `app/data/japanese_test1.js` | 登録済み |
 | `school_english_jhs1_test1` | 英語 第1回定期テスト | 英語 | 中1 | 第1回定期テスト | 273 | `app/data/english_test1.js` | 登録済み |
+| `school_math_jhs1_test1` | 数学 第1回定期テスト | 数学 | 中1 | 教科書 p.12-p.65 / 自主学習 p.4-p.39 | 292 | `app/data/math_test1.js` | 登録済み |
 
 ## Manifestの項目
 

@@ -24,6 +24,7 @@
 | `school_social_history_jhs1_textbook_p24_p27` | 社会 歴史 p24-p27 | `app/data/social_history_p24_p27.js` | 学校教科 | 社会 | p24-p27 | yes | 教材別管理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式 |
 | `school_japanese_jhs1_test1` | 国語 第1回定期テスト | `app/data/japanese_test1.js` | 学校教科 | 国語 | 第1回定期テスト | yes | 教材別管理 | `timed_quiz_trainer_v0_6_set_switching` 互換。`window.QUIZ_SETS` 形式。作成過程資料は `docs/materials/school/japanese/jhs1/test1/` |
 | `school_english_jhs1_test1` | 英語 第1回定期テスト | `app/data/english_test1.js` | 学校教科 | 英語 | 第1回定期テスト | yes | 教材別管理 | 273問。作成過程資料は `docs/materials/school/english/jhs1/test1/` |
+| `school_math_jhs1_test1` | 数学 第1回定期テスト | `app/data/math_test1.js` | 学校教科 | 数学 | 教科書 p.12-p.65 / 自主学習 p.4-p.39 | yes | 教材別管理 | 292問。作成過程資料は `docs/materials/school/math/jhs1/test1/` |
 
 ## 補助資料・確認資料
 
@@ -42,6 +43,11 @@
 | `school_english_jhs1_test1` | `docs/materials/school/english/jhs1/test1/source_scope.md` | 対象範囲 | 出題範囲と原本の扱い |
 | `school_english_jhs1_test1` | `docs/materials/school/english/jhs1/test1/question_design.md` | 設計資料 | セット構成と出題形式 |
 | `school_english_jhs1_test1` | `docs/materials/school/english/jhs1/test1/generation_review.md` | レビュー記録 | 問題数と機械チェック結果 |
+| `school_math_jhs1_test1` | `docs/materials/school/math/jhs1/test1/README.md` | README | 教材目的と原本の扱い |
+| `school_math_jhs1_test1` | `docs/materials/school/math/jhs1/test1/source_scope.md` | 対象範囲 | 出題範囲と参照資料 |
+| `school_math_jhs1_test1` | `docs/materials/school/math/jhs1/test1/question_design.md` | 設計資料 | セット構成と出題方針 |
+| `school_math_jhs1_test1` | `docs/materials/school/math/jhs1/test1/generation_review.md` | レビュー記録 | 問題数と機械チェック結果 |
+| `school_math_jhs1_test1` | `docs/materials/school/math/jhs1/test1/math_test1_questions_review.md` | 確認資料 | 全問題・解答・解説の確認用 |
 
 ## 今回はいったん対象外
 
@@ -89,6 +95,7 @@
 | `school_social_history_jhs1_textbook_p24_p27` | `h001_a_` |
 | `school_japanese_jhs1_test1` | `japanese_test1_` |
 | `school_english_jhs1_test1` | `english_test1_` |
+| `school_math_jhs1_test1` | `math_test1_` |
 
 問題IDは教材間で重複させない。
 新教材では、教材内容を判別できる固有のprefixを使用する。
