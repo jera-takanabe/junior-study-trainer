@@ -612,6 +612,15 @@
         };
       }
 
+      if (firstQuestionId.startsWith("english_test1_")) {
+        return {
+          questionSetId: "school_english_jhs1_test1",
+          questionSetName: "英語 第1回定期テスト",
+          source: "questionId",
+          totalQuestionCount
+        };
+      }
+
       return {
         questionSetId: "unknown",
         questionSetName: firstSeriesName || "未判定の教材",
