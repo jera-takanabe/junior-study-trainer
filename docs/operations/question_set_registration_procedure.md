@@ -52,6 +52,29 @@ grep -n "QUESTION_SETS_MANIFEST\|sourceFile\|loadQuestionDataScript\|identifyCur
 
 ## 3. 問題データファイルを作る
 
+### 3.1 原本と作成過程資料を分ける
+
+教科書、ワーク、配布プリント、単元テストなどの原本PDFや、本文のまとまった引用は、公開リポジトリへ格納しない。
+
+問題作成の根拠や中間成果物は、派生情報として次の場所に整理する。
+
+```text
+docs/materials/<区分>/<教科>/<学年・範囲>/
+```
+
+推奨する資料:
+
+- `README.md`: 教材の目的と著作権上の扱い
+- `source_scope.md`: 対象範囲と参照資料
+- `question_design.md`: セット構成と出題方針
+- `generation_review.md`: 問題数、機械チェック、レビュー結果
+
+教科や教材によって既存のファイル名がある場合は、それを維持してよい。
+
+重要なのは、アプリ用問題だけでなく、作成根拠・設計・レビューを追跡できる状態にすることである。
+
+アプリが実際に読み込む問題データは、次へ配置する。
+
 配置先:
 
 ```text
@@ -191,17 +214,39 @@ sets = json.loads(m_sets.group(1))
 questions = json.loads(m_questions.group(1))
 set_ids = {x["setId"] for x in sets}
 question_set_ids = {x["setId"] for x in questions}
+duplicate_set_ids = [k for k, v in Counter(x["setId"] for x in sets).items() if v > 1]
 duplicate_ids = [k for k, v in Counter(q["id"] for q in questions).items() if v > 1]
 bad_set_refs = sorted(question_set_ids - set_ids)
+
+required = [
+    "id",
+    "setId",
+    "question",
+    "answer",
+    "note",
+    "targets",
+    "tags",
+    "sourcePage",
+    "sourceQuestion",
+]
+missing_required = []
+for q in questions:
+    missing = [k for k in required if k not in q or q[k] in ("", [], None)]
+    if missing:
+        missing_required.append((q.get("id"), missing))
 
 print("sets", len(sets))
 print("questions", len(questions))
 print("by_set", dict(Counter(q["setId"] for q in questions)))
+print("duplicate_set_ids", duplicate_set_ids)
 print("duplicate_ids", duplicate_ids)
 print("bad_set_refs", bad_set_refs)
 print("first_id", questions[0]["id"] if questions else None)
+print("last_id", questions[-1]["id"] if questions else None)
 print("count_ok", len(questions) == question_count)
 print("prefix_ok", all(q["id"].startswith(question_id_prefix) for q in questions))
+print("missing_required_count", len(missing_required))
+print("sample_missing_required", missing_required[:3])
 
 manifest_text = Path("app/question_sets_manifest.js").read_text(encoding="utf-8")
 for token in [
@@ -225,10 +270,12 @@ PY
 確認する結果:
 
 - `questions` が想定数
+- `duplicate_set_ids []`
 - `duplicate_ids []`
 - `bad_set_refs []`
 - `count_ok True`
 - `prefix_ok True`
+- `missing_required_count 0`
 - manifest の各項目が `True`
 - index 側の教材判定が必要な場合、各項目が `True`
 
@@ -268,7 +315,7 @@ git diff -- app/index.html | sed -n '1,160p'
 
 ## 9. コミット
 
-データ・manifest・docs の追加:
+データ・Manifest・運用資料の追加:
 
 ```bash
 git add app/data/<教材名>.js \
@@ -278,6 +325,14 @@ git add app/data/<教材名>.js \
 
 git commit -m "feat: add <教材名> question set"
 ```
+
+作成過程資料を新規作成・更新した場合は、内容を確認してから別途追加する。
+
+```bash
+git add docs/materials/<対象ディレクトリ>/
+```
+
+原本PDF、教科書・ワーク本文のまとまった転載、`.local/` 配下の一時ファイルはステージしない。
 
 `app/index.html` の教材判定を追加した場合:
 
@@ -314,4 +369,6 @@ git log --oneline --decorate -5
 - 出題確認だけで終わり、進捗・履歴・バックアップを確認しない
 - `questionSetId` と問題ID prefix の対応を曖昧にする
 - `app/index.html` の教材判定追加をステージし忘れる
+- 作成過程資料を更新したのにステージし忘れる
+- 原本PDFや `.local/` 配下の一時ファイルを登録する
 - 既存教材の進捗・履歴と混ざる状態で保存する
