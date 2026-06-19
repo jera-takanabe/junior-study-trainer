@@ -1,5 +1,8 @@
 # Junior Study Trainer 設計概要 v0.6
 
+> この文書はv0.6時点の履歴資料であり、現行実装の説明ではない。
+> 現行設計の入口は `docs/design/README.md` を参照する。
+
 ## 1. この文書の目的
 
 この文書は、Junior Study Trainer の現行 v0.6 時点の設計概要を整理する。

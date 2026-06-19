@@ -11,7 +11,7 @@
 3. 必要に応じて `app/index.html` に問題ID prefixによる教材判定を追加する
 4. アプリの教材選択画面から使用する教材を選ぶ
 5. 教材ごとに分離された進捗・履歴を使って学習する
-6. 必要に応じて全教材分のバックアップJSONをエクスポートする
+6. 必要に応じて選択中教材分のバックアップJSONをエクスポートする
 
 通常、新教材の登録で `app/questions.js` は変更しない。
 
@@ -82,7 +82,7 @@
 | 進捗 | 教材の `questionSetId` ごとに分離して管理する |
 | 履歴 | 教材の `questionSetId` ごとに表示・管理する |
 | 進捗リセット | 選択中の教材を対象とする |
-| バックアップ | 登録済み教材の進捗・履歴をまとめて扱う |
+| バックアップ | 選択中教材1件の進捗・履歴を扱う。全教材一括は未実装 |
 | 保存場所 | ブラウザの `localStorage` |
 | 複数デバイス同期 | なし。必要に応じてバックアップJSONを移動する |
 
@@ -92,7 +92,7 @@
 |---|---|
 | `school_science_jhs1_textbook_s001_s003` | `science_textbook_` |
 | `school_social_geography_jhs1_textbook_p10_p53` | `social_geography_` |
-| `school_social_history_jhs1_textbook_p24_p27` | `h001_a_` |
+| `school_social_history_jhs1_textbook_p24_p27` | `h001_` |
 | `school_japanese_jhs1_test1` | `japanese_test1_` |
 | `school_english_jhs1_test1` | `english_test1_` |
 | `school_math_jhs1_test1` | `math_test1_` |
