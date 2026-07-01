@@ -26,6 +26,7 @@
 関連設計:
 
 ```text
+docs/design/id_and_code_policy_v0_1.md
 docs/design/catalog_to_question_data_design_v0_1.md
 docs/design/purpose_based_question_sets_design_v0_1.md
 docs/design/printable_question_output_design_v0_1.md
@@ -365,15 +366,31 @@ docs/operations/question_sets_manifest_draft.md
 ```text
 明示ID方式
 purposeSetId:
-  suken6_light_check
+  purpose_suken6_light_check_001
 
-questionIds:
-  - suken6_fraction_q001
-  - suken6_ratio_q003
-  - suken6_speed_q002
+selectionMode:
+  explicitIds
+
+questions:
+  - questionSetId: "cert_suken_grade6_light_check"
+    questionId: "suken6_fraction_q001"
+
+  - questionSetId: "cert_suken_grade6_light_check"
+    questionId: "suken6_ratio_q003"
+
+  - questionSetId: "cert_suken_grade6_light_check"
+    questionId: "suken6_speed_q002"
 ```
 
+目的別問題集では、questionId 単独ではなく、questionSetId と questionId の組で参照する。
+
 この段階では、抽出条件方式を無理に実装しない。
+
+目的別問題集を追加・変更した場合は、参照整合性を検証する。
+
+```bash
+python scripts/validate_purpose_sets.py
+```
 
 ### 4.2 印刷対象か確認する
 
@@ -747,10 +764,16 @@ metadata を付けた場合の追加完了条件:
 
 目的別問題集に入れる場合の追加完了条件:
 
-- 対象 questionId が存在する
+- 目的別問題集に入れるか判断した
+- 明示ID方式で始めるか、後回しにするか決めた
+- 目的別問題集では questionSetId + questionId で参照している
+- 対象 questionSetId が `app/question_sets_manifest.js` に存在する
+- 対象 questionId が対象教材データに存在する
 - 重複IDがない
 - 目的別セット名が子どもにも分かる
+- `python scripts/validate_purpose_sets.py` で参照整合性を確認した
 - 既存の教材単位進捗と混ざらない
+- 抽出条件方式を無理に先行させていない
 
 印刷対象の場合の追加完了条件:
 
