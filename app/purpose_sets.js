@@ -75,6 +75,79 @@
     }));
   }
 
+  function getQuestionRefs(purposeSetId) {
+    const purposeSet = getById(purposeSetId);
+    if (!purposeSet || !Array.isArray(purposeSet.questions)) {
+      return [];
+    }
+
+    return purposeSet.questions.map((questionRef) => ({
+      questionSetId: questionRef.questionSetId || "",
+      questionId: questionRef.questionId || ""
+    }));
+  }
+
+  function canResolveWithCurrentQuestionSet(purposeSetId, currentQuestionSetId) {
+    if (!purposeSetId || !currentQuestionSetId) {
+      return false;
+    }
+
+    const refs = getQuestionRefs(purposeSetId);
+
+    if (refs.length === 0) {
+      return false;
+    }
+
+    return refs.every((questionRef) => questionRef.questionSetId === currentQuestionSetId);
+  }
+
+  function resolveQuestionsFromCurrentSet(purposeSetId, currentQuestionSetId, questions) {
+    if (!canResolveWithCurrentQuestionSet(purposeSetId, currentQuestionSetId)) {
+      return {
+        ok: false,
+        reason: "currentQuestionSetMismatch",
+        questions: [],
+        missingQuestionIds: []
+      };
+    }
+
+    const sourceQuestions = Array.isArray(questions) ? questions : [];
+    const refs = getQuestionRefs(purposeSetId);
+    const questionMap = new Map(sourceQuestions.map((question) => [question.id, question]));
+    const resolvedQuestions = [];
+    const missingQuestionIds = [];
+
+    refs.forEach((questionRef) => {
+      const question = questionMap.get(questionRef.questionId);
+      if (question) {
+        resolvedQuestions.push({
+          ...question,
+          sourceQuestionSetId: questionRef.questionSetId,
+          sourceQuestionId: questionRef.questionId,
+          purposeSetId
+        });
+      } else {
+        missingQuestionIds.push(questionRef.questionId);
+      }
+    });
+
+    if (missingQuestionIds.length > 0) {
+      return {
+        ok: false,
+        reason: "missingQuestions",
+        questions: resolvedQuestions,
+        missingQuestionIds
+      };
+    }
+
+    return {
+      ok: true,
+      reason: "",
+      questions: resolvedQuestions,
+      missingQuestionIds: []
+    };
+  }
+
   window.PurposeSets = {
     getAll,
     getById,
@@ -82,6 +155,9 @@
     isActive,
     getQuestionCount,
     getDisplaySummary,
-    getDisplayItems
+    getDisplayItems,
+    getQuestionRefs,
+    canResolveWithCurrentQuestionSet,
+    resolveQuestionsFromCurrentSet
   };
 })();
