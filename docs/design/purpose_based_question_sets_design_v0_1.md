@@ -22,6 +22,16 @@
 
 この文書では、すぐにアプリを改修するのではなく、今後の問題データ・進捗管理・印刷出力へつなげるための設計を整理する。
 
+関連する設計文書は次の通り。
+
+```text
+関連設計
+├─ id_and_code_policy_v0_1.md
+├─ question_metadata_schema_design_v0_1.md
+├─ metadata_migration_plan_v0_1.md
+└─ printable_question_output_design_v0_1.md
+```
+
 ## 2. 現在の前提
 
 現在のアプリは、教材セット単位で問題を選ぶ。
@@ -307,16 +317,33 @@
 
 ```text
 purposeSetId:
-  math_test1_final_review
+  purpose_math_test1_final_review_001
 
 selectionMode:
   explicitIds
 
-questionIds:
-  - math_test1_M001_Q001
-  - math_test1_M001_Q002
-  - math_test1_M003_Q014
-  - math_test1_M013_Q020
+questions:
+  - questionSetId: "school_math_jhs1_test1"
+    questionId: "math_test1_m001_q001"
+
+  - questionSetId: "school_math_jhs1_test1"
+    questionId: "math_test1_m001_q002"
+
+  - questionSetId: "school_math_jhs1_test1"
+    questionId: "math_test1_m003_q014"
+
+  - questionSetId: "school_math_jhs1_test1"
+    questionId: "math_test1_m013_q020"
+```
+
+明示ID方式では、questionId 単独ではなく、questionSetId と questionId の組で問題を参照する。
+
+```text
+理由
+├─ questionId の衝突に備える
+├─ 教材セットをまたぐ目的別問題集に対応する
+├─ sourceFile を manifest から特定しやすくする
+└─ ID 文字列の意味に依存しない実装にする
 ```
 
 ### 6.2 向いている用途
