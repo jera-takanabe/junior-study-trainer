@@ -802,3 +802,94 @@ metadata を付けた場合の追加完了条件:
 - 目的別問題集を抽出条件方式から始めて複雑化する
 - 教科書・ワークの図表をそのまま公開リポジトリに入れる
 - 印刷用問題に著作権上公開できない本文を含める
+
+## 目的別問題集の登録・確認手順
+
+目的別問題集は、通常教材とは別に `app/purpose_sets_manifest.js` へ登録する。
+
+現時点の初期実装では、目的別問題集は「保存なし実行」として扱う。
+通常教材の進捗・履歴には記録しない。
+
+### 1. 登録前に決める項目
+
+目的別問題集で決める項目:
+
+    purposeSetId
+    title
+    description
+    status
+      draft: 開始不可
+      active: 条件を満たす場合のみ開始可能
+    selectionMode
+      現時点では explicitIds のみ対応
+    questions[]
+      questionSetId
+      questionId
+
+### 2. 現時点の制限
+
+初期実装の制限:
+
+    現在読み込み済み教材と同じ questionSetId の目的別問題集だけ開始できる
+    複数教材をまたぐ目的別問題集は未対応
+    抽出条件方式は未対応
+    進捗保存は未対応
+    履歴保存は未対応
+    バックアップ・復元は未対応
+    リセットUIは未対応
+
+### 3. 検証コマンド
+
+目的別問題集を追加・変更したら、必ず検証スクリプトを実行する。
+
+    python scripts/validate_purpose_sets.py
+
+確認すること:
+
+    questionSetId が manifest に存在する
+    questionId が参照先データに存在する
+    purposeSet 数が想定どおり
+    検証済み参照数が想定どおり
+    エラーが出ていない
+
+### 4. ブラウザ確認
+
+目的別問題集を `active` にした場合は、ブラウザで次を確認する。
+
+ブラウザ確認ポイント:
+
+    対象教材を読み込む前は開始不可になる
+    対象教材を読み込むと「この目的別問題集を始める」が有効になる
+    目的別問題集の問題数どおりに出題される
+    設定画面の問題数指定で切り詰められない
+    結果画面まで到達できる
+    結果画面に目的別問題集名が表示される
+    結果画面に「保存なし実行」が表示される
+    復習欄のセット表示が目的別問題集名になる
+    「同じ設定でもう一度」でも保存なしを維持する
+    「間違えた問題だけ再挑戦」でも保存なしを維持する
+    通常教材の履歴に保存されない
+    通常教材の進捗に反映されない
+    通常教材の出題・履歴・進捗は従来どおり動く
+
+### 5. コミット前確認
+
+目的別問題集の変更後は、次を確認する。
+
+    git diff --check
+    python scripts/validate_purpose_sets.py
+    git status
+
+目的別問題集の変更をコミットするときは、通常教材の変更と目的別問題集の変更をできるだけ分ける。
+
+例:
+
+    git add app/purpose_sets_manifest.js app/purpose_sets.js app/index.html
+    git commit -m "feat: add purpose set runtime support"
+
+設計書や手順書を更新した場合は、別コミットにしてよい。
+
+例:
+
+    git add docs/design/purpose_set_runtime_design_v0_1.md docs/operations/question_set_registration_procedure.md
+    git commit -m "docs: update purpose set runtime procedure"
