@@ -520,16 +520,23 @@
           `${escapeHtml(item.title)} ` +
           `<span class="small">(${escapeHtml(item.purposeSetId)} / ${Number(item.questionCount || 0)}問 / ${escapeHtml(statusLabel || "状態不明")} / ${escapeHtml(resolveLabel)})</span><br />` +
           `<span class="small">${escapeHtml(item.description || "")}</span><br />` +
-          `<button type="button" class="btn-secondary purpose-set-start-button" disabled data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(buttonLabel)}</button>` +
-          `${isStartable ? `<span class="small"> ※開始処理は次の段階で接続します。</span>` : ""}` +
+          `<button type="button" class="btn-secondary purpose-set-start-button" ${isStartable ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(buttonLabel)}</button>` +
+          `${isStartable ? `<span class="small"> ※現在は確認用です。出題開始にはまだ接続していません。</span>` : ""}` +
           `</li>`
         );
       }).join("");
 
       purposeSetsPanel.innerHTML =
         `<strong>目的別問題集：</strong>${items.length}件<br />` +
-        `<span class="small">※現在は表示のみです。出題開始にはまだ接続していません。</span>` +
+        `<span class="small">※現在は表示とクリック確認のみです。出題開始にはまだ接続していません。</span>` +
         `<ul style="margin: 6px 0 0 18px; padding: 0;">${listItems}</ul>`;
+
+      purposeSetsPanel.querySelectorAll(".purpose-set-start-button").forEach(button => {
+        button.addEventListener("click", () => {
+          const purposeSet = window.PurposeSets.getById(button.dataset.purposeSetId || "");
+          alert(`目的別問題集の開始確認です。\n\n${purposeSet ? purposeSet.title : "目的別問題集"}\n\n出題開始処理はまだ接続していません。`);
+        });
+      });
     }
 
     async function switchQuestionSet(questionSetId) {
