@@ -508,12 +508,20 @@
           QUESTION_SET_PROFILE.questionSetId
         );
         const resolveLabel = canResolve ? "現在の教材で解決可能" : "現在の教材では未対応";
+        const isStartable = item.status === "active" && canResolve;
+        const buttonLabel = item.status === "draft"
+          ? "下書きのため開始不可"
+          : canResolve
+            ? "この目的別問題集を始める"
+            : "現在の教材では開始不可";
 
         return (
           `<li>` +
           `${escapeHtml(item.title)} ` +
           `<span class="small">(${escapeHtml(item.purposeSetId)} / ${Number(item.questionCount || 0)}問 / ${escapeHtml(statusLabel || "状態不明")} / ${escapeHtml(resolveLabel)})</span><br />` +
-          `<span class="small">${escapeHtml(item.description || "")}</span>` +
+          `<span class="small">${escapeHtml(item.description || "")}</span><br />` +
+          `<button type="button" class="btn-secondary purpose-set-start-button" disabled data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(buttonLabel)}</button>` +
+          `${isStartable ? `<span class="small"> ※開始処理は次の段階で接続します。</span>` : ""}` +
           `</li>`
         );
       }).join("");
