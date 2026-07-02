@@ -173,5 +173,74 @@ window.PURPOSE_SETS_MANIFEST = [
         questionId: "math_test1_m013_q039"
       }
     ]
+  },
+  {
+    purposeSetId: "purpose_english_test1_get_ready_001",
+    title: "英語 第1回定期テスト Get Ready 基本確認",
+    description: "英語第1回定期テスト範囲から、Get Ready のアルファベット小文字を短時間で確認する目的別問題集。",
+    purposeType: "定期テスト対策",
+    selectionMode: "explicitIds",
+    questionSetScope: [
+      "school_english_jhs1_test1"
+    ],
+    ordering: "fixed",
+    randomization: false,
+    limit: 12,
+    timer: {
+      questionSeconds: 15,
+      answerSeconds: 5
+    },
+    progressScope: "purposeSet",
+    status: "active",
+    questions: [
+      {
+        questionSetId: "school_english_jhs1_test1",
+        questionId: "english_test1_e001_q001"
+      },
+      {
+        questionSetId: "school_english_jhs1_test1",
+        questionId: "english_test1_e001_q002"
+      },
+      {
+        questionSetId: "school_english_jhs1_test1",
+        questionId: "english_test1_e001_q003"
+      },
+      {
+        questionSetId: "school_english_jhs1_test1",
+        questionId: "english_test1_e001_q004"
+      },
+      {
+        questionSetId: "school_english_jhs1_test1",
+        questionId: "english_test1_e001_q005"
+      },
+      {
+        questionSetId: "school_english_jhs1_test1",
+        questionId: "english_test1_e001_q006"
+      },
+      {
+        questionSetId: "school_english_jhs1_test1",
+        questionId: "english_test1_e001_q007"
+      },
+      {
+        questionSetId: "school_english_jhs1_test1",
+        questionId: "english_test1_e001_q008"
+      },
+      {
+        questionSetId: "school_english_jhs1_test1",
+        questionId: "english_test1_e001_q009"
+      },
+      {
+        questionSetId: "school_english_jhs1_test1",
+        questionId: "english_test1_e001_q010"
+      },
+      {
+        questionSetId: "school_english_jhs1_test1",
+        questionId: "english_test1_e001_q011"
+      },
+      {
+        questionSetId: "school_english_jhs1_test1",
+        questionId: "english_test1_e001_q012"
+      }
+    ]
   }
 ];
