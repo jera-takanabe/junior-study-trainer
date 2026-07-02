@@ -503,10 +503,16 @@
 
       const listItems = items.map(item => {
         const statusLabel = item.status === "draft" ? "下書き" : item.status;
+        const canResolve = window.PurposeSets.canResolveWithCurrentQuestionSet(
+          item.purposeSetId,
+          QUESTION_SET_PROFILE.questionSetId
+        );
+        const resolveLabel = canResolve ? "現在の教材で解決可能" : "現在の教材では未対応";
+
         return (
           `<li>` +
           `${escapeHtml(item.title)} ` +
-          `<span class="small">(${escapeHtml(item.purposeSetId)} / ${Number(item.questionCount || 0)}問 / ${escapeHtml(statusLabel || "状態不明")})</span><br />` +
+          `<span class="small">(${escapeHtml(item.purposeSetId)} / ${Number(item.questionCount || 0)}問 / ${escapeHtml(statusLabel || "状態不明")} / ${escapeHtml(resolveLabel)})</span><br />` +
           `<span class="small">${escapeHtml(item.description || "")}</span>` +
           `</li>`
         );
