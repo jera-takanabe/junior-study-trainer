@@ -193,6 +193,7 @@
 
     <section id="resultScreen" class="card hidden">
       <h2>結果</h2>
+      <div id="resultRuntimeInfo" class="note hidden"></div>
       <div id="resultSummary" class="summary-grid"></div>
       <div id="reviewArea"></div>
       <div class="btn-row two">
@@ -319,6 +320,7 @@
     const questionArea = document.getElementById("questionArea");
     const answerArea = document.getElementById("answerArea");
     const pauseButton = document.getElementById("pauseButton");
+    const resultRuntimeInfo = document.getElementById("resultRuntimeInfo");
     const resultSummary = document.getElementById("resultSummary");
     const reviewArea = document.getElementById("reviewArea");
     const retryWrongButton = document.getElementById("retryWrongButton");
@@ -1020,6 +1022,19 @@
     }
 
     function showResult(session) {
+      const sessionRuntimeContext = session.runtimeContext || runtimeContext;
+      const isPurposeSetSession = isPurposeSetRuntime(sessionRuntimeContext);
+
+      if (isPurposeSetSession) {
+        resultRuntimeInfo.classList.remove("hidden");
+        resultRuntimeInfo.innerHTML =
+          `<strong>目的別問題集：</strong>${escapeHtml(sessionRuntimeContext.title || sessionRuntimeContext.id || "名称未設定")}<br />` +
+          `<span class="small">保存なし実行です。進捗・履歴には記録していません。</span>`;
+      } else {
+        resultRuntimeInfo.classList.add("hidden");
+        resultRuntimeInfo.innerHTML = "";
+      }
+
       const total = session.results.length;
       const correct = session.results.filter(r => r.judgement === "correct").length;
       const wrong = session.results.filter(r => r.judgement === "wrong").length;
@@ -1056,14 +1071,20 @@
         return;
       }
 
-      const items = reviewTargets.map(r => `
-        <li>
-          <strong>${escapeHtml(r.question)}</strong><br />
-          答え：${escapeHtml(r.answer)}<br />
-          セット：${escapeHtml(r.setName || "")}<br />
-          判定：${labelJudgement(r.judgement)} / 表示理由：${labelTrigger(r.answerTrigger)} / 現在の復習ポイント：${r.mistakePointsAfter}
-        </li>
-      `).join("");
+      const items = reviewTargets.map(r => {
+        const setLabel = isPurposeSetSession
+          ? `${sessionRuntimeContext.title || sessionRuntimeContext.id || "目的別問題集"}（保存なし）`
+          : (r.setName || "");
+
+        return `
+          <li>
+            <strong>${escapeHtml(r.question)}</strong><br />
+            答え：${escapeHtml(r.answer)}<br />
+            セット：${escapeHtml(setLabel)}<br />
+            判定：${labelJudgement(r.judgement)} / 表示理由：${labelTrigger(r.answerTrigger)} / 現在の復習ポイント：${r.mistakePointsAfter}
+          </li>
+        `;
+      }).join("");
 
       reviewArea.innerHTML = `<h3>復習</h3><p>${message}</p><ol class="review-list">${items}</ol>`;
     }
