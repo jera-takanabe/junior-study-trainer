@@ -510,17 +510,32 @@
         return;
       }
 
-      const listItems = items.map(item => {
-        const statusLabel = item.status === "draft" ? "下書き" : item.status;
+      const displayItems = items.map((item, index) => {
         const canResolve = window.PurposeSets.canResolveWithCurrentQuestionSet(
           item.purposeSetId,
           QUESTION_SET_PROFILE.questionSetId
         );
-        const resolveLabel = canResolve ? "現在の教材で解決可能" : "現在の教材では未対応";
         const isStartable = item.status === "active" && canResolve;
+        const sortGroup = isStartable ? 0 : item.status === "draft" ? 1 : 2;
+
+        return {
+          ...item,
+          canResolve,
+          isStartable,
+          originalIndex: index,
+          sortGroup
+        };
+      }).sort((a, b) => {
+        if (a.sortGroup !== b.sortGroup) return a.sortGroup - b.sortGroup;
+        return a.originalIndex - b.originalIndex;
+      });
+
+      const listItems = displayItems.map(item => {
+        const statusLabel = item.status === "draft" ? "下書き" : item.status;
+        const resolveLabel = item.canResolve ? "現在の教材で解決可能" : "現在の教材では未対応";
         const buttonLabel = item.status === "draft"
           ? "下書きのため開始不可"
-          : canResolve
+          : item.canResolve
             ? "この目的別問題集を始める"
             : "現在の教材では開始不可";
 
@@ -536,8 +551,8 @@
           `<span class="small">(${escapeHtml(item.purposeSetId)} / ${runtimeQuestionCount}問 / ${escapeHtml(statusLabel || "状態不明")} / ${escapeHtml(resolveLabel)})</span><br />` +
           `<span class="small">${escapeHtml(item.description || "")}</span><br />` +
           `<span class="small">${escapeHtml(runtimeLabel)}</span><br />` +
-          `<button type="button" class="btn-secondary purpose-set-start-button" ${isStartable ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(buttonLabel)}</button>` +
-          `${isStartable ? `<span class="small"> ※保存なしで実行します。進捗・履歴にはまだ記録しません。</span>` : ""}` +
+          `<button type="button" class="btn-secondary purpose-set-start-button" ${item.isStartable ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(buttonLabel)}</button>` +
+          `${item.isStartable ? `<span class="small"> ※保存なしで実行します。進捗・履歴にはまだ記録しません。</span>` : ""}` +
           `</li>`
         );
       }).join("");
