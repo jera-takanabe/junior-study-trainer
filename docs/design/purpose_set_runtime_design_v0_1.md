@@ -19,6 +19,8 @@
 - 保存なし実行では、通常教材の進捗・履歴へ記録しない。
 - 結果画面には、目的別問題集名と保存なし実行であることを表示する。
 - 目的別問題集の「同じ設定でもう一度」「間違えた問題だけ再挑戦」も保存なしを維持する。
+- 目的別問題集Manifest側の `limit`, `timer`, `ordering`, `randomization` を実行時に反映する。
+- 複数の目的別問題集を同時に表示・実行できる。
 - 既存の通常教材出題、進捗、履歴、バックアップは従来通り動作している。
 
 ## 3. 通常教材と目的別問題集の違い
@@ -179,6 +181,19 @@
       saveProgress: true | false
       saveHistory: true | false
 
+目的別問題集の実行時設定:
+
+    limit:
+      出題数
+    timer.questionSeconds:
+      問題表示秒数
+    timer.answerSeconds:
+      回答表示秒数
+    ordering:
+      fixed または random
+    randomization:
+      true の場合はランダム出題
+
 通常教材の場合:
 
     mode = "questionSet"
@@ -258,8 +273,12 @@
 
 - 現在読み込み済み教材と同じ `questionSetId` の目的別問題集だけ開始できる。
 - `selectionMode: explicitIds` の目的別問題集だけ対応する。
-- 目的別問題集の問題数どおりに出題する。
+- 目的別問題集の `limit` または参照問題数どおりに出題する。
 - 目的別問題集では、設定画面の問題数指定による切り詰めを行わない。
+- 目的別問題集Manifest側の `timer` を問題表示秒数・回答表示秒数に反映する。
+- `randomization: true` または `ordering: "random"` の場合だけランダム出題にする。
+- `ordering: "fixed"` かつ `randomization: false` の場合は固定順にする。
+- 複数の目的別問題集を同時に表示・実行できる。
 - 結果画面まで表示できる。
 - 結果画面に目的別問題集名と保存なし実行であることを表示する。
 - 復習欄のセット表示には目的別問題集名を表示する。
@@ -267,6 +286,7 @@
 
 未実装事項:
 
+- 目的別問題集用の設定表示の改善
 - `purposeSetId` 単位の進捗保存
 - `purposeSetId` 単位の履歴保存
 - 目的別問題集の再開
