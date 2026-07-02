@@ -71,6 +71,10 @@
       status: purposeSet.status || "unknown",
       selectionMode: purposeSet.selectionMode || "unknown",
       questionCount: getQuestionCount(purposeSet),
+      limit: purposeSet.limit,
+      timer: purposeSet.timer ? { ...purposeSet.timer } : null,
+      ordering: purposeSet.ordering || "fixed",
+      randomization: purposeSet.randomization === true,
       summary: getDisplaySummary(purposeSet)
     }));
   }
