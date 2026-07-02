@@ -524,11 +524,18 @@
             ? "この目的別問題集を始める"
             : "現在の教材では開始不可";
 
+        const runtimeQuestionCount = Number(item.limit || item.questionCount || 0);
+        const questionSeconds = Number(item.timer?.questionSeconds || questionTimeSelect.value);
+        const answerSeconds = Number(item.timer?.answerSeconds || answerTimeSelect.value);
+        const orderLabel = item.randomization === true || item.ordering === "random" ? "ランダム" : "固定順";
+        const runtimeLabel = `設定：${runtimeQuestionCount}問 / 問題${questionSeconds}秒 / 回答${answerSeconds}秒 / ${orderLabel}`;
+
         return (
           `<li>` +
           `${escapeHtml(item.title)} ` +
-          `<span class="small">(${escapeHtml(item.purposeSetId)} / ${Number(item.questionCount || 0)}問 / ${escapeHtml(statusLabel || "状態不明")} / ${escapeHtml(resolveLabel)})</span><br />` +
+          `<span class="small">(${escapeHtml(item.purposeSetId)} / ${runtimeQuestionCount}問 / ${escapeHtml(statusLabel || "状態不明")} / ${escapeHtml(resolveLabel)})</span><br />` +
           `<span class="small">${escapeHtml(item.description || "")}</span><br />` +
+          `<span class="small">${escapeHtml(runtimeLabel)}</span><br />` +
           `<button type="button" class="btn-secondary purpose-set-start-button" ${isStartable ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(buttonLabel)}</button>` +
           `${isStartable ? `<span class="small"> ※保存なしで実行します。進捗・履歴にはまだ記録しません。</span>` : ""}` +
           `</li>`
