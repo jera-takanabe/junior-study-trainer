@@ -557,14 +557,14 @@
           `<span class="small">${escapeHtml(item.description || "")}</span><br />` +
           `<span class="small">${escapeHtml(runtimeLabel)}</span><br />` +
           `<button type="button" class="btn-secondary purpose-set-start-button" ${item.isStartable ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(buttonLabel)}</button>` +
-          `${item.isStartable ? `<span class="small"> ※保存なしで実行します。進捗・履歴にはまだ記録しません。</span>` : ""}` +
+          `${item.isStartable ? `<span class="small"> ※履歴は保存します。問題別進捗にはまだ反映しません。</span>` : ""}` +
           `</li>`
         );
       }).join("");
 
       purposeSetsPanel.innerHTML =
         `<strong>目的別問題集：</strong>${items.length}件<br />` +
-        `<span class="small">※目的別問題集は保存なしで実行します。進捗・履歴にはまだ記録しません。</span>` +
+        `<span class="small">※目的別問題集の履歴は保存します。問題別進捗にはまだ反映しません。</span>` +
         `<ul style="margin: 6px 0 0 18px; padding: 0;">${listItems}</ul>`;
 
       purposeSetsPanel.querySelectorAll(".purpose-set-start-button").forEach(button => {
@@ -1075,7 +1075,7 @@
         resultRuntimeInfo.classList.remove("hidden");
         resultRuntimeInfo.innerHTML =
           `<strong>目的別問題集：</strong>${escapeHtml(sessionRuntimeContext.title || sessionRuntimeContext.id || "名称未設定")}<br />` +
-          `<span class="small">保存なし実行です。進捗・履歴には記録していません。</span>`;
+          `<span class="small">履歴は保存しています。問題別進捗にはまだ反映していません。</span>`;
       } else {
         resultRuntimeInfo.classList.add("hidden");
         resultRuntimeInfo.innerHTML = "";
@@ -1119,7 +1119,7 @@
 
       const items = reviewTargets.map(r => {
         const setLabel = isPurposeSetSession
-          ? `${sessionRuntimeContext.title || sessionRuntimeContext.id || "目的別問題集"}（保存なし）`
+          ? `${sessionRuntimeContext.title || sessionRuntimeContext.id || "目的別問題集"}（進捗未反映）`
           : (r.setName || "");
 
         return `
