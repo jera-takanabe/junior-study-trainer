@@ -566,12 +566,26 @@
         return;
       }
 
-      startQuiz(resolved.questions, {
+      const purposeQuestions = Number(purposeSet.limit || 0) > 0
+        ? resolved.questions.slice(0, Number(purposeSet.limit))
+        : resolved.questions;
+
+      startQuiz(purposeQuestions, {
         mode: "purposeSet",
         id: purposeSet.purposeSetId,
         title: purposeSet.title || purposeSet.purposeSetId,
         saveProgress: false,
         saveHistory: false
+      }, {
+        setId: `purpose:${purposeSet.purposeSetId}`,
+        setName: purposeSet.title || purposeSet.purposeSetId,
+        category: purposeSet.purposeType || "目的別問題集",
+        level: "目的別",
+        mode: "all",
+        questionCount: String(purposeQuestions.length),
+        questionTimeSec: Number(purposeSet.timer?.questionSeconds || questionTimeSelect.value),
+        answerTimeSec: Number(purposeSet.timer?.answerSeconds || answerTimeSelect.value),
+        order: purposeSet.randomization === true || purposeSet.ordering === "random" ? "random" : "normal"
       });
     }
 
@@ -783,7 +797,7 @@
       updateQuestionCountInfo();
     }
 
-    function startQuiz(customQuestions = null, customRuntimeContext = null) {
+    function startQuiz(customQuestions = null, customRuntimeContext = null, customSettingsOverrides = null) {
       runtimeContext = customRuntimeContext || {
         mode: "questionSet",
         id: QUESTION_SET_PROFILE.questionSetId,
@@ -801,7 +815,8 @@
         questionCount: questionCountSelect.value,
         questionTimeSec: Number(questionTimeSelect.value),
         answerTimeSec: Number(answerTimeSelect.value),
-        order: orderSelect.value
+        order: orderSelect.value,
+        ...(customSettingsOverrides || {})
       };
 
       const hasCustomQuestions = Array.isArray(customQuestions);
@@ -1196,13 +1211,13 @@
       const context = lastSession.runtimeContext || runtimeContext;
       const sourceQuestions = isPurposeSetRuntime(context) ? quizQuestions : QUESTIONS;
       const retryQuestions = sourceQuestions.filter(q => ids.includes(q.id));
-      startQuiz(retryQuestions, cloneRuntimeContext(context));
+      startQuiz(retryQuestions, cloneRuntimeContext(context), lastSession.settings);
     }
 
     function restartWithSameSettings() {
       if (!settings) return;
       if (isPurposeSetRuntime(runtimeContext)) {
-        startQuiz(quizQuestions, cloneRuntimeContext(runtimeContext));
+        startQuiz(quizQuestions, cloneRuntimeContext(runtimeContext), settings);
         return;
       }
       startQuiz();
