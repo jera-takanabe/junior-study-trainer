@@ -528,21 +528,48 @@
           `<span class="small">(${escapeHtml(item.purposeSetId)} / ${Number(item.questionCount || 0)}問 / ${escapeHtml(statusLabel || "状態不明")} / ${escapeHtml(resolveLabel)})</span><br />` +
           `<span class="small">${escapeHtml(item.description || "")}</span><br />` +
           `<button type="button" class="btn-secondary purpose-set-start-button" ${isStartable ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(buttonLabel)}</button>` +
-          `${isStartable ? `<span class="small"> ※現在は確認用です。出題開始にはまだ接続していません。</span>` : ""}` +
+          `${isStartable ? `<span class="small"> ※保存なしで実行します。進捗・履歴にはまだ記録しません。</span>` : ""}` +
           `</li>`
         );
       }).join("");
 
       purposeSetsPanel.innerHTML =
         `<strong>目的別問題集：</strong>${items.length}件<br />` +
-        `<span class="small">※現在は表示とクリック確認のみです。出題開始にはまだ接続していません。</span>` +
+        `<span class="small">※目的別問題集は保存なしで実行します。進捗・履歴にはまだ記録しません。</span>` +
         `<ul style="margin: 6px 0 0 18px; padding: 0;">${listItems}</ul>`;
 
       purposeSetsPanel.querySelectorAll(".purpose-set-start-button").forEach(button => {
         button.addEventListener("click", () => {
-          const purposeSet = window.PurposeSets.getById(button.dataset.purposeSetId || "");
-          alert(`目的別問題集の開始確認です。\n\n${purposeSet ? purposeSet.title : "目的別問題集"}\n\n出題開始処理はまだ接続していません。`);
+          startPurposeSetQuiz(button.dataset.purposeSetId || "");
         });
+      });
+    }
+
+    function startPurposeSetQuiz(purposeSetId) {
+      const purposeSet = window.PurposeSets.getById(purposeSetId);
+
+      if (!purposeSet) {
+        alert("目的別問題集が見つかりません。");
+        return;
+      }
+
+      const resolved = window.PurposeSets.resolveQuestionsFromCurrentSet(
+        purposeSetId,
+        QUESTION_SET_PROFILE.questionSetId,
+        QUESTIONS
+      );
+
+      if (!resolved.ok) {
+        alert("この目的別問題集は、現在読み込み中の教材では開始できません。");
+        return;
+      }
+
+      startQuiz(resolved.questions, {
+        mode: "purposeSet",
+        id: purposeSet.purposeSetId,
+        title: purposeSet.title || purposeSet.purposeSetId,
+        saveProgress: false,
+        saveHistory: false
       });
     }
 
@@ -775,10 +802,13 @@
         order: orderSelect.value
       };
 
-      let sourceQuestions = customQuestions || getFilteredQuestions(settings.setId, settings.category, settings.level, settings.mode);
+      const hasCustomQuestions = Array.isArray(customQuestions);
+      let sourceQuestions = hasCustomQuestions
+        ? customQuestions
+        : getFilteredQuestions(settings.setId, settings.category, settings.level, settings.mode);
 
       if (settings.order === "random") sourceQuestions = shuffleArray(sourceQuestions);
-      if (settings.questionCount !== "all") sourceQuestions = sourceQuestions.slice(0, Number(settings.questionCount));
+      if (!hasCustomQuestions && settings.questionCount !== "all") sourceQuestions = sourceQuestions.slice(0, Number(settings.questionCount));
 
       if (sourceQuestions.length === 0) {
         alert("出題できる問題がありません。セット、カテゴリ、出題タイプ、出題モードを変更してください。");
