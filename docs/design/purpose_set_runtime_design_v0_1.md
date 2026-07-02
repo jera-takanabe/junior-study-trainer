@@ -205,6 +205,193 @@
 - 問題表示秒数
 - 回答表示秒数
 
+## 6.5 保存データ構造案
+
+目的別問題集の本格運用では、保存データを次の3層に分ける。
+
+    実行履歴:
+      1回の実施結果を記録する。
+      「いつ、何を、どの出題モードで、何問実施したか」を後から確認するためのデータである。
+
+    周回管理:
+      短期対策用の状態を記録する。
+      「次の周回で出すべき問題が残っているか」「周回が完了したか」を管理する。
+
+    弱点管理:
+      長期育成用の状態を記録する。
+      「何度も間違える問題」「時間を空けると忘れる問題」を管理する。
+
+この3層は、同じ問題IDを参照しても、目的とリセット単位が異なるため別データとして扱う。
+
+### 6.5.1 実行履歴
+
+目的別問題集の履歴キーは、`purposeSetId` 単位にする。
+
+例:
+
+    timedQuizTrainerPurposeHistoryV01__purpose_math_test1_word_problems_001
+
+履歴1件には、少なくとも次を保存する。
+
+    sessionId:
+      実施1回ごとのID
+
+    startedAt:
+      開始日時
+
+    finishedAt:
+      終了日時
+
+    runtimeMode:
+      "purposeSet"
+
+    purposeSetId:
+      実行した目的別問題集ID
+
+    purposeSetTitle:
+      実行時点の目的別問題集名
+
+    quizMode:
+      "normal" | "cycle" | "weakness" | "retention" | "random"
+
+    settings:
+      問題表示秒数、回答表示秒数、出題順、出題数
+
+    results:
+      questionSetId、questionId、正誤、所要時間、表示秒数、回答表示秒数
+
+履歴は「過去に何をしたか」を見るためのデータであり、周回状態や弱点状態の主データにはしない。
+
+### 6.5.2 周回管理
+
+周回管理のキーは、`purposeSetId` 単位にする。
+
+例:
+
+    timedQuizTrainerPurposeCycleV01__purpose_math_test1_word_problems_001
+
+周回管理には、少なくとも次を保存する。
+
+    purposeSetId:
+      対象の目的別問題集ID
+
+    cycleId:
+      現在の周回ID
+
+    startedAt:
+      現在の周回を開始した日時
+
+    updatedAt:
+      最終更新日時
+
+    status:
+      "notStarted" | "inProgress" | "cleared"
+
+    remainingQuestionRefs:
+      次の周回で出題する問題参照の一覧
+
+    clearedQuestionRefs:
+      現在の周回で正解済みの問題参照の一覧
+
+    lastSessionId:
+      最後に反映した実行履歴ID
+
+周回管理の基本動作は次のとおりとする。
+
+1. 初回は目的別問題集の全問題を出す。
+2. 実施後、誤答またはパスした問題だけを `remainingQuestionRefs` に残す。
+3. 次回の周回練習では、`remainingQuestionRefs` だけを出す。
+4. すべて正解したら `status: "cleared"` にする。
+5. 周回リセットは、弱点管理や通常履歴とは独立して行う。
+
+### 6.5.3 弱点管理
+
+弱点管理は、長期的に使うため、目的別問題集だけでなく通常教材にもまたがる可能性がある。
+
+初期設計では、まず問題参照単位で保存できる形にする。
+
+例:
+
+    timedQuizTrainerWeaknessV01
+
+弱点管理には、少なくとも次を保存する。
+
+    questionRefKey:
+      questionSetId + questionId から作る一意キー
+
+    questionSetId:
+      参照元教材ID
+
+    questionId:
+      問題ID
+
+    weaknessScore:
+      弱点スコア
+
+    weaknessStatus:
+      "none" | "candidate" | "weak" | "stable"
+
+    seenCount:
+      実施回数
+
+    wrongCount:
+      誤答回数
+
+    passCount:
+      パス回数
+
+    correctCount:
+      正解回数
+
+    lastAnsweredAt:
+      最終回答日時
+
+    lastWrongAt:
+      最終誤答日時
+
+    lastCorrectAt:
+      最終正解日時
+
+    lastWeakAt:
+      弱点入りした日時
+
+    lastStableAt:
+      安定判定になった日時
+
+弱点管理の初期実装は後回しにしてよい。
+ただし、周回練習の結果を将来弱点管理へ反映できるよう、履歴には `questionSetId` と `questionId` を必ず残す。
+
+### 6.5.4 リセット単位
+
+リセットは次の単位で分ける。
+
+    周回リセット:
+      purposeSetId 単位で、周回状態だけを消す。
+
+    目的別問題集履歴リセット:
+      purposeSetId 単位で、実行履歴だけを消す。
+
+    弱点リセット:
+      全体または条件指定で、弱点管理データを消す。
+
+    通常教材進捗リセット:
+      既存の questionSetId 単位リセットを維持する。
+
+初期実装では、まず周回管理と目的別問題集履歴の保存を優先し、弱点管理のUIとアルゴリズムは後回しにする。
+
+### 6.5.5 実装順序への影響
+
+保存機能の実装は、次の順で進める。
+
+1. 目的別問題集の実行履歴を `purposeSetId` 単位で保存する。
+2. 周回管理データを保存する。
+3. 周回練習モードを追加する。
+4. 周回リセットを追加する。
+5. 弱点管理の保存領域だけを用意する。
+6. 弱点練習、定着確認、弱点解除アルゴリズムを段階的に追加する。
+
+この順にすることで、定期テスト向けの短期対策を先に実用化し、全国模試・検定向けの長期弱点管理は後から育てられる。
+
 ## 7. 問題データ解決方針
 
 目的別問題集は、`purposeSetId` から次の手順で出題用問題配列を作る。
@@ -381,8 +568,6 @@
 未実装事項:
 
 - 目的別問題集一覧の絞り込みの改善
-- 周回管理の保存設計
-- 弱点管理の保存設計
 - 出題モードUIの設計
 - `purposeSetId` 単位の進捗保存
 - `purposeSetId` 単位の履歴保存
