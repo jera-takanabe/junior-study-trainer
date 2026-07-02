@@ -281,6 +281,13 @@
     let isPaused = false;
     let results = [];
     let lastSession = null;
+    let runtimeContext = {
+      mode: "questionSet",
+      id: "",
+      title: "",
+      saveProgress: true,
+      saveHistory: true
+    };
 
     const setupScreen = document.getElementById("setupScreen");
     const quizScreen = document.getElementById("quizScreen");
@@ -747,7 +754,15 @@
       updateQuestionCountInfo();
     }
 
-    function startQuiz(customQuestions = null) {
+    function startQuiz(customQuestions = null, customRuntimeContext = null) {
+      runtimeContext = customRuntimeContext || {
+        mode: "questionSet",
+        id: QUESTION_SET_PROFILE.questionSetId,
+        title: QUESTION_SET_PROFILE.questionSetName,
+        saveProgress: true,
+        saveHistory: true
+      };
+
       settings = {
         setId: setSelect.value,
         setName: getSelectedSetName(),
@@ -909,7 +924,9 @@
       const now = Date.now();
       const questionTimeMs = answerShownAt ? answerShownAt - currentQuestionStartedAt : now - currentQuestionStartedAt;
 
-      const updatedProgress = updateQuestionProgress(q.id, judgement, now);
+      const updatedProgress = runtimeContext.saveProgress
+        ? updateQuestionProgress(q.id, judgement, now)
+        : createDefaultProgress(q.id);
 
       results.push({
         questionId: q.id,
@@ -950,7 +967,9 @@
       };
 
       lastSession = session;
-      saveSession(session);
+      if (runtimeContext.saveHistory) {
+        saveSession(session);
+      }
       showResult(session);
       showScreen("result");
     }
