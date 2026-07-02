@@ -984,6 +984,20 @@
       else showQuestion();
     }
 
+    function cloneRuntimeContext(context) {
+      return {
+        mode: context.mode || "questionSet",
+        id: context.id || "",
+        title: context.title || "",
+        saveProgress: context.saveProgress !== false,
+        saveHistory: context.saveHistory !== false
+      };
+    }
+
+    function isPurposeSetRuntime(context) {
+      return context && context.mode === "purposeSet";
+    }
+
     function finishQuiz(interrupted) {
       clearTimer();
 
@@ -993,6 +1007,7 @@
         finishedAt: new Date().toISOString(),
         interrupted,
         settings,
+        runtimeContext: cloneRuntimeContext(runtimeContext),
         results
       };
 
@@ -1157,12 +1172,18 @@
     function retryWrongQuestions() {
       if (!lastSession) return;
       const ids = lastSession.results.filter(r => r.judgement !== "correct").map(r => r.questionId);
-      const retryQuestions = QUESTIONS.filter(q => ids.includes(q.id));
-      startQuiz(retryQuestions);
+      const context = lastSession.runtimeContext || runtimeContext;
+      const sourceQuestions = isPurposeSetRuntime(context) ? quizQuestions : QUESTIONS;
+      const retryQuestions = sourceQuestions.filter(q => ids.includes(q.id));
+      startQuiz(retryQuestions, cloneRuntimeContext(context));
     }
 
     function restartWithSameSettings() {
       if (!settings) return;
+      if (isPurposeSetRuntime(runtimeContext)) {
+        startQuiz(quizQuestions, cloneRuntimeContext(runtimeContext));
+        return;
+      }
       startQuiz();
     }
 
