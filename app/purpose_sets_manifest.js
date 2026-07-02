@@ -25,7 +25,7 @@ window.PURPOSE_SETS_MANIFEST = [
       answerSeconds: 5
     },
     progressScope: "purposeSet",
-    status: "draft",
+    status: "active",
     questions: [
       {
         questionSetId: "school_math_jhs1_test1",
