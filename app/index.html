@@ -1403,6 +1403,30 @@
       return { keyCount: keys.length, sessionCount };
     }
 
+    function loadAllPurposeHistories() {
+      const prefix = `${PURPOSE_HISTORY_KEY_BASE}__`;
+      const purposeHistories = {};
+
+      try {
+        for (let i = 0; i < localStorage.length; i += 1) {
+          const key = localStorage.key(i);
+          if (!key || !key.startsWith(prefix)) continue;
+
+          const purposeSetId = key.slice(prefix.length);
+          try {
+            const sessions = JSON.parse(localStorage.getItem(key)) || [];
+            purposeHistories[purposeSetId] = Array.isArray(sessions) ? sessions : [];
+          } catch (e) {
+            purposeHistories[purposeSetId] = [];
+          }
+        }
+      } catch (e) {
+        return {};
+      }
+
+      return purposeHistories;
+    }
+
     function clearHistory() {
       const ok = confirm("履歴をすべて削除しますか？問題別進捗は残ります。");
       if (!ok) return;
@@ -1464,10 +1488,11 @@
       const backup = {
         appName: "timed-quiz-trainer",
         version: APP_VERSION,
-        backupVersion: 2,
+        backupVersion: 3,
         exportedAt: new Date().toISOString(),
         historyKey: HISTORY_KEY,
         progressKey: PROGRESS_KEY,
+        purposeHistoryKeyBase: PURPOSE_HISTORY_KEY_BASE,
         questionSetId: QUESTION_SET_PROFILE.questionSetId,
         questionSetName: QUESTION_SET_PROFILE.questionSetName,
         questionSetSource: QUESTION_SET_PROFILE.source,
@@ -1475,7 +1500,8 @@
         questionCount: QUESTIONS.length,
         questionIds: QUESTIONS.map(q => q.id),
         history: loadHistory(),
-        progress: loadProgressMap()
+        progress: loadProgressMap(),
+        purposeHistories: loadAllPurposeHistories()
       };
 
       const json = JSON.stringify(backup, null, 2);
