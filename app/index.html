@@ -150,6 +150,7 @@
       <h3 style="margin-top: 20px;">確認・管理</h3>
       <div class="top-actions">
         <button class="btn-secondary" onclick="showHistory()">履歴を見る</button>
+        <button class="btn-secondary" onclick="showPurposeHistory()">目的別履歴を見る</button>
         <button class="btn-secondary" onclick="showProgressList()">問題別進捗を見る</button>
         <button class="btn-secondary" onclick="exportHistoryCsv()">履歴CSV</button>
         <button class="btn-secondary" onclick="exportProgressCsv()">進捗CSV</button>
@@ -1295,6 +1296,60 @@
         }).join("");
         historyArea.innerHTML = items;
       }
+      showScreen("history");
+    }
+
+    function showPurposeHistory() {
+      const purposeHistories = loadAllPurposeHistories();
+      const purposeSetMap = new Map(
+        (Array.isArray(window.PURPOSE_SETS_MANIFEST) ? window.PURPOSE_SETS_MANIFEST : []).map(purposeSet => [
+          purposeSet.purposeSetId,
+          purposeSet.title || purposeSet.purposeSetId
+        ])
+      );
+
+      const groups = Object.entries(purposeHistories)
+        .filter(([, sessions]) => Array.isArray(sessions) && sessions.length > 0)
+        .sort(([a], [b]) => a.localeCompare(b));
+
+      if (groups.length === 0) {
+        historyArea.innerHTML = `<p>目的別問題集履歴はまだありません。</p>`;
+        showScreen("history");
+        return;
+      }
+
+      const items = groups.map(([purposeSetId, sessions]) => {
+        const title = purposeSetMap.get(purposeSetId) || purposeSetId;
+        const sessionItems = sessions.slice().reverse().map(session => {
+          const total = session.results.length;
+          const correct = session.results.filter(r => r.judgement === "correct").length;
+          const wrong = session.results.filter(r => r.judgement === "wrong").length;
+          const pass = session.results.filter(r => r.judgement === "pass").length;
+          const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+          const date = new Date(session.finishedAt).toLocaleString("ja-JP");
+
+          return `
+            <div class="card">
+              <h4>${date}</h4>
+              <p>${total}問中 ${correct}問正解 / 正答率 ${accuracy}%<br />不正解 ${wrong}問 / パス ${pass}問</p>
+              <p class="muted small">
+                問題表示 ${session.settings.questionTimeSec}秒 / 回答表示 ${session.settings.answerTimeSec}秒<br />
+                出題順 ${session.settings.order === "random" ? "ランダム" : "固定順"}
+              </p>
+            </div>
+          `;
+        }).join("");
+
+        return `
+          <div class="card">
+            <h3>${title}</h3>
+            <p class="muted small">目的別問題集ID：${purposeSetId}</p>
+            ${sessionItems}
+          </div>
+        `;
+      }).join("");
+
+      historyArea.innerHTML = items;
       showScreen("history");
     }
 
