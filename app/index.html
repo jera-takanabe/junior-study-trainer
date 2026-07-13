@@ -1378,29 +1378,34 @@
     }
 
     function getPurposeHistorySummary() {
-      const prefix = `${PURPOSE_HISTORY_KEY_BASE}__`;
-      const keys = [];
-      let sessionCount = 0;
-
-      try {
-        for (let i = 0; i < localStorage.length; i += 1) {
-          const key = localStorage.key(i);
-          if (key && key.startsWith(prefix)) keys.push(key);
-        }
-
-        keys.forEach(key => {
-          try {
-            const sessions = JSON.parse(localStorage.getItem(key)) || [];
-            if (Array.isArray(sessions)) sessionCount += sessions.length;
-          } catch (e) {
-            // 壊れた履歴データは件数に含めない。
-          }
-        });
-      } catch (e) {
-        return { keyCount: 0, sessionCount: 0 };
-      }
+      const purposeHistories = loadAllPurposeHistories();
+      const keys = Object.keys(purposeHistories);
+      const sessionCount = Object.values(purposeHistories).reduce(
+        (sum, sessions) => sum + (Array.isArray(sessions) ? sessions.length : 0),
+        0
+      );
 
       return { keyCount: keys.length, sessionCount };
+    }
+
+    function formatPurposeHistoryDetails() {
+      const purposeHistories = loadAllPurposeHistories();
+      const purposeSetMap = new Map(
+        (Array.isArray(PURPOSE_SETS) ? PURPOSE_SETS : []).map(purposeSet => [
+          purposeSet.purposeSetId,
+          purposeSet.title || purposeSet.purposeSetId
+        ])
+      );
+
+      const lines = Object.entries(purposeHistories)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([purposeSetId, sessions]) => {
+          const title = purposeSetMap.get(purposeSetId) || purposeSetId;
+          const count = Array.isArray(sessions) ? sessions.length : 0;
+          return `  - ${title}: ${count} セッション`;
+        });
+
+      return lines.length > 0 ? `\n目的別問題集履歴内訳：\n${lines.join("\n")}` : "";
     }
 
     function loadAllPurposeHistories() {
@@ -1488,7 +1493,15 @@
       }
 
       storageStatus.className = "status-panel ok";
-      storageStatus.textContent = `保存状態：利用可能\nセット数：${SETS.length}\n問題数：${QUESTIONS.length} 問\n通常教材履歴：${history.length} セッション\n目的別問題集履歴：${purposeHistorySummary.sessionCount} セッション（${purposeHistorySummary.keyCount} 件）\n進捗：${progressCount} 問分\n最終履歴：${lastText}\n保存キー：${HISTORY_KEY} / ${PROGRESS_KEY}`;
+      const purposeHistoryDetails = formatPurposeHistoryDetails();
+      storageStatus.textContent = `保存状態：利用可能
+セット数：${SETS.length}
+問題数：${QUESTIONS.length} 問
+通常教材履歴：${history.length} セッション
+目的別問題集履歴：${purposeHistorySummary.sessionCount} セッション（${purposeHistorySummary.keyCount} 件）${purposeHistoryDetails}
+進捗：${progressCount} 問分
+最終履歴：${lastText}
+保存キー：${HISTORY_KEY} / ${PROGRESS_KEY}`;
 
       if (showAlert) {
         alert(`保存確認OK\nセット数：${SETS.length}\n問題数：${QUESTIONS.length} 問\n通常教材履歴：${history.length} セッション\n目的別問題集履歴：${purposeHistorySummary.sessionCount} セッション（${purposeHistorySummary.keyCount} 件）\n進捗：${progressCount} 問分\n最終履歴：${lastText}`);
