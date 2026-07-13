@@ -154,6 +154,7 @@
         <button class="btn-secondary" onclick="exportHistoryCsv()">履歴CSV</button>
         <button class="btn-secondary" onclick="exportProgressCsv()">進捗CSV</button>
         <button class="btn-secondary" onclick="clearHistory()">履歴削除</button>
+        <button class="btn-secondary" onclick="clearPurposeHistories()">目的別履歴リセット</button>
         <button class="btn-danger" onclick="clearProgress()">進捗リセット</button>
       </div>
     </section>
@@ -1461,6 +1462,20 @@
       localStorage.removeItem(HISTORY_KEY);
       checkStorageStatus();
       alert("履歴を削除しました。");
+    }
+
+    function clearPurposeHistories() {
+      const summary = getPurposeHistorySummary();
+      const ok = confirm(
+        `目的別問題集履歴をすべて削除しますか？\n\n` +
+        `対象：${summary.sessionCount} セッション（${summary.keyCount} 件）\n\n` +
+        `通常教材履歴・問題別進捗は残ります。`
+      );
+      if (!ok) return;
+
+      clearAllPurposeHistories();
+      checkStorageStatus();
+      alert("目的別問題集履歴を削除しました。");
     }
 
     function clearProgress() {
