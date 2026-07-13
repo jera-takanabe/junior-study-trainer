@@ -1427,6 +1427,29 @@
       return purposeHistories;
     }
 
+    function clearAllPurposeHistories() {
+      const prefix = `${PURPOSE_HISTORY_KEY_BASE}__`;
+      const keys = [];
+
+      for (let i = 0; i < localStorage.length; i += 1) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(prefix)) keys.push(key);
+      }
+
+      keys.forEach(key => localStorage.removeItem(key));
+    }
+
+    function restorePurposeHistories(purposeHistories) {
+      if (!purposeHistories || typeof purposeHistories !== "object" || Array.isArray(purposeHistories)) return;
+
+      clearAllPurposeHistories();
+
+      Object.entries(purposeHistories).forEach(([purposeSetId, sessions]) => {
+        if (!purposeSetId || !Array.isArray(sessions)) return;
+        localStorage.setItem(buildPurposeHistoryKey(purposeSetId), JSON.stringify(sessions));
+      });
+    }
+
     function clearHistory() {
       const ok = confirm("履歴をすべて削除しますか？問題別進捗は残ります。");
       if (!ok) return;
@@ -1542,19 +1565,34 @@
 
           const historyCount = Array.isArray(backup.history) ? backup.history.length : 0;
           const progressCount = backup.progress && typeof backup.progress === "object" ? Object.keys(backup.progress).length : 0;
+          const hasPurposeHistories = backup.purposeHistories && typeof backup.purposeHistories === "object";
+          const purposeHistoryCount = hasPurposeHistories
+            ? Object.values(backup.purposeHistories).reduce((sum, sessions) => sum + (Array.isArray(sessions) ? sessions.length : 0), 0)
+            : 0;
+          const purposeHistorySetCount = hasPurposeHistories
+            ? Object.keys(backup.purposeHistories).length
+            : 0;
+          const purposeHistoryImportMessage = hasPurposeHistories
+            ? `目的別問題集履歴：${purposeHistoryCount} セッション（${purposeHistorySetCount} 件）\n`
+            : `目的別問題集履歴：旧形式バックアップのため変更しません\n`;
+          const overwriteMessage = hasPurposeHistories
+            ? `現在の履歴・進捗・目的別問題集履歴は上書きされます。`
+            : `現在の履歴・進捗は上書きされます。目的別問題集履歴は変更しません。`;
           const ok = confirm(
             `バックアップを読み込みますか？\n\n` +
             `出力日時：${backup.exportedAt || "不明"}\n` +
             `教材：${backup.questionSetName || "旧形式または不明"}\n` +
             `教材ID：${backup.questionSetId || "旧形式または不明"}\n` +
-            `履歴：${historyCount} セッション\n` +
+            `通常教材履歴：${historyCount} セッション\n` +
+            purposeHistoryImportMessage +
             `進捗：${progressCount} 問分\n\n` +
-            `現在の履歴・進捗は上書きされます。`
+            overwriteMessage
           );
           if (!ok) return;
 
           localStorage.setItem(HISTORY_KEY, JSON.stringify(backup.history || []));
           localStorage.setItem(PROGRESS_KEY, JSON.stringify(backup.progress || {}));
+          restorePurposeHistories(backup.purposeHistories);
           refreshSetupSummary();
           checkStorageStatus(false);
           alert("バックアップJSONから復元しました。");
@@ -1571,6 +1609,10 @@
       if (!Array.isArray(backup.history)) throw new Error("history が配列ではありません。");
       if (!backup.progress || typeof backup.progress !== "object" || Array.isArray(backup.progress)) {
         throw new Error("progress がオブジェクトではありません。");
+      }
+      if (backup.purposeHistories !== undefined &&
+          (!backup.purposeHistories || typeof backup.purposeHistories !== "object" || Array.isArray(backup.purposeHistories))) {
+        throw new Error("purposeHistories がオブジェクトではありません。");
       }
     }
 
