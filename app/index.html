@@ -1391,7 +1391,7 @@
     function formatPurposeHistoryDetails() {
       const purposeHistories = loadAllPurposeHistories();
       const purposeSetMap = new Map(
-        (Array.isArray(PURPOSE_SETS) ? PURPOSE_SETS : []).map(purposeSet => [
+        (Array.isArray(window.PURPOSE_SETS_MANIFEST) ? window.PURPOSE_SETS_MANIFEST : []).map(purposeSet => [
           purposeSet.purposeSetId,
           purposeSet.title || purposeSet.purposeSetId
         ])
