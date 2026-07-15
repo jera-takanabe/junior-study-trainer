@@ -289,6 +289,7 @@
     let isPaused = false;
     let results = [];
     let lastSession = null;
+    let showUnavailablePurposeSets = false;
     let runtimeContext = {
       mode: "questionSet",
       id: "",
@@ -537,7 +538,13 @@
         return a.originalIndex - b.originalIndex;
       });
 
-      const listItems = displayItems.map(item => {
+      const startableCount = displayItems.filter(item => item.isStartable).length;
+      const unavailableCount = displayItems.length - startableCount;
+      const visibleItems = showUnavailablePurposeSets
+        ? displayItems
+        : displayItems.filter(item => item.isStartable);
+
+      const listItems = visibleItems.map(item => {
         const statusLabel = item.status === "draft" ? "下書き" : item.status;
         const resolveLabel = item.canResolve ? "現在の教材で解決可能" : "現在の教材では未対応";
         const buttonLabel = item.status === "draft"
@@ -564,9 +571,16 @@
         );
       }).join("");
 
+      const unavailableToggle = unavailableCount > 0
+        ? `<br /><button type="button" class="btn-secondary purpose-set-unavailable-toggle">` +
+          `${showUnavailablePurposeSets ? "開始不可を隠す" : `開始不可も表示（${unavailableCount}件）`}` +
+          `</button>`
+        : "";
+
       purposeSetsPanel.innerHTML =
-        `<strong>目的別問題集：</strong>${items.length}件<br />` +
+        `<strong>目的別問題集：</strong>${startableCount}件開始可能 / 全${items.length}件<br />` +
         `<span class="small">※目的別問題集の履歴は保存します。問題別進捗にはまだ反映しません。</span>` +
+        `${unavailableToggle}` +
         `<ul style="margin: 6px 0 0 18px; padding: 0;">${listItems}</ul>`;
 
       purposeSetsPanel.querySelectorAll(".purpose-set-start-button").forEach(button => {
@@ -574,6 +588,14 @@
           startPurposeSetQuiz(button.dataset.purposeSetId || "");
         });
       });
+
+      const unavailableToggleButton = purposeSetsPanel.querySelector(".purpose-set-unavailable-toggle");
+      if (unavailableToggleButton) {
+        unavailableToggleButton.addEventListener("click", () => {
+          showUnavailablePurposeSets = !showUnavailablePurposeSets;
+          renderPurposeSetsPanel();
+        });
+      }
     }
 
     function startPurposeSetQuiz(purposeSetId) {
