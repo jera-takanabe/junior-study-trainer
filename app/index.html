@@ -2453,6 +2453,32 @@
       return masteryMap;
     }
 
+    function loadMasteryStates() {
+      try {
+        const value = JSON.parse(localStorage.getItem(MASTERY_KEY)) || {};
+        return value && typeof value === "object" && !Array.isArray(value)
+          ? value
+          : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveMasteryStates(masteryMap) {
+      const value = masteryMap && typeof masteryMap === "object" && !Array.isArray(masteryMap)
+        ? masteryMap
+        : {};
+
+      localStorage.setItem(MASTERY_KEY, JSON.stringify(value));
+      return value;
+    }
+
+    function rebuildAndSaveAllMasteryStates() {
+      const masteryMap = recalculateAllMasteryStates();
+      saveMasteryStates(masteryMap);
+      return masteryMap;
+    }
+
     function collectAllAnswerEvents() {
       const events = [];
 
