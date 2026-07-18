@@ -250,6 +250,10 @@
     const PROGRESS_KEY_BASE = "timedQuizTrainerProgressV04";
     const PURPOSE_HISTORY_KEY_BASE = "timedQuizTrainerPurposeHistoryV01";
     const PURPOSE_CYCLE_KEY_BASE = "timedQuizTrainerPurposeCycleV01";
+    const MASTERY_KEY = "timedQuizTrainerMasteryV01";
+    const MASTERY_ALGORITHM_ID = "interval_stability";
+    const MASTERY_ALGORITHM_VERSION = 1;
+    const MASTERY_INTERVAL_DAYS = [0, 1, 3, 7, 14, 30, 60, 120];
     let HISTORY_KEY = buildStorageKey(HISTORY_KEY_BASE);
     let PROGRESS_KEY = buildStorageKey(PROGRESS_KEY_BASE);
     const APP_VERSION = "v0.6";
@@ -2187,6 +2191,71 @@
       }
 
       return histories;
+    }
+
+    function buildMasteryQuestionRefKey(questionSetId, questionId) {
+      if (!questionSetId || !questionId) return "";
+      return `${questionSetId}::${questionId}`;
+    }
+
+    function parseMasteryDate(value) {
+      if (!value) return null;
+      const date = new Date(value);
+      return Number.isFinite(date.getTime()) ? date : null;
+    }
+
+    function getLaterIsoDate(firstValue, secondValue) {
+      const firstDate = parseMasteryDate(firstValue);
+      const secondDate = parseMasteryDate(secondValue);
+
+      if (!firstDate) return secondDate ? secondDate.toISOString() : "";
+      if (!secondDate) return firstDate.toISOString();
+
+      return firstDate.getTime() >= secondDate.getTime()
+        ? firstDate.toISOString()
+        : secondDate.toISOString();
+    }
+
+    function getIntervalDays(fromValue, toValue) {
+      const fromDate = parseMasteryDate(fromValue);
+      const toDate = parseMasteryDate(toValue);
+      if (!fromDate || !toDate) return null;
+
+      const milliseconds = toDate.getTime() - fromDate.getTime();
+      if (milliseconds < 0) return null;
+
+      return milliseconds / (24 * 60 * 60 * 1000);
+    }
+
+    function addDaysToIsoDate(value, days) {
+      const date = parseMasteryDate(value);
+      if (!date || !Number.isFinite(Number(days))) return "";
+
+      return new Date(
+        date.getTime() + Number(days) * 24 * 60 * 60 * 1000
+      ).toISOString();
+    }
+
+    function createDefaultMasteryState(questionSetId, questionId) {
+      const questionRefKey = buildMasteryQuestionRefKey(questionSetId, questionId);
+
+      return {
+        questionRefKey,
+        questionSetId: questionSetId || "",
+        questionId: questionId || "",
+        currentStabilityLevel: 0,
+        highestStabilityLevel: 0,
+        lastConfirmedAt: "",
+        lastSuccessfulIntervalDays: null,
+        lastAnsweredAt: "",
+        lastWrongAt: "",
+        lastFailureAt: "",
+        lastCorrectAt: "",
+        nextReviewAt: "",
+        algorithmId: MASTERY_ALGORITHM_ID,
+        algorithmVersion: MASTERY_ALGORITHM_VERSION,
+        evaluatedAt: ""
+      };
     }
 
     function collectAllAnswerEvents() {
