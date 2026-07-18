@@ -278,6 +278,7 @@
     let settings = null;
     let quizQuestions = [];
     let currentIndex = 0;
+    let quizStartedAt = null;
     let currentQuestionStartedAt = null;
     let answerShownAt = null;
     let answerTrigger = null;
@@ -961,6 +962,7 @@
 
       quizQuestions = sourceQuestions;
       currentIndex = 0;
+      quizStartedAt = new Date().toISOString();
       results = [];
       isPaused = false;
 
@@ -1162,7 +1164,7 @@
 
       const session = {
         id: `session-${Date.now()}`,
-        startedAt: results[0]?.judgedAt || new Date().toISOString(),
+        startedAt: quizStartedAt || new Date().toISOString(),
         finishedAt: new Date().toISOString(),
         interrupted,
         settings,
