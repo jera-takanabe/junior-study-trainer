@@ -566,6 +566,12 @@
         const orderLabel = item.randomization === true || item.ordering === "random" ? "ランダム" : "固定順";
         const runtimeLabel = `設定：${runtimeQuestionCount}問 / 問題${questionSeconds}秒 / 回答${answerSeconds}秒 / ${orderLabel}`;
 
+        const cycle = item.isStartable ? loadPurposeCycle(item.purposeSetId) : null;
+        const canAddToCycle = Boolean(cycle && cycle.status === "inProgress");
+        const addToCycleLabel = canAddToCycle
+          ? "この問題集の未追加問題を周回に追加"
+          : "進行中の周回なし";
+
         return (
           `<li>` +
           `${escapeHtml(item.title)} ` +
@@ -574,6 +580,7 @@
           `<span class="small">${escapeHtml(runtimeLabel)}</span><br />` +
           `<button type="button" class="btn-secondary purpose-set-start-button" ${item.isStartable ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(buttonLabel)}</button>` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-cycle-start-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">周回練習を始める</button>` : ""}` +
+          `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-cycle-add-button" ${canAddToCycle ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(addToCycleLabel)}</button>` : ""}` +
           `${item.isStartable ? `<span class="small"> ※履歴は保存します。問題別進捗にはまだ反映しません。</span>` : ""}` +
           `</li>`
         );
@@ -600,6 +607,12 @@
       purposeSetsPanel.querySelectorAll(".purpose-set-cycle-start-button").forEach(button => {
         button.addEventListener("click", () => {
           startPurposeSetCycleQuiz(button.dataset.purposeSetId || "");
+        });
+      });
+
+      purposeSetsPanel.querySelectorAll(".purpose-set-cycle-add-button").forEach(button => {
+        button.addEventListener("click", () => {
+          addPurposeSetQuestionsToCycle(button.dataset.purposeSetId || "");
         });
       });
 
@@ -1715,6 +1728,82 @@
         clearedQuestionRefs: nextCleared,
         lastSessionId: session.id
       });
+    }
+
+    function addPurposeSetQuestionsToCycle(purposeSetId) {
+      const purposeSet = window.PurposeSets.getById(purposeSetId);
+
+      if (!purposeSet) {
+        alert("目的別問題集が見つかりません。");
+        return;
+      }
+
+      const cycle = loadPurposeCycle(purposeSet.purposeSetId);
+      if (!cycle || cycle.status !== "inProgress") {
+        alert("進行中の周回がありません。先に周回練習を開始してください。");
+        return;
+      }
+
+      const resolved = window.PurposeSets.resolveQuestionsFromCurrentSet(
+        purposeSetId,
+        QUESTION_SET_PROFILE.questionSetId,
+        QUESTIONS
+      );
+
+      if (!resolved.ok) {
+        alert("この目的別問題集は、現在読み込み中の教材では解決できません。");
+        return;
+      }
+
+      const purposeQuestions = Number(purposeSet.limit || 0) > 0
+        ? resolved.questions.slice(0, Number(purposeSet.limit))
+        : resolved.questions;
+
+      const existingKeys = new Set([
+        ...(Array.isArray(cycle.initialQuestionRefs) ? cycle.initialQuestionRefs : []),
+        ...(Array.isArray(cycle.addedQuestionRefs) ? cycle.addedQuestionRefs : []),
+        ...(Array.isArray(cycle.remainingQuestionRefs) ? cycle.remainingQuestionRefs : []),
+        ...(Array.isArray(cycle.clearedQuestionRefs) ? cycle.clearedQuestionRefs : [])
+      ].map(buildQuestionRefKey));
+
+      const refsToAdd = uniqueQuestionRefs(
+        purposeQuestions
+          .map(buildQuestionRef)
+          .filter(ref => ref.questionSetId && ref.questionId)
+          .filter(ref => !existingKeys.has(buildQuestionRefKey(ref)))
+      );
+
+      if (refsToAdd.length === 0) {
+        alert("追加できる未登録の問題はありません。");
+        return;
+      }
+
+      const now = new Date().toISOString();
+      const nextCycle = {
+        ...cycle,
+        updatedAt: now,
+        status: "inProgress",
+        addedQuestionRefs: uniqueQuestionRefs([
+          ...(Array.isArray(cycle.addedQuestionRefs) ? cycle.addedQuestionRefs : []),
+          ...refsToAdd
+        ]),
+        remainingQuestionRefs: uniqueQuestionRefs([
+          ...(Array.isArray(cycle.remainingQuestionRefs) ? cycle.remainingQuestionRefs : []),
+          ...refsToAdd
+        ]),
+        addEvents: [
+          ...(Array.isArray(cycle.addEvents) ? cycle.addEvents : []),
+          {
+            addedAt: now,
+            reason: "manual_add_from_purpose_set",
+            questionRefs: refsToAdd
+          }
+        ]
+      };
+
+      savePurposeCycle(purposeSet.purposeSetId, nextCycle);
+      renderPurposeSetsPanel();
+      alert(`${refsToAdd.length}問を進行中の周回に追加しました。`);
     }
 
     function getPurposeHistorySummary() {
