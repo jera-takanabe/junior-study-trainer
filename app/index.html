@@ -1471,6 +1471,34 @@
       checkStorageStatus(false);
     }
 
+    function buildQuestionRef(question) {
+      return {
+        questionSetId: QUESTION_SET_PROFILE.questionSetId || "",
+        questionId: question?.id || ""
+      };
+    }
+
+    function createPurposeCycle(purposeSetId, questions) {
+      const now = new Date().toISOString();
+      const questionRefs = (Array.isArray(questions) ? questions : [])
+        .map(buildQuestionRef)
+        .filter(ref => ref.questionSetId && ref.questionId);
+
+      return {
+        purposeSetId,
+        cycleId: `cycle-${Date.now()}`,
+        startedAt: now,
+        updatedAt: now,
+        status: "inProgress",
+        initialQuestionRefs: questionRefs,
+        addedQuestionRefs: [],
+        remainingQuestionRefs: [...questionRefs],
+        clearedQuestionRefs: [],
+        addEvents: [],
+        lastSessionId: null
+      };
+    }
+
     function getPurposeHistorySummary() {
       const purposeHistories = loadAllPurposeHistories();
       const keys = Object.keys(purposeHistories);
