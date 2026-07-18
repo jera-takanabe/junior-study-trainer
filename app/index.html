@@ -151,6 +151,7 @@
       <div class="top-actions">
         <button class="btn-secondary" onclick="showHistory()">履歴を見る</button>
         <button class="btn-secondary" onclick="showPurposeHistory()">目的別履歴を見る</button>
+        <button class="btn-secondary" onclick="showPurposeCycles()">周回状況を見る</button>
         <button class="btn-secondary" onclick="showProgressList()">問題別進捗を見る</button>
         <button class="btn-secondary" onclick="exportHistoryCsv()">履歴CSV</button>
         <button class="btn-secondary" onclick="exportProgressCsv()">進捗CSV</button>
@@ -1403,6 +1404,72 @@
         }).join("");
         historyArea.innerHTML = items;
       }
+      showScreen("history");
+    }
+
+    function loadAllPurposeCycles() {
+      const cycles = {};
+      for (let i = 0; i < localStorage.length; i += 1) {
+        const key = localStorage.key(i);
+        if (!key || !key.startsWith(`${PURPOSE_CYCLE_KEY_BASE}__`)) continue;
+        const purposeSetId = key.slice(`${PURPOSE_CYCLE_KEY_BASE}__`.length);
+        try {
+          cycles[purposeSetId] = JSON.parse(localStorage.getItem(key));
+        } catch (e) {
+          cycles[purposeSetId] = null;
+        }
+      }
+      return cycles;
+    }
+
+    function showPurposeCycles() {
+      const cycles = loadAllPurposeCycles();
+      const purposeSetMap = new Map(
+        (Array.isArray(window.PURPOSE_SETS_MANIFEST) ? window.PURPOSE_SETS_MANIFEST : []).map(purposeSet => [
+          purposeSet.purposeSetId,
+          purposeSet.title || purposeSet.purposeSetId
+        ])
+      );
+
+      const items = Object.entries(cycles)
+        .filter(([, cycle]) => cycle && typeof cycle === "object")
+        .sort(([a], [b]) => a.localeCompare(b));
+
+      if (items.length === 0) {
+        historyArea.innerHTML = `<p>周回状況はまだありません。</p>`;
+        showScreen("history");
+        return;
+      }
+
+      historyArea.innerHTML = items.map(([purposeSetId, cycle]) => {
+        const title = purposeSetMap.get(purposeSetId) || purposeSetId;
+        const initialCount = Array.isArray(cycle.initialQuestionRefs) ? cycle.initialQuestionRefs.length : 0;
+        const addedCount = Array.isArray(cycle.addedQuestionRefs) ? cycle.addedQuestionRefs.length : 0;
+        const remainingCount = Array.isArray(cycle.remainingQuestionRefs) ? cycle.remainingQuestionRefs.length : 0;
+        const clearedCount = Array.isArray(cycle.clearedQuestionRefs) ? cycle.clearedQuestionRefs.length : 0;
+        const startedAt = cycle.startedAt ? new Date(cycle.startedAt).toLocaleString("ja-JP") : "不明";
+        const updatedAt = cycle.updatedAt ? new Date(cycle.updatedAt).toLocaleString("ja-JP") : "不明";
+        const statusLabel = cycle.status === "cleared" ? "完了" : "進行中";
+
+        return `
+          <div class="card">
+            <h3>${escapeHtml(title)}</h3>
+            <p class="muted small">目的別問題集ID：${escapeHtml(purposeSetId)}</p>
+            <p>
+              状態：${escapeHtml(statusLabel)}<br />
+              開始時の問題数：${initialCount}問<br />
+              途中追加：${addedCount}問<br />
+              残り：${remainingCount}問<br />
+              クリア済み：${clearedCount}問
+            </p>
+            <p class="muted small">
+              開始：${escapeHtml(startedAt)}<br />
+              更新：${escapeHtml(updatedAt)}
+            </p>
+          </div>
+        `;
+      }).join("");
+
       showScreen("history");
     }
 
