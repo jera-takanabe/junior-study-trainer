@@ -143,6 +143,7 @@
         <button class="btn-secondary" onclick="showPurposeHistory()">目的別履歴を見る</button>
         <button class="btn-secondary" onclick="showPurposeCycles()">周回状況を見る</button>
         <button class="btn-secondary" onclick="showProgressList()">問題別進捗を見る</button>
+        <button class="btn-secondary" onclick="showMasteryList()">定着・復習状況を見る</button>
         <button class="btn-secondary" onclick="exportHistoryCsv()">履歴CSV</button>
         <button class="btn-secondary" onclick="exportProgressCsv()">進捗CSV</button>
         <button class="btn-secondary" onclick="exportAnswerEventsCsv()">回答イベントCSV</button>
@@ -212,6 +213,15 @@
       <h2>問題別進捗</h2>
       <p class="muted small">現在のセット・カテゴリ・出題タイプ条件で表示します。</p>
       <div id="progressListArea"></div>
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="backToSetup()">設定に戻る</button>
+      </div>
+    </section>
+
+    <section id="masteryListScreen" class="card hidden">
+      <h2>定着・復習状況</h2>
+      <p class="muted small">回答履歴から算出した長期定着状態を表示します。</p>
+      <div id="masteryListArea"></div>
       <div class="btn-row">
         <button class="btn-secondary" onclick="backToSetup()">設定に戻る</button>
       </div>
@@ -308,6 +318,7 @@
     const resultScreen = document.getElementById("resultScreen");
     const historyScreen = document.getElementById("historyScreen");
     const progressListScreen = document.getElementById("progressListScreen");
+    const masteryListScreen = document.getElementById("masteryListScreen");
 
     const setSelect = document.getElementById("setSelect");
     const categorySelect = document.getElementById("categorySelect");
@@ -338,6 +349,7 @@
     const retryWrongButton = document.getElementById("retryWrongButton");
     const historyArea = document.getElementById("historyArea");
     const progressListArea = document.getElementById("progressListArea");
+    const masteryListArea = document.getElementById("masteryListArea");
 
     startApplication();
 
@@ -1622,6 +1634,119 @@
       showScreen("progressList");
     }
 
+    function showMasteryList() {
+      const masteryMap = loadMasteryStates();
+      const evaluatedAt = new Date().toISOString();
+      const statusPriority = {
+        "要確認": 0,
+        "復習推奨": 1,
+        "まもなく確認": 2,
+        "安定": 3,
+        "未確認": 4
+      };
+
+      const rows = QUESTIONS
+        .map(question => {
+          const questionSetId =
+            question.questionSetId
+            || QUESTION_SET_PROFILE.questionSetId
+            || "unknown";
+          const questionRefKey = buildMasteryQuestionRefKey(
+            questionSetId,
+            question.id
+          );
+          const state = masteryMap[questionRefKey];
+
+          if (!state) return null;
+
+          return {
+            question,
+            state,
+            evaluation: calculateMasteryReviewEvaluation(
+              state,
+              evaluatedAt
+            )
+          };
+        })
+        .filter(Boolean)
+        .sort((a, b) => {
+          const priorityDifference =
+            (statusPriority[a.evaluation.reviewStatus] ?? 99)
+            - (statusPriority[b.evaluation.reviewStatus] ?? 99);
+
+          if (priorityDifference !== 0) return priorityDifference;
+
+          const riskDifference =
+            (b.evaluation.forgettingRisk ?? -1)
+            - (a.evaluation.forgettingRisk ?? -1);
+
+          if (riskDifference !== 0) return riskDifference;
+
+          return String(a.question.id).localeCompare(
+            String(b.question.id),
+            "ja"
+          );
+        });
+
+      if (rows.length === 0) {
+        masteryListArea.innerHTML =
+          `<p>現在の教材には、表示できる定着状態がまだありません。</p>`;
+        showScreen("masteryList");
+        return;
+      }
+
+      const body = rows.map(({ question, state, evaluation }) => {
+        const elapsedDays = Number.isFinite(evaluation.elapsedDays)
+          ? evaluation.elapsedDays.toFixed(1)
+          : "-";
+        const forgettingRisk = Number.isFinite(evaluation.forgettingRisk)
+          ? `${Math.round(evaluation.forgettingRisk * 100)}%`
+          : "-";
+        const nextReviewAt = parseMasteryDate(state.nextReviewAt);
+        const nextReviewText = nextReviewAt
+          ? nextReviewAt.toLocaleDateString("ja-JP")
+          : "-";
+
+        return `
+          <tr>
+            <td>${escapeHtml(evaluation.reviewStatus)}</td>
+            <td>${state.currentStabilityLevel}</td>
+            <td>${state.highestStabilityLevel}</td>
+            <td>${elapsedDays}</td>
+            <td>${forgettingRisk}</td>
+            <td>${escapeHtml(nextReviewText)}</td>
+            <td>${escapeHtml(question.id)}</td>
+            <td>${escapeHtml(question.question || "")}</td>
+          </tr>
+        `;
+      }).join("");
+
+      masteryListArea.innerHTML = `
+        <p class="muted small">
+          現在読み込み中の教材を対象に、復習優先度が高い順で表示します。
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>復習状態</th>
+                <th>現在段階</th>
+                <th>最高段階</th>
+                <th>経過日数</th>
+                <th>忘却リスク</th>
+                <th>次回確認</th>
+                <th>問題ID</th>
+                <th>問題</th>
+              </tr>
+            </thead>
+            <tbody>${body}</tbody>
+          </table>
+        </div>
+      `;
+
+      showScreen("masteryList");
+    }
+
     function saveSession(session) {
       const history = loadHistory();
       history.push(session);
@@ -2747,11 +2872,13 @@
       resultScreen.classList.add("hidden");
       historyScreen.classList.add("hidden");
       progressListScreen.classList.add("hidden");
+      masteryListScreen.classList.add("hidden");
       if (name === "setup") setupScreen.classList.remove("hidden");
       if (name === "quiz") quizScreen.classList.remove("hidden");
       if (name === "result") resultScreen.classList.remove("hidden");
       if (name === "history") historyScreen.classList.remove("hidden");
       if (name === "progressList") progressListScreen.classList.remove("hidden");
+      if (name === "masteryList") masteryListScreen.classList.remove("hidden");
     }
 
     function clearTimer() {
