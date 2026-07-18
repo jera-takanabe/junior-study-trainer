@@ -1223,6 +1223,11 @@
         ? "復習ポイントを減らせました。いい流れです。"
         : "復習ポイントが見つかりました。次の復習対象です。";
 
+      if (total === 0) {
+        reviewArea.innerHTML = `<h3>復習</h3><p>回答済みの問題がありません。</p>`;
+        return;
+      }
+
       if (reviewTargets.length === 0) {
         reviewArea.innerHTML = `<h3>復習</h3><p>${message}</p><p>全問正解です。</p>`;
         return;
