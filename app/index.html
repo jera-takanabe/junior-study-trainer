@@ -1123,6 +1123,14 @@
       return context && context.mode === "purposeSet";
     }
 
+    function isPurposeCycleRuntime(context) {
+      return context && context.mode === "purposeCycle";
+    }
+
+    function isPurposeRuntime(context) {
+      return isPurposeSetRuntime(context) || isPurposeCycleRuntime(context);
+    }
+
     function finishQuiz(interrupted) {
       clearTimer();
 
@@ -1138,11 +1146,15 @@
 
       lastSession = session;
       if (runtimeContext.saveHistory) {
-        if (isPurposeSetRuntime(runtimeContext)) {
+        if (isPurposeRuntime(runtimeContext)) {
           savePurposeSession(session);
         } else {
           saveSession(session);
         }
+      }
+
+      if (isPurposeCycleRuntime(runtimeContext)) {
+        updatePurposeCycleFromSession(session);
       }
       showResult(session);
       showScreen("result");
@@ -1150,7 +1162,7 @@
 
     function showResult(session) {
       const sessionRuntimeContext = session.runtimeContext || runtimeContext;
-      const isPurposeSetSession = isPurposeSetRuntime(sessionRuntimeContext);
+      const isPurposeSetSession = isPurposeRuntime(sessionRuntimeContext);
 
       if (isPurposeSetSession) {
         resultRuntimeInfo.classList.remove("hidden");
@@ -1549,6 +1561,71 @@
         addEvents: [],
         lastSessionId: null
       };
+    }
+
+    function buildQuestionRefKey(ref) {
+      return `${ref?.questionSetId || ""}::${ref?.questionId || ""}`;
+    }
+
+    function uniqueQuestionRefs(refs) {
+      const seen = new Set();
+      return (Array.isArray(refs) ? refs : []).filter(ref => {
+        const key = buildQuestionRefKey(ref);
+        if (!ref?.questionSetId || !ref?.questionId || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }
+
+    function buildQuestionRefFromResult(result) {
+      return {
+        questionSetId: QUESTION_SET_PROFILE.questionSetId || "",
+        questionId: result?.questionId || ""
+      };
+    }
+
+    function updatePurposeCycleFromSession(session) {
+      const sessionRuntimeContext = session.runtimeContext || {};
+      const purposeSetId = sessionRuntimeContext.id || "";
+      const cycle = loadPurposeCycle(purposeSetId);
+      if (!purposeSetId || !cycle) return;
+
+      const resultRefs = (Array.isArray(session.results) ? session.results : [])
+        .map(buildQuestionRefFromResult)
+        .filter(ref => ref.questionSetId && ref.questionId);
+
+      const answeredKeys = new Set(resultRefs.map(buildQuestionRefKey));
+      const previousRemaining = Array.isArray(cycle.remainingQuestionRefs)
+        ? cycle.remainingQuestionRefs
+        : [];
+
+      const notAnsweredRemaining = previousRemaining.filter(ref => !answeredKeys.has(buildQuestionRefKey(ref)));
+
+      const notClearedRefs = (Array.isArray(session.results) ? session.results : [])
+        .filter(result => result.judgement !== "correct")
+        .map(buildQuestionRefFromResult)
+        .filter(ref => ref.questionSetId && ref.questionId);
+
+      const correctRefs = (Array.isArray(session.results) ? session.results : [])
+        .filter(result => result.judgement === "correct")
+        .map(buildQuestionRefFromResult)
+        .filter(ref => ref.questionSetId && ref.questionId);
+
+      const nextRemaining = uniqueQuestionRefs([...notAnsweredRemaining, ...notClearedRefs]);
+      const remainingKeys = new Set(nextRemaining.map(buildQuestionRefKey));
+      const nextCleared = uniqueQuestionRefs([
+        ...(Array.isArray(cycle.clearedQuestionRefs) ? cycle.clearedQuestionRefs : []),
+        ...correctRefs
+      ]).filter(ref => !remainingKeys.has(buildQuestionRefKey(ref)));
+
+      savePurposeCycle(purposeSetId, {
+        ...cycle,
+        updatedAt: new Date().toISOString(),
+        status: nextRemaining.length === 0 ? "cleared" : "inProgress",
+        remainingQuestionRefs: nextRemaining,
+        clearedQuestionRefs: nextCleared,
+        lastSessionId: session.id
+      });
     }
 
     function getPurposeHistorySummary() {
