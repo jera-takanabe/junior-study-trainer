@@ -702,6 +702,7 @@
         mode: "purposeCycle",
         id: purposeSet.purposeSetId,
         title: `${purposeSet.title || purposeSet.purposeSetId} 周回練習`,
+        cycleId: cycle.cycleId || "",
         saveProgress: false,
         saveHistory: true
       }, {
@@ -1137,6 +1138,7 @@
         mode: context.mode || "questionSet",
         id: context.id || "",
         title: context.title || "",
+        cycleId: context.cycleId || "",
         saveProgress: context.saveProgress !== false,
         saveHistory: context.saveHistory !== false
       };
@@ -1699,6 +1701,9 @@
       const purposeSetId = sessionRuntimeContext.id || "";
       const cycle = loadPurposeCycle(purposeSetId);
       if (!purposeSetId || !cycle) return;
+
+      const sessionCycleId = sessionRuntimeContext.cycleId || "";
+      if (sessionCycleId && sessionCycleId !== cycle.cycleId) return;
 
       const resultRefs = (Array.isArray(session.results) ? session.results : [])
         .map(buildQuestionRefFromResult)
