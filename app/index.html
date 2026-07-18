@@ -2314,6 +2314,64 @@
       );
     }
 
+    function calculateMasteryReviewEvaluation(state, evaluatedAt = new Date().toISOString()) {
+      const level = Number(state?.currentStabilityLevel) || 0;
+      const originAt = getLaterIsoDate(
+        state?.lastConfirmedAt,
+        state?.lastFailureAt
+      );
+      const evaluationDate = parseMasteryDate(evaluatedAt);
+
+      if (level === 0) {
+        return {
+          elapsedDays: originAt && evaluationDate
+            ? Math.max(0, getIntervalDays(originAt, evaluatedAt))
+            : null,
+          forgettingRisk: null,
+          reviewStatus: "要確認"
+        };
+      }
+
+      if (!originAt || !evaluationDate) {
+        return {
+          elapsedDays: null,
+          forgettingRisk: null,
+          reviewStatus: "未確認"
+        };
+      }
+
+      const elapsedDays = Math.max(
+        0,
+        getIntervalDays(originAt, evaluatedAt)
+      );
+      const intervalDays = MASTERY_INTERVAL_DAYS[level];
+
+      if (!Number.isFinite(intervalDays) || intervalDays <= 0) {
+        return {
+          elapsedDays,
+          forgettingRisk: null,
+          reviewStatus: "未確認"
+        };
+      }
+
+      const forgettingRisk = elapsedDays / intervalDays;
+      let reviewStatus = "安定";
+
+      if (forgettingRisk >= 1.5) {
+        reviewStatus = "要確認";
+      } else if (forgettingRisk >= 1.0) {
+        reviewStatus = "復習推奨";
+      } else if (forgettingRisk >= 0.75) {
+        reviewStatus = "まもなく確認";
+      }
+
+      return {
+        elapsedDays,
+        forgettingRisk,
+        reviewStatus
+      };
+    }
+
     function applyAnswerEventToMasteryState(currentState, event) {
       const questionSetId = event?.questionSetId || "";
       const questionId = event?.questionId || "";
