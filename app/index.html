@@ -145,6 +145,7 @@
         <button class="btn-secondary" onclick="showProgressList()">問題別進捗を見る</button>
         <button class="btn-secondary" onclick="exportHistoryCsv()">履歴CSV</button>
         <button class="btn-secondary" onclick="exportProgressCsv()">進捗CSV</button>
+        <button class="btn-secondary" onclick="exportAnswerEventsCsv()">回答イベントCSV</button>
         <button class="btn-secondary" onclick="clearHistory()">履歴削除</button>
         <button class="btn-secondary" onclick="clearPurposeHistories()">目的別履歴リセット</button>
         <button class="btn-secondary" onclick="clearPurposeCycles()">周回リセット</button>
@@ -2162,6 +2163,128 @@
     // =====================================================
     // CSV出力
     // =====================================================
+
+    function loadAllQuestionSetHistories() {
+      const prefix = `${HISTORY_KEY_BASE}__`;
+      const histories = {};
+
+      try {
+        for (let i = 0; i < localStorage.length; i += 1) {
+          const key = localStorage.key(i);
+          if (!key || !key.startsWith(prefix)) continue;
+
+          const questionSetId = key.slice(prefix.length);
+
+          try {
+            const sessions = JSON.parse(localStorage.getItem(key)) || [];
+            histories[questionSetId] = Array.isArray(sessions) ? sessions : [];
+          } catch (e) {
+            histories[questionSetId] = [];
+          }
+        }
+      } catch (e) {
+        return {};
+      }
+
+      return histories;
+    }
+
+    function exportAnswerEventsCsv() {
+      const rows = [[
+        "session_id",
+        "session_started_at",
+        "session_finished_at",
+        "runtime_mode",
+        "quiz_mode",
+        "purpose_set_id",
+        "cycle_id",
+        "question_set_id",
+        "question_id",
+        "set_id",
+        "set_name",
+        "domain",
+        "exam",
+        "category",
+        "level",
+        "unit",
+        "question_type",
+        "question",
+        "answer",
+        "judgement",
+        "judged_at",
+        "answer_trigger",
+        "question_time_limit_sec",
+        "question_time_actual_sec",
+        "interrupted"
+      ]];
+
+      const appendSession = (session, fallbackQuestionSetId = "", fallbackPurposeSetId = "") => {
+        const runtime = session?.runtimeContext || {};
+        const settingsValue = session?.settings || {};
+        const resultsValue = Array.isArray(session?.results) ? session.results : [];
+
+        resultsValue.forEach(result => {
+          const runtimeMode = runtime.mode || "questionSet";
+          const purposeSetId = runtimeMode === "purposeSet" || runtimeMode === "purposeCycle"
+            ? runtime.id || fallbackPurposeSetId
+            : "";
+
+          rows.push([
+            session?.id || "",
+            session?.startedAt || "",
+            session?.finishedAt || "",
+            runtimeMode,
+            settingsValue.mode || "",
+            purposeSetId,
+            runtime.cycleId || "",
+            result?.questionSetId || fallbackQuestionSetId,
+            result?.questionId || "",
+            result?.setId || "",
+            result?.setName || "",
+            result?.domain || "",
+            result?.exam || "",
+            result?.category || "",
+            result?.level || "",
+            result?.unit || "",
+            result?.questionType || "",
+            result?.question || "",
+            result?.answer || "",
+            result?.judgement || "",
+            result?.judgedAt || "",
+            result?.answerTrigger || "",
+            settingsValue.questionTimeSec ?? "",
+            Number.isFinite(Number(result?.questionTimeMs))
+              ? (Number(result.questionTimeMs) / 1000).toFixed(1)
+              : "",
+            session?.interrupted === true ? "true" : "false"
+          ]);
+        });
+      };
+
+      const questionSetHistories = loadAllQuestionSetHistories();
+      Object.entries(questionSetHistories).forEach(([questionSetId, sessions]) => {
+        (Array.isArray(sessions) ? sessions : []).forEach(session => {
+          appendSession(session, questionSetId, "");
+        });
+      });
+
+      const purposeHistories = loadAllPurposeHistories();
+      Object.entries(purposeHistories).forEach(([purposeSetId, sessions]) => {
+        (Array.isArray(sessions) ? sessions : []).forEach(session => {
+          appendSession(session, "", purposeSetId);
+        });
+      });
+
+      if (rows.length === 1) {
+        alert("出力できる回答イベントがありません。");
+        return;
+      }
+
+      downloadCsv(
+        rows,
+        `timed_quiz_answer_events_${formatDateForFile(new Date())}.csv`
+      );
+    }
 
     function exportHistoryCsv() {
       const history = loadHistory();
