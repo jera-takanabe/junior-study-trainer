@@ -2189,7 +2189,77 @@
       return histories;
     }
 
+    function collectAllAnswerEvents() {
+      const events = [];
+
+      const appendSession = (session, fallbackQuestionSetId = "", fallbackPurposeSetId = "") => {
+        const runtime = session?.runtimeContext || {};
+        const settingsValue = session?.settings || {};
+        const resultsValue = Array.isArray(session?.results) ? session.results : [];
+
+        resultsValue.forEach(result => {
+          const runtimeMode = runtime.mode || "questionSet";
+          const purposeSetId = runtimeMode === "purposeSet" || runtimeMode === "purposeCycle"
+            ? runtime.id || fallbackPurposeSetId
+            : "";
+
+          events.push({
+            sessionId: session?.id || "",
+            sessionStartedAt: session?.startedAt || "",
+            sessionFinishedAt: session?.finishedAt || "",
+            runtimeMode,
+            quizMode: settingsValue.mode || "",
+            purposeSetId,
+            cycleId: runtime.cycleId || "",
+            questionSetId: result?.questionSetId || fallbackQuestionSetId,
+            questionId: result?.questionId || "",
+            setId: result?.setId || "",
+            setName: result?.setName || "",
+            domain: result?.domain || "",
+            exam: result?.exam || "",
+            category: result?.category || "",
+            level: result?.level || "",
+            unit: result?.unit || "",
+            questionType: result?.questionType || "",
+            question: result?.question || "",
+            answer: result?.answer || "",
+            judgement: result?.judgement || "",
+            judgedAt: result?.judgedAt || "",
+            answerTrigger: result?.answerTrigger || "",
+            questionTimeLimitSec: settingsValue.questionTimeSec ?? "",
+            questionTimeActualSec: Number.isFinite(Number(result?.questionTimeMs))
+              ? Number((Number(result.questionTimeMs) / 1000).toFixed(1))
+              : null,
+            interrupted: session?.interrupted === true
+          });
+        });
+      };
+
+      const questionSetHistories = loadAllQuestionSetHistories();
+      Object.entries(questionSetHistories).forEach(([questionSetId, sessions]) => {
+        (Array.isArray(sessions) ? sessions : []).forEach(session => {
+          appendSession(session, questionSetId, "");
+        });
+      });
+
+      const purposeHistories = loadAllPurposeHistories();
+      Object.entries(purposeHistories).forEach(([purposeSetId, sessions]) => {
+        (Array.isArray(sessions) ? sessions : []).forEach(session => {
+          appendSession(session, "", purposeSetId);
+        });
+      });
+
+      return events;
+    }
+
     function exportAnswerEventsCsv() {
+      const events = collectAllAnswerEvents();
+
+      if (events.length === 0) {
+        alert("出力できる回答イベントがありません。");
+        return;
+      }
+
       const rows = [[
         "session_id",
         "session_started_at",
@@ -2218,67 +2288,35 @@
         "interrupted"
       ]];
 
-      const appendSession = (session, fallbackQuestionSetId = "", fallbackPurposeSetId = "") => {
-        const runtime = session?.runtimeContext || {};
-        const settingsValue = session?.settings || {};
-        const resultsValue = Array.isArray(session?.results) ? session.results : [];
-
-        resultsValue.forEach(result => {
-          const runtimeMode = runtime.mode || "questionSet";
-          const purposeSetId = runtimeMode === "purposeSet" || runtimeMode === "purposeCycle"
-            ? runtime.id || fallbackPurposeSetId
-            : "";
-
-          rows.push([
-            session?.id || "",
-            session?.startedAt || "",
-            session?.finishedAt || "",
-            runtimeMode,
-            settingsValue.mode || "",
-            purposeSetId,
-            runtime.cycleId || "",
-            result?.questionSetId || fallbackQuestionSetId,
-            result?.questionId || "",
-            result?.setId || "",
-            result?.setName || "",
-            result?.domain || "",
-            result?.exam || "",
-            result?.category || "",
-            result?.level || "",
-            result?.unit || "",
-            result?.questionType || "",
-            result?.question || "",
-            result?.answer || "",
-            result?.judgement || "",
-            result?.judgedAt || "",
-            result?.answerTrigger || "",
-            settingsValue.questionTimeSec ?? "",
-            Number.isFinite(Number(result?.questionTimeMs))
-              ? (Number(result.questionTimeMs) / 1000).toFixed(1)
-              : "",
-            session?.interrupted === true ? "true" : "false"
-          ]);
-        });
-      };
-
-      const questionSetHistories = loadAllQuestionSetHistories();
-      Object.entries(questionSetHistories).forEach(([questionSetId, sessions]) => {
-        (Array.isArray(sessions) ? sessions : []).forEach(session => {
-          appendSession(session, questionSetId, "");
-        });
+      events.forEach(event => {
+        rows.push([
+          event.sessionId,
+          event.sessionStartedAt,
+          event.sessionFinishedAt,
+          event.runtimeMode,
+          event.quizMode,
+          event.purposeSetId,
+          event.cycleId,
+          event.questionSetId,
+          event.questionId,
+          event.setId,
+          event.setName,
+          event.domain,
+          event.exam,
+          event.category,
+          event.level,
+          event.unit,
+          event.questionType,
+          event.question,
+          event.answer,
+          event.judgement,
+          event.judgedAt,
+          event.answerTrigger,
+          event.questionTimeLimitSec,
+          event.questionTimeActualSec ?? "",
+          event.interrupted ? "true" : "false"
+        ]);
       });
-
-      const purposeHistories = loadAllPurposeHistories();
-      Object.entries(purposeHistories).forEach(([purposeSetId, sessions]) => {
-        (Array.isArray(sessions) ? sessions : []).forEach(session => {
-          appendSession(session, "", purposeSetId);
-        });
-      });
-
-      if (rows.length === 1) {
-        alert("出力できる回答イベントがありません。");
-        return;
-      }
 
       downloadCsv(
         rows,
