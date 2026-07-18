@@ -256,6 +256,7 @@
     const HISTORY_KEY_BASE = "timedQuizTrainerHistoryV04";
     const PROGRESS_KEY_BASE = "timedQuizTrainerProgressV04";
     const PURPOSE_HISTORY_KEY_BASE = "timedQuizTrainerPurposeHistoryV01";
+    const PURPOSE_CYCLE_KEY_BASE = "timedQuizTrainerPurposeCycleV01";
     let HISTORY_KEY = buildStorageKey(HISTORY_KEY_BASE);
     let PROGRESS_KEY = buildStorageKey(PROGRESS_KEY_BASE);
     const APP_VERSION = "v0.6";
@@ -266,6 +267,10 @@
 
     function buildPurposeHistoryKey(purposeSetId) {
       return `${PURPOSE_HISTORY_KEY_BASE}__${purposeSetId || "unknown_purpose_set"}`;
+    }
+
+    function buildPurposeCycleKey(purposeSetId) {
+      return `${PURPOSE_CYCLE_KEY_BASE}__${purposeSetId || "unknown_purpose_set"}`;
     }
 
     function rebuildStorageKeys() {
@@ -1453,6 +1458,17 @@
     function loadPurposeHistory(purposeSetId) {
       try { return JSON.parse(localStorage.getItem(buildPurposeHistoryKey(purposeSetId))) || []; }
       catch (e) { return []; }
+    }
+
+    function loadPurposeCycle(purposeSetId) {
+      try { return JSON.parse(localStorage.getItem(buildPurposeCycleKey(purposeSetId))) || null; }
+      catch (e) { return null; }
+    }
+
+    function savePurposeCycle(purposeSetId, cycle) {
+      if (!purposeSetId || !cycle) return;
+      localStorage.setItem(buildPurposeCycleKey(purposeSetId), JSON.stringify(cycle));
+      checkStorageStatus(false);
     }
 
     function getPurposeHistorySummary() {
