@@ -157,6 +157,7 @@
         <button class="btn-secondary" onclick="exportProgressCsv()">進捗CSV</button>
         <button class="btn-secondary" onclick="clearHistory()">履歴削除</button>
         <button class="btn-secondary" onclick="clearPurposeHistories()">目的別履歴リセット</button>
+        <button class="btn-secondary" onclick="clearPurposeCycles()">周回リセット</button>
         <button class="btn-danger" onclick="clearProgress()">進捗リセット</button>
       </div>
     </section>
@@ -1809,6 +1810,38 @@
       clearAllPurposeHistories();
       checkStorageStatus();
       alert("目的別問題集履歴を削除しました。");
+    }
+
+    function getPurposeCycleSummary() {
+      const cycles = loadAllPurposeCycles();
+      return {
+        keyCount: Object.keys(cycles).length
+      };
+    }
+
+    function clearAllPurposeCycles() {
+      const keys = [];
+      for (let i = 0; i < localStorage.length; i += 1) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(`${PURPOSE_CYCLE_KEY_BASE}__`)) {
+          keys.push(key);
+        }
+      }
+      keys.forEach(key => localStorage.removeItem(key));
+    }
+
+    function clearPurposeCycles() {
+      const summary = getPurposeCycleSummary();
+      const ok = confirm(
+        `目的別問題集の周回状況をすべて削除しますか？\n\n` +
+        `対象：${summary.keyCount} 件\n\n` +
+        `通常教材履歴・目的別問題集履歴・問題別進捗は残ります。`
+      );
+      if (!ok) return;
+
+      clearAllPurposeCycles();
+      checkStorageStatus();
+      alert("目的別問題集の周回状況を削除しました。");
     }
 
     function clearProgress() {
