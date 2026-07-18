@@ -1795,6 +1795,17 @@
       });
     }
 
+    function restorePurposeCycles(purposeCycles) {
+      if (!purposeCycles || typeof purposeCycles !== "object" || Array.isArray(purposeCycles)) return;
+
+      clearAllPurposeCycles();
+
+      Object.entries(purposeCycles).forEach(([purposeSetId, cycle]) => {
+        if (!purposeSetId || !cycle || typeof cycle !== "object" || Array.isArray(cycle)) return;
+        localStorage.setItem(buildPurposeCycleKey(purposeSetId), JSON.stringify(cycle));
+      });
+    }
+
     function clearHistory() {
       const ok = confirm("履歴をすべて削除しますか？問題別進捗は残ります。");
       if (!ok) return;
@@ -1910,11 +1921,12 @@
       const backup = {
         appName: "timed-quiz-trainer",
         version: APP_VERSION,
-        backupVersion: 3,
+        backupVersion: 4,
         exportedAt: new Date().toISOString(),
         historyKey: HISTORY_KEY,
         progressKey: PROGRESS_KEY,
         purposeHistoryKeyBase: PURPOSE_HISTORY_KEY_BASE,
+        purposeCycleKeyBase: PURPOSE_CYCLE_KEY_BASE,
         questionSetId: QUESTION_SET_PROFILE.questionSetId,
         questionSetName: QUESTION_SET_PROFILE.questionSetName,
         questionSetSource: QUESTION_SET_PROFILE.source,
@@ -1923,7 +1935,8 @@
         questionIds: QUESTIONS.map(q => q.id),
         history: loadHistory(),
         progress: loadProgressMap(),
-        purposeHistories: loadAllPurposeHistories()
+        purposeHistories: loadAllPurposeHistories(),
+        purposeCycles: loadAllPurposeCycles()
       };
 
       const json = JSON.stringify(backup, null, 2);
@@ -1974,9 +1987,26 @@
           const purposeHistoryImportMessage = hasPurposeHistories
             ? `目的別問題集履歴：${purposeHistoryCount} セッション（${purposeHistorySetCount} 件）\n`
             : `目的別問題集履歴：旧形式バックアップのため変更しません\n`;
-          const overwriteMessage = hasPurposeHistories
-            ? `現在の履歴・進捗・目的別問題集履歴は上書きされます。`
-            : `現在の履歴・進捗は上書きされます。目的別問題集履歴は変更しません。`;
+          const hasPurposeCycles = backup.purposeCycles && typeof backup.purposeCycles === "object";
+          const purposeCycleCount = hasPurposeCycles
+            ? Object.keys(backup.purposeCycles).length
+            : 0;
+          const purposeCycleImportMessage = hasPurposeCycles
+            ? `周回状況：${purposeCycleCount} 件\n`
+            : `周回状況：旧形式バックアップのため変更しません\n`;
+          const overwriteTargets = [
+            "現在の履歴",
+            "進捗",
+            ...(hasPurposeHistories ? ["目的別問題集履歴"] : []),
+            ...(hasPurposeCycles ? ["周回状況"] : [])
+          ];
+          const keepTargets = [
+            ...(!hasPurposeHistories ? ["目的別問題集履歴"] : []),
+            ...(!hasPurposeCycles ? ["周回状況"] : [])
+          ];
+          const overwriteMessage = keepTargets.length === 0
+            ? `${overwriteTargets.join("・")}は上書きされます。`
+            : `${overwriteTargets.join("・")}は上書きされます。${keepTargets.join("・")}は変更しません。`;
           const ok = confirm(
             `バックアップを読み込みますか？\n\n` +
             `出力日時：${backup.exportedAt || "不明"}\n` +
@@ -1984,6 +2014,7 @@
             `教材ID：${backup.questionSetId || "旧形式または不明"}\n` +
             `通常教材履歴：${historyCount} セッション\n` +
             purposeHistoryImportMessage +
+            purposeCycleImportMessage +
             `進捗：${progressCount} 問分\n\n` +
             overwriteMessage
           );
@@ -1992,6 +2023,7 @@
           localStorage.setItem(HISTORY_KEY, JSON.stringify(backup.history || []));
           localStorage.setItem(PROGRESS_KEY, JSON.stringify(backup.progress || {}));
           restorePurposeHistories(backup.purposeHistories);
+          restorePurposeCycles(backup.purposeCycles);
           refreshSetupSummary();
           checkStorageStatus(false);
           alert("バックアップJSONから復元しました。");
@@ -2012,6 +2044,10 @@
       if (backup.purposeHistories !== undefined &&
           (!backup.purposeHistories || typeof backup.purposeHistories !== "object" || Array.isArray(backup.purposeHistories))) {
         throw new Error("purposeHistories がオブジェクトではありません。");
+      }
+      if (backup.purposeCycles !== undefined &&
+          (!backup.purposeCycles || typeof backup.purposeCycles !== "object" || Array.isArray(backup.purposeCycles))) {
+        throw new Error("purposeCycles がオブジェクトではありません。");
       }
     }
 
