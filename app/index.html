@@ -675,10 +675,26 @@
         ? resolved.questions.slice(0, Number(purposeSet.limit))
         : resolved.questions;
 
-      const cycle = createPurposeCycle(purposeSet.purposeSetId, purposeQuestions);
-      savePurposeCycle(purposeSet.purposeSetId, cycle);
+      let cycle = loadPurposeCycle(purposeSet.purposeSetId);
+      let cycleQuestions = purposeQuestions;
 
-      startQuiz(purposeQuestions, {
+      if (!cycle || cycle.status === "cleared") {
+        cycle = createPurposeCycle(purposeSet.purposeSetId, purposeQuestions);
+        savePurposeCycle(purposeSet.purposeSetId, cycle);
+      } else {
+        const questionMap = new Map(purposeQuestions.map(question => [question.id, question]));
+        cycleQuestions = (Array.isArray(cycle.remainingQuestionRefs) ? cycle.remainingQuestionRefs : [])
+          .filter(ref => ref.questionSetId === QUESTION_SET_PROFILE.questionSetId)
+          .map(ref => questionMap.get(ref.questionId))
+          .filter(Boolean);
+
+        if (cycleQuestions.length === 0) {
+          alert("周回練習で出題できる残り問題がありません。周回状況を確認してください。");
+          return;
+        }
+      }
+
+      startQuiz(cycleQuestions, {
         mode: "purposeCycle",
         id: purposeSet.purposeSetId,
         title: `${purposeSet.title || purposeSet.purposeSetId} 周回練習`,
@@ -690,7 +706,7 @@
         category: purposeSet.purposeType || "目的別問題集",
         level: "周回",
         mode: "cycle",
-        questionCount: String(purposeQuestions.length),
+        questionCount: String(cycleQuestions.length),
         questionTimeSec: Number(purposeSet.timer?.questionSeconds || questionTimeSelect.value),
         answerTimeSec: Number(purposeSet.timer?.answerSeconds || answerTimeSelect.value),
         order: purposeSet.randomization === true || purposeSet.ordering === "random" ? "random" : "normal"
