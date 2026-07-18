@@ -2408,6 +2408,51 @@
       return state;
     }
 
+    function recalculateAllMasteryStates(answerEvents = null) {
+      const events = Array.isArray(answerEvents)
+        ? [...answerEvents]
+        : collectAllAnswerEvents();
+
+      const sortableEvents = events
+        .map((event, originalIndex) => ({
+          event,
+          originalIndex,
+          eventAt: getMasteryEventIsoDate(event)
+        }))
+        .filter(item =>
+          item.eventAt
+          && item.event?.questionSetId
+          && item.event?.questionId
+          && ["correct", "wrong", "pass"].includes(item.event?.judgement)
+        )
+        .sort((a, b) => {
+          const timeDifference =
+            parseMasteryDate(a.eventAt).getTime()
+            - parseMasteryDate(b.eventAt).getTime();
+
+          if (timeDifference !== 0) return timeDifference;
+          return a.originalIndex - b.originalIndex;
+        });
+
+      const masteryMap = {};
+
+      sortableEvents.forEach(({ event }) => {
+        const questionRefKey = buildMasteryQuestionRefKey(
+          event.questionSetId,
+          event.questionId
+        );
+
+        if (!questionRefKey) return;
+
+        masteryMap[questionRefKey] = applyAnswerEventToMasteryState(
+          masteryMap[questionRefKey],
+          event
+        );
+      });
+
+      return masteryMap;
+    }
+
     function collectAllAnswerEvents() {
       const events = [];
 
