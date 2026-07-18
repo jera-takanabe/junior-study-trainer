@@ -1108,6 +1108,7 @@
         : createDefaultProgress(q.id);
 
       results.push({
+        questionSetId: QUESTION_SET_PROFILE.questionSetId || "unknown",
         questionId: q.id,
         setId: q.setId || "unset",
         setName: q.setName || "未設定セット",
@@ -1691,7 +1692,10 @@
 
     function buildQuestionRefFromResult(result) {
       return {
-        questionSetId: QUESTION_SET_PROFILE.questionSetId || "",
+        questionSetId:
+          result?.questionSetId ||
+          QUESTION_SET_PROFILE.questionSetId ||
+          "",
         questionId: result?.questionId || ""
       };
     }

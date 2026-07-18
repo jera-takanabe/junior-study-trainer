@@ -283,10 +283,36 @@
       "normal" | "cycle" | "weakness" | "retention" | "random"
 
     settings:
-      問題表示秒数、出題順、出題数
+      questionTimeSec:
+        実行時に設定された問題表示制限時間
+
+      order:
+        出題順
+
+      questionCount:
+        出題数
 
     results:
-      questionSetId、questionId、正誤、所要時間、問題表示秒数
+      questionSetId:
+        教材全体を識別するID
+
+      questionId:
+        教材内の問題ID
+
+      setId:
+        教材内部の問題グループID
+
+      judgement:
+        "correct" | "wrong" | "pass"
+
+      judgedAt:
+        判定日時
+
+      answerTrigger:
+        "manual" | "timeout"
+
+      questionTimeMs:
+        一時停止時間を除いた問題所要時間
 
 履歴は「過去に何をしたか」を見るためのデータであり、周回状態や弱点状態の主データにはしない。
 
