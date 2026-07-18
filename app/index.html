@@ -363,6 +363,7 @@
       renderQuestionSetsManifestPanel();
       renderPurposeSetsPanel();
       checkStorageStatus(false);
+      rebuildAndSaveAllMasteryStates();
 
       setSelect.addEventListener("change", () => {
         populateCategories();
