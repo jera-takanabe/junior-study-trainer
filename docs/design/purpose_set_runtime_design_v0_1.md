@@ -528,11 +528,35 @@
 
 初期設計では、まず問題参照単位で保存できる形にする。
 
+保存キーは、弱点だけでなく安定・維持段階も含む全問題の定着状態を扱うため、
+次を使用する。
+
+    timedQuizTrainerMasteryV01
+
+保存形式は、`questionRefKey` をキーとするオブジェクトとする。
+
 例:
 
-    timedQuizTrainerWeaknessV01
+    {
+      "math_test1::math_q001": {
+        "questionRefKey": "math_test1::math_q001",
+        "questionSetId": "math_test1",
+        "questionId": "math_q001",
+        "currentStabilityLevel": 2,
+        "highestStabilityLevel": 3
+      }
+    }
 
-弱点管理には、少なくとも次を保存する。
+`questionRefKey` は、`questionSetId` と `questionId` を区切り文字で連結して作る。
+初期実装では、区切り文字に `::` を使用する。
+
+    questionRefKey =
+      questionSetId + "::" + questionId
+
+`questionSetId` と `questionId` 自体も保存し、
+`questionRefKey` の文字列分解だけに依存しない。
+
+弱点・習得管理には、少なくとも次を保存する。
 
     questionRefKey:
       questionSetId + questionId から作る一意キー
@@ -570,6 +594,11 @@
 
     nextReviewAt:
       現在のアルゴリズムが算出した次回確認予定日時
+      確認間隔の起点に現在の定着段階の基準間隔を加えて算出する
+      確認間隔の起点は lastConfirmedAt と lastFailureAt のうち新しい日時
+      定着段階0で lastFailureAt がある場合は、再昇格条件に合わせて
+      lastFailureAt の1日後を次回確認日時とする
+      定着段階0で起点がない場合は null
       検索・抽出用の派生キャッシュであり、回答履歴から再計算可能とする
 
     algorithmId:
