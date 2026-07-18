@@ -731,6 +731,94 @@
 9. 問題なく動作した後、`purposeSetId` 単位の履歴保存を追加する。
 10. 最後に進捗保存、バックアップ、リセット、CSV出力への対応を検討する。
 
+## 13.1 回答イベントCSV方針
+
+既存の「履歴CSV」と「進捗CSV」は、当面そのまま維持する。
+
+    履歴CSV:
+      現在選択中の通常教材について、
+      セッションと回答結果を確認するための既存出力
+
+    進捗CSV:
+      現在選択中の通常教材について、
+      問題別に集計された進捗を確認するための既存出力
+
+長期の弱点・習得管理用には、これらとは別に
+「回答イベントCSV」を追加する。
+
+回答イベントCSVの目的:
+
+- 全通常教材と全目的別問題集の回答履歴を横断して確認する。
+- 回答1件を1行として出力する。
+- 判定アルゴリズムの検証、改善、再計算の参考データにする。
+- 同一周回内の再回答と、日を空けた定着確認を区別できるようにする。
+- CSVは分析・確認用とし、完全復元には使用しない。
+
+回答イベントCSVには、少なくとも次の列を含める。
+
+    session_id:
+      実行セッションID
+
+    session_started_at:
+      セッション開始日時
+
+    session_finished_at:
+      セッション終了日時
+
+    runtime_mode:
+      "questionSet" | "purposeSet" | "purposeCycle"
+
+    quiz_mode:
+      "normal" | "cycle" | "weakness" | "retention" | "random"
+
+    purpose_set_id:
+      目的別問題集ID
+      通常教材の実行では空
+
+    cycle_id:
+      周回ID
+      周回外の実行では空
+
+    question_set_id:
+      教材全体ID
+
+    question_id:
+      問題ID
+
+    set_id:
+      教材内部の問題グループID
+
+    judgement:
+      "correct" | "wrong" | "pass"
+
+    judged_at:
+      判定日時
+
+    answer_trigger:
+      "manual" | "timeout"
+
+    question_time_limit_sec:
+      実行時の問題表示制限時間
+
+    question_time_actual_sec:
+      一時停止時間を除いた実所要時間
+
+    interrupted:
+      セッションが途中終了されたか
+
+必要に応じて、問題文、解答、分類情報も出力できるようにする。
+ただし、長期管理における回答イベントの一意識別と時系列分析には、
+上記の識別情報と回答事実を必須とする。
+
+通常教材の履歴は教材別localStorageキーに分かれているため、
+回答イベントCSV出力時には、全 `timedQuizTrainerHistoryV04__*` を収集する。
+
+目的別問題集の履歴は、
+全 `timedQuizTrainerPurposeHistoryV01__*` を収集する。
+
+既存の履歴CSVを置き換えず、回答イベントCSVを別機能として追加する。
+これにより、既存運用を維持しながら横断分析を導入できる。
+
 ## 14. 当面の判断
 
 現在の実装では、まだ完全な目的別問題集運用には進まない。
