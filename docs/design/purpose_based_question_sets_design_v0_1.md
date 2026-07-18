@@ -605,9 +605,6 @@ timer:
   questionSeconds:
     1問あたりの制限時間
 
-  answerSeconds:
-    解答確認時間
-
   mode:
     normal / quick / noTimer / exam
 ```
@@ -617,11 +614,9 @@ timer:
 ```text
 暗算・語彙：
   questionSeconds: 10
-  answerSeconds: 5
 
 数学文章題：
   questionSeconds: 60
-  answerSeconds: 10
 
 英作文：
   noTimer または exam

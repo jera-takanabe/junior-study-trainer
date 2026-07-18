@@ -114,16 +114,6 @@
         </div>
 
         <div>
-          <label for="answerTimeSelect">回答表示時間</label>
-          <select id="answerTimeSelect">
-            <option value="3">3秒</option>
-            <option value="5" selected>5秒</option>
-            <option value="10">10秒</option>
-            <option value="15">15秒</option>
-          </select>
-        </div>
-
-        <div>
           <label for="orderSelect">出題順</label>
           <select id="orderSelect">
             <option value="random" selected>ランダム</option>
@@ -294,6 +284,8 @@
     let remainingSeconds = 0;
     let timerId = null;
     let isPaused = false;
+    let pauseStartedAt = null;
+    let totalPausedMs = 0;
     let results = [];
     let lastSession = null;
     let showUnavailablePurposeSets = false;
@@ -317,7 +309,6 @@
     const modeSelect = document.getElementById("modeSelect");
     const questionCountSelect = document.getElementById("questionCountSelect");
     const questionTimeSelect = document.getElementById("questionTimeSelect");
-    const answerTimeSelect = document.getElementById("answerTimeSelect");
     const orderSelect = document.getElementById("orderSelect");
     const questionCountInfo = document.getElementById("questionCountInfo");
     const progressSummary = document.getElementById("progressSummary");
@@ -562,9 +553,8 @@
 
         const runtimeQuestionCount = Number(item.limit || item.questionCount || 0);
         const questionSeconds = Number(item.timer?.questionSeconds || questionTimeSelect.value);
-        const answerSeconds = Number(item.timer?.answerSeconds || answerTimeSelect.value);
         const orderLabel = item.randomization === true || item.ordering === "random" ? "ランダム" : "固定順";
-        const runtimeLabel = `設定：${runtimeQuestionCount}問 / 問題${questionSeconds}秒 / 回答${answerSeconds}秒 / ${orderLabel}`;
+        const runtimeLabel = `設定：${runtimeQuestionCount}問 / 問題${questionSeconds}秒 / ${orderLabel}`;
 
         const cycle = item.isStartable ? loadPurposeCycle(item.purposeSetId) : null;
         const canAddToCycle = Boolean(cycle && cycle.status === "inProgress");
@@ -662,7 +652,6 @@
         mode: "all",
         questionCount: String(purposeQuestions.length),
         questionTimeSec: Number(purposeSet.timer?.questionSeconds || questionTimeSelect.value),
-        answerTimeSec: Number(purposeSet.timer?.answerSeconds || answerTimeSelect.value),
         order: purposeSet.randomization === true || purposeSet.ordering === "random" ? "random" : "normal"
       });
     }
@@ -723,7 +712,6 @@
         mode: "cycle",
         questionCount: String(cycleQuestions.length),
         questionTimeSec: Number(purposeSet.timer?.questionSeconds || questionTimeSelect.value),
-        answerTimeSec: Number(purposeSet.timer?.answerSeconds || answerTimeSelect.value),
         order: purposeSet.randomization === true || purposeSet.ordering === "random" ? "random" : "normal"
       });
     }
@@ -953,7 +941,6 @@
         mode: modeSelect.value,
         questionCount: questionCountSelect.value,
         questionTimeSec: Number(questionTimeSelect.value),
-        answerTimeSec: Number(answerTimeSelect.value),
         order: orderSelect.value,
         ...(customSettingsOverrides || {})
       };
@@ -1048,6 +1035,8 @@
       answerTrigger = null;
       remainingSeconds = settings.questionTimeSec;
       isPaused = false;
+      pauseStartedAt = null;
+      totalPausedMs = 0;
 
       progressText.textContent = `第${currentIndex + 1}問 / ${quizQuestions.length}問`;
       categoryText.textContent = `${q.setName || "未設定セット"} / ${q.category || "未設定"} / ${q.level || "未設定"}`;
@@ -1058,6 +1047,7 @@
       timerEl.textContent = remainingSeconds;
       timerEl.classList.remove("warning");
       pauseButton.textContent = "一時停止";
+      pauseButton.disabled = false;
 
       questionArea.classList.remove("hidden");
       answerArea.classList.add("hidden");
@@ -1075,6 +1065,13 @@
       if (answerShownAt) return;
 
       clearTimer();
+
+      if (isPaused && pauseStartedAt !== null) {
+        totalPausedMs += Date.now() - pauseStartedAt;
+        pauseStartedAt = null;
+        isPaused = false;
+      }
+
       answerTrigger = trigger;
       answerShownAt = Date.now();
 
@@ -1089,26 +1086,21 @@
       questionArea.classList.add("hidden");
       answerArea.classList.remove("hidden");
 
-      remainingSeconds = settings.answerTimeSec;
-      timerEl.textContent = remainingSeconds;
+      remainingSeconds = 0;
+      timerEl.textContent = "判定";
       timerEl.classList.remove("warning");
-
-      timerId = setInterval(() => {
-        if (isPaused) return;
-        remainingSeconds -= 1;
-        timerEl.textContent = remainingSeconds;
-        if (remainingSeconds <= 3) timerEl.classList.add("warning");
-        if (remainingSeconds <= 0) {
-          clearTimer();
-          timerEl.textContent = "判定";
-        }
-      }, 1000);
+      pauseButton.textContent = "一時停止";
+      pauseButton.disabled = true;
     }
 
     function judgeCurrent(judgement) {
       const q = quizQuestions[currentIndex];
       const now = Date.now();
-      const questionTimeMs = answerShownAt ? answerShownAt - currentQuestionStartedAt : now - currentQuestionStartedAt;
+      const questionEndedAt = answerShownAt || now;
+      const questionTimeMs = Math.max(
+        0,
+        questionEndedAt - currentQuestionStartedAt - totalPausedMs
+      );
 
       const updatedProgress = runtimeContext.saveProgress
         ? updateQuestionProgress(q.id, judgement, now)
@@ -1392,7 +1384,22 @@
     }
 
     function togglePause() {
-      isPaused = !isPaused;
+      if (answerShownAt) return;
+
+      const now = Date.now();
+
+      if (!isPaused) {
+        isPaused = true;
+        pauseStartedAt = now;
+      } else {
+        isPaused = false;
+
+        if (pauseStartedAt !== null) {
+          totalPausedMs += now - pauseStartedAt;
+          pauseStartedAt = null;
+        }
+      }
+
       pauseButton.textContent = isPaused ? "再開" : "一時停止";
       timerEl.textContent = isPaused ? "停止中" : remainingSeconds;
     }
@@ -1416,7 +1423,7 @@
               <p>${total}問中 ${correct}問正解 / 正答率 ${accuracy}%<br />不正解 ${wrong}問 / パス ${pass}問</p>
               <p class="muted small">
                 セット ${session.settings.setName || "全部"}<br />
-                問題表示 ${session.settings.questionTimeSec}秒 / 回答表示 ${session.settings.answerTimeSec}秒<br />
+                問題表示 ${session.settings.questionTimeSec}秒<br />
                 カテゴリ ${session.settings.category} / 出題タイプ ${session.settings.level || "全部"} / 出題モード ${labelMode(session.settings.mode)}
               </p>
             </div>
@@ -1527,7 +1534,7 @@
               <h4>${date}</h4>
               <p>${total}問中 ${correct}問正解 / 正答率 ${accuracy}%<br />不正解 ${wrong}問 / パス ${pass}問</p>
               <p class="muted small">
-                問題表示 ${session.settings.questionTimeSec}秒 / 回答表示 ${session.settings.answerTimeSec}秒<br />
+                問題表示 ${session.settings.questionTimeSec}秒<br />
                 出題順 ${session.settings.order === "random" ? "ランダム" : "固定順"}
               </p>
             </div>
@@ -2154,7 +2161,7 @@
 
       const rows = [[
         "session_id", "finished_at", "set_id_setting", "set_name_setting", "category_setting", "level_setting", "mode_setting",
-        "question_time_sec", "answer_time_sec", "question_id", "set_id", "set_name", "domain", "exam", "category",
+        "question_time_sec", "question_id", "set_id", "set_name", "domain", "exam", "category",
         "level", "unit", "question_type", "question", "answer", "judgement", "answer_trigger",
         "question_time_sec_actual", "mistake_points_after", "progress_status_after", "mastery_status_after"
       ]];
@@ -2163,7 +2170,7 @@
         session.results.forEach(r => {
           rows.push([
             session.id, session.finishedAt, session.settings.setId || "all", session.settings.setName || "全部", session.settings.category, session.settings.level || "all", session.settings.mode || "all",
-            session.settings.questionTimeSec, session.settings.answerTimeSec, r.questionId, r.setId || "", r.setName || "", r.domain || "", r.exam || "", r.category,
+            session.settings.questionTimeSec, r.questionId, r.setId || "", r.setName || "", r.domain || "", r.exam || "", r.category,
             r.level, r.unit || "", r.questionType || "", r.question, r.answer, r.judgement, r.answerTrigger,
             (r.questionTimeMs / 1000).toFixed(1), r.mistakePointsAfter ?? "", r.progressStatusAfter ?? "", r.masteryStatusAfter ?? ""
           ]);

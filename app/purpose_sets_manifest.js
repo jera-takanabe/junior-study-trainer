@@ -21,8 +21,7 @@ window.PURPOSE_SETS_MANIFEST = [
     randomization: false,
     limit: 15,
     timer: {
-      questionSeconds: 20,
-      answerSeconds: 5
+      questionSeconds: 20
     },
     progressScope: "purposeSet",
     status: "active",
@@ -102,8 +101,7 @@ window.PURPOSE_SETS_MANIFEST = [
     randomization: false,
     limit: 16,
     timer: {
-      questionSeconds: 30,
-      answerSeconds: 5
+      questionSeconds: 30
     },
     progressScope: "purposeSet",
     status: "active",
@@ -187,8 +185,7 @@ window.PURPOSE_SETS_MANIFEST = [
     randomization: false,
     limit: 12,
     timer: {
-      questionSeconds: 15,
-      answerSeconds: 5
+      questionSeconds: 15
     },
     progressScope: "purposeSet",
     status: "active",
