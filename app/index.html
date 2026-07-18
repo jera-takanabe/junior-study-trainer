@@ -2258,6 +2258,156 @@
       };
     }
 
+    function getMasteryEventIsoDate(event) {
+      const candidates = [
+        event?.judgedAt,
+        event?.sessionFinishedAt,
+        event?.sessionStartedAt
+      ];
+
+      for (const value of candidates) {
+        const date = parseMasteryDate(value);
+        if (date) return date.toISOString();
+      }
+
+      return "";
+    }
+
+    function isSameMasteryDate(firstValue, secondValue) {
+      const firstDate = parseMasteryDate(firstValue);
+      const secondDate = parseMasteryDate(secondValue);
+      if (!firstDate || !secondDate) return false;
+
+      return firstDate.getFullYear() === secondDate.getFullYear()
+        && firstDate.getMonth() === secondDate.getMonth()
+        && firstDate.getDate() === secondDate.getDate();
+    }
+
+    function calculateMasteryNextReviewAt(state) {
+      const level = Math.max(
+        0,
+        Math.min(
+          MASTERY_INTERVAL_DAYS.length - 1,
+          Number(state?.currentStabilityLevel) || 0
+        )
+      );
+
+      if (level === 0) {
+        return state?.lastFailureAt
+          ? addDaysToIsoDate(state.lastFailureAt, 1)
+          : "";
+      }
+
+      const intervalStartAt = getLaterIsoDate(
+        state?.lastConfirmedAt,
+        state?.lastFailureAt
+      );
+
+      if (!intervalStartAt) return "";
+
+      return addDaysToIsoDate(
+        intervalStartAt,
+        MASTERY_INTERVAL_DAYS[level]
+      );
+    }
+
+    function applyAnswerEventToMasteryState(currentState, event) {
+      const questionSetId = event?.questionSetId || "";
+      const questionId = event?.questionId || "";
+      const questionRefKey = buildMasteryQuestionRefKey(questionSetId, questionId);
+      const eventAt = getMasteryEventIsoDate(event);
+      const judgement = event?.judgement || "";
+
+      if (
+        !questionRefKey
+        || !eventAt
+        || !["correct", "wrong", "pass"].includes(judgement)
+      ) {
+        return currentState;
+      }
+
+      const state = {
+        ...createDefaultMasteryState(questionSetId, questionId),
+        ...(currentState || {}),
+        questionRefKey,
+        questionSetId,
+        questionId
+      };
+
+      const levelBefore = Math.max(
+        0,
+        Math.min(
+          MASTERY_INTERVAL_DAYS.length - 1,
+          Number(state.currentStabilityLevel) || 0
+        )
+      );
+
+      state.currentStabilityLevel = levelBefore;
+      state.lastAnsweredAt = eventAt;
+
+      if (judgement === "wrong") {
+        state.currentStabilityLevel = Math.max(0, levelBefore - 2);
+        state.lastWrongAt = eventAt;
+        state.lastFailureAt = eventAt;
+      } else if (judgement === "pass") {
+        state.currentStabilityLevel = Math.max(0, levelBefore - 1);
+        state.lastFailureAt = eventAt;
+      } else if (judgement === "correct") {
+        state.lastCorrectAt = eventAt;
+
+        const intervalStartAt = getLaterIsoDate(
+          state.lastConfirmedAt,
+          state.lastFailureAt
+        );
+        const intervalDays = getIntervalDays(intervalStartAt, eventAt);
+        const sameDayFailure = state.lastFailureAt
+          && isSameMasteryDate(state.lastFailureAt, eventAt);
+
+        let meaningfulCorrect = false;
+
+        if (levelBefore === 0) {
+          const firstRecordedCorrect = !state.lastConfirmedAt && !state.lastFailureAt;
+          const recoveredAfterFailure = state.lastFailureAt
+            && intervalDays !== null
+            && intervalDays >= 1;
+
+          if (!sameDayFailure && (firstRecordedCorrect || recoveredAfterFailure)) {
+            state.currentStabilityLevel = 1;
+            meaningfulCorrect = true;
+          }
+        } else {
+          const requiredIntervalDays = MASTERY_INTERVAL_DAYS[levelBefore];
+
+          if (
+            !sameDayFailure
+            && intervalDays !== null
+            && intervalDays >= requiredIntervalDays
+          ) {
+            if (levelBefore < MASTERY_INTERVAL_DAYS.length - 1) {
+              state.currentStabilityLevel = levelBefore + 1;
+            }
+            meaningfulCorrect = true;
+          }
+        }
+
+        if (meaningfulCorrect) {
+          state.lastSuccessfulIntervalDays = intervalDays;
+          state.lastConfirmedAt = eventAt;
+        }
+      }
+
+      state.highestStabilityLevel = Math.max(
+        Number(state.highestStabilityLevel) || 0,
+        state.currentStabilityLevel
+      );
+      state.nextReviewAt = calculateMasteryNextReviewAt(state);
+      state.algorithmId = MASTERY_ALGORITHM_ID;
+      state.algorithmVersion = MASTERY_ALGORITHM_VERSION;
+      state.evaluatedAt = eventAt;
+
+      return state;
+    }
+
     function collectAllAnswerEvents() {
       const events = [];
 
