@@ -593,6 +593,8 @@
           `<button type="button" class="btn-secondary purpose-set-start-button" ${item.isStartable ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(buttonLabel)}</button>` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-cycle-start-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">周回練習を始める</button>` : ""}` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-cycle-add-button" ${canAddToCycle ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(addToCycleLabel)}</button>` : ""}` +
+          `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-history-reset-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">履歴リセット</button>` : ""}` +
+          `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-cycle-reset-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">周回リセット</button>` : ""}` +
           `${item.isStartable ? `<span class="small"> ※履歴は保存します。問題別進捗にはまだ反映しません。</span>` : ""}` +
           `</li>`
         );
@@ -625,6 +627,18 @@
       purposeSetsPanel.querySelectorAll(".purpose-set-cycle-add-button").forEach(button => {
         button.addEventListener("click", () => {
           addPurposeSetQuestionsToCycle(button.dataset.purposeSetId || "");
+        });
+      });
+
+      purposeSetsPanel.querySelectorAll(".purpose-set-history-reset-button").forEach(button => {
+        button.addEventListener("click", () => {
+          clearPurposeHistoryById(button.dataset.purposeSetId || "");
+        });
+      });
+
+      purposeSetsPanel.querySelectorAll(".purpose-set-cycle-reset-button").forEach(button => {
+        button.addEventListener("click", () => {
+          clearPurposeCycleById(button.dataset.purposeSetId || "");
         });
       });
 
@@ -2172,6 +2186,49 @@
       rebuildAndSaveAllMasteryStates();
       checkStorageStatus();
       alert("履歴を削除しました。");
+    }
+
+    function clearPurposeHistoryById(purposeSetId) {
+      if (!purposeSetId) return;
+
+      const purposeSet = window.PurposeSets?.getById(purposeSetId);
+      const title = purposeSet?.title || purposeSetId;
+      const history = loadPurposeHistory(purposeSetId);
+
+      const ok = confirm(
+        `「${title}」の履歴を削除しますか？\n\n`
+        + `対象：${history.length} セッション\n\n`
+        + `通常教材履歴・問題別進捗・周回状況は残ります。`
+      );
+      if (!ok) return;
+
+      localStorage.removeItem(buildPurposeHistoryKey(purposeSetId));
+      rebuildAndSaveAllMasteryStates();
+      renderPurposeSetsPanel();
+      checkStorageStatus(false);
+
+      alert(`「${title}」の履歴を削除しました。`);
+    }
+
+    function clearPurposeCycleById(purposeSetId) {
+      if (!purposeSetId) return;
+
+      const purposeSet = window.PurposeSets?.getById(purposeSetId);
+      const title = purposeSet?.title || purposeSetId;
+      const cycle = loadPurposeCycle(purposeSetId);
+
+      const ok = confirm(
+        `「${title}」の周回状況を削除しますか？\n\n`
+        + `対象：${cycle ? "1件" : "0件"}\n\n`
+        + `通常教材履歴・目的別問題集履歴・問題別進捗は残ります。`
+      );
+      if (!ok) return;
+
+      localStorage.removeItem(buildPurposeCycleKey(purposeSetId));
+      renderPurposeSetsPanel();
+      checkStorageStatus(false);
+
+      alert(`「${title}」の周回状況を削除しました。`);
     }
 
     function clearPurposeHistories() {
