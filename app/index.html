@@ -592,6 +592,8 @@
           `<span class="small">${escapeHtml(runtimeLabel)}</span><br />` +
           `<button type="button" class="btn-secondary purpose-set-start-button" ${item.isStartable ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(buttonLabel)}</button>` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-cycle-start-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">周回練習を始める</button>` : ""}` +
+          `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-mastery-review-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">弱点練習</button>` : ""}` +
+          `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-mastery-check-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">定着確認</button>` : ""}` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-cycle-add-button" ${canAddToCycle ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(addToCycleLabel)}</button>` : ""}` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-history-reset-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">履歴リセット</button>` : ""}` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-cycle-reset-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">周回リセット</button>` : ""}` +
@@ -621,6 +623,24 @@
       purposeSetsPanel.querySelectorAll(".purpose-set-cycle-start-button").forEach(button => {
         button.addEventListener("click", () => {
           startPurposeSetCycleQuiz(button.dataset.purposeSetId || "");
+        });
+      });
+
+      purposeSetsPanel.querySelectorAll(".purpose-set-mastery-review-button").forEach(button => {
+        button.addEventListener("click", () => {
+          startPurposeSetMasteryQuiz(
+            button.dataset.purposeSetId || "",
+            "mastery_review"
+          );
+        });
+      });
+
+      purposeSetsPanel.querySelectorAll(".purpose-set-mastery-check-button").forEach(button => {
+        button.addEventListener("click", () => {
+          startPurposeSetMasteryQuiz(
+            button.dataset.purposeSetId || "",
+            "mastery_check"
+          );
         });
       });
 
@@ -689,6 +709,77 @@
         questionCount: String(purposeQuestions.length),
         questionTimeSec: Number(purposeSet.timer?.questionSeconds || questionTimeSelect.value),
         order: purposeSet.randomization === true || purposeSet.ordering === "random" ? "random" : "normal"
+      });
+    }
+
+    function startPurposeSetMasteryQuiz(purposeSetId, mode) {
+      const purposeSet = window.PurposeSets.getById(purposeSetId);
+
+      if (!purposeSet) {
+        alert("目的別問題集が見つかりません。");
+        return;
+      }
+
+      if (mode !== "mastery_review" && mode !== "mastery_check") {
+        alert("対応していない出題モードです。");
+        return;
+      }
+
+      const resolved = window.PurposeSets.resolveQuestionsFromCurrentSet(
+        purposeSetId,
+        QUESTION_SET_PROFILE.questionSetId,
+        QUESTIONS
+      );
+
+      if (!resolved.ok) {
+        alert("この目的別問題集は、現在読み込み中の教材では開始できません。");
+        return;
+      }
+
+      const purposeQuestions = Number(purposeSet.limit || 0) > 0
+        ? resolved.questions.slice(0, Number(purposeSet.limit))
+        : resolved.questions;
+
+      const filteredQuestions = filterQuestionsByMode(
+        purposeQuestions,
+        "all",
+        "all",
+        "all",
+        mode
+      );
+
+      if (filteredQuestions.length === 0) {
+        alert(
+          mode === "mastery_review"
+            ? "この目的別問題集には、現在の弱点練習対象がありません。"
+            : "この目的別問題集には、現在の定着確認対象がありません。"
+        );
+        return;
+      }
+
+      const modeLabel = labelMode(mode);
+
+      startQuiz(filteredQuestions, {
+        mode: "purposeSet",
+        id: purposeSet.purposeSetId,
+        title: `${purposeSet.title || purposeSet.purposeSetId} ${modeLabel}`,
+        saveProgress: false,
+        saveHistory: true
+      }, {
+        setId: `purpose:${purposeSet.purposeSetId}`,
+        setName: purposeSet.title || purposeSet.purposeSetId,
+        category: purposeSet.purposeType || "目的別問題集",
+        level: "目的別",
+        mode,
+        questionCount: String(filteredQuestions.length),
+        questionTimeSec: Number(
+          purposeSet.timer?.questionSeconds || questionTimeSelect.value
+        ),
+        order:
+          purposeSet.randomization === true
+          || purposeSet.ordering === "random"
+            ? "random"
+            : "normal"
       });
     }
 
@@ -1183,7 +1274,13 @@
       totalPausedMs = 0;
 
       progressText.textContent = `第${currentIndex + 1}問 / ${quizQuestions.length}問`;
-      categoryText.textContent = `${q.setName || "未設定セット"} / ${q.category || "未設定"} / ${q.level || "未設定"}`;
+
+      const displaySetName = runtimeContext.mode === "questionSet"
+        ? q.setName || settings.setName || "未設定セット"
+        : settings.setName || runtimeContext.title || "目的別問題集";
+
+      categoryText.textContent =
+        `${displaySetName} / ${q.category || "未設定"} / ${q.level || "未設定"}`;
       questionText.textContent = q.question;
       answerText.textContent = "";
       noteText.textContent = "";
