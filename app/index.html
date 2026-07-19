@@ -2336,6 +2336,38 @@
       return lines.length > 0 ? `\n目的別問題集履歴内訳：\n${lines.join("\n")}` : "";
     }
 
+    function loadAllPurposeProgress() {
+      const prefix = `${PURPOSE_PROGRESS_KEY_BASE}__`;
+      const progressByPurposeSet = {};
+
+      try {
+        for (let i = 0; i < localStorage.length; i += 1) {
+          const key = localStorage.key(i);
+          if (!key || !key.startsWith(prefix)) continue;
+
+          const purposeSetId = key.slice(prefix.length);
+
+          try {
+            const progressMap =
+              JSON.parse(localStorage.getItem(key)) || {};
+
+            progressByPurposeSet[purposeSetId] =
+              progressMap
+              && typeof progressMap === "object"
+              && !Array.isArray(progressMap)
+                ? progressMap
+                : {};
+          } catch (e) {
+            progressByPurposeSet[purposeSetId] = {};
+          }
+        }
+      } catch (e) {
+        return {};
+      }
+
+      return progressByPurposeSet;
+    }
+
     function loadAllPurposeHistories() {
       const prefix = `${PURPOSE_HISTORY_KEY_BASE}__`;
       const purposeHistories = {};
@@ -2373,6 +2405,36 @@
 
     function clearAllPurposeHistories() {
       clearStorageKeysByPrefix(`${PURPOSE_HISTORY_KEY_BASE}__`);
+    }
+
+    function restorePurposeProgress(progressByPurposeSet) {
+      if (
+        !progressByPurposeSet
+        || typeof progressByPurposeSet !== "object"
+        || Array.isArray(progressByPurposeSet)
+      ) {
+        return;
+      }
+
+      clearStorageKeysByPrefix(`${PURPOSE_PROGRESS_KEY_BASE}__`);
+
+      Object.entries(progressByPurposeSet).forEach(
+        ([purposeSetId, progressMap]) => {
+          if (
+            !purposeSetId
+            || !progressMap
+            || typeof progressMap !== "object"
+            || Array.isArray(progressMap)
+          ) {
+            return;
+          }
+
+          localStorage.setItem(
+            buildPurposeProgressKey(purposeSetId),
+            JSON.stringify(progressMap)
+          );
+        }
+      );
     }
 
     function restorePurposeHistories(purposeHistories) {
