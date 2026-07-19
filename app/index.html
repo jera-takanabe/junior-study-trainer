@@ -2105,8 +2105,7 @@
       return purposeHistories;
     }
 
-    function clearAllPurposeHistories() {
-      const prefix = `${PURPOSE_HISTORY_KEY_BASE}__`;
+    function clearStorageKeysByPrefix(prefix) {
       const keys = [];
 
       for (let i = 0; i < localStorage.length; i += 1) {
@@ -2115,6 +2114,10 @@
       }
 
       keys.forEach(key => localStorage.removeItem(key));
+    }
+
+    function clearAllPurposeHistories() {
+      clearStorageKeysByPrefix(`${PURPOSE_HISTORY_KEY_BASE}__`);
     }
 
     function restorePurposeHistories(purposeHistories) {
