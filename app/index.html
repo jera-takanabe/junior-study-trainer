@@ -2257,22 +2257,26 @@
       const backup = {
         appName: "timed-quiz-trainer",
         version: APP_VERSION,
-        backupVersion: 4,
+        backupVersion: 5,
         exportedAt: new Date().toISOString(),
-        historyKey: HISTORY_KEY,
-        progressKey: PROGRESS_KEY,
+        historyKeyBase: HISTORY_KEY_BASE,
+        progressKeyBase: PROGRESS_KEY_BASE,
         purposeHistoryKeyBase: PURPOSE_HISTORY_KEY_BASE,
         purposeCycleKeyBase: PURPOSE_CYCLE_KEY_BASE,
+        masteryKey: MASTERY_KEY,
+        masteryAlgorithmId: MASTERY_ALGORITHM_ID,
+        masteryAlgorithmVersion: MASTERY_ALGORITHM_VERSION,
         questionSetId: QUESTION_SET_PROFILE.questionSetId,
         questionSetName: QUESTION_SET_PROFILE.questionSetName,
         questionSetSource: QUESTION_SET_PROFILE.source,
         sets: SETS,
         questionCount: QUESTIONS.length,
         questionIds: QUESTIONS.map(q => q.id),
-        history: loadHistory(),
-        progress: loadProgressMap(),
+        allQuestionSetHistories: loadAllQuestionSetHistories(),
+        allQuestionSetProgress: loadAllQuestionSetProgress(),
         purposeHistories: loadAllPurposeHistories(),
-        purposeCycles: loadAllPurposeCycles()
+        purposeCycles: loadAllPurposeCycles(),
+        masteryStates: loadMasteryStates()
       };
 
       const json = JSON.stringify(backup, null, 2);
