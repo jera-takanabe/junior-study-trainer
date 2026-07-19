@@ -2375,18 +2375,79 @@
     }
 
     function validateBackup(backup) {
-      if (!backup || typeof backup !== "object") throw new Error("JSON形式が正しくありません。");
-      if (backup.appName !== "timed-quiz-trainer") throw new Error("このアプリのバックアップJSONではありません。");
-      if (!Array.isArray(backup.history)) throw new Error("history が配列ではありません。");
-      if (!backup.progress || typeof backup.progress !== "object" || Array.isArray(backup.progress)) {
-        throw new Error("progress がオブジェクトではありません。");
+      if (!backup || typeof backup !== "object" || Array.isArray(backup)) {
+        throw new Error("JSON形式が正しくありません。");
       }
-      if (backup.purposeHistories !== undefined &&
-          (!backup.purposeHistories || typeof backup.purposeHistories !== "object" || Array.isArray(backup.purposeHistories))) {
-        throw new Error("purposeHistories がオブジェクトではありません。");
+
+      if (backup.appName !== "timed-quiz-trainer") {
+        throw new Error("このアプリのバックアップJSONではありません。");
       }
-      if (backup.purposeCycles !== undefined &&
-          (!backup.purposeCycles || typeof backup.purposeCycles !== "object" || Array.isArray(backup.purposeCycles))) {
+
+      const backupVersion = Number(backup.backupVersion || 0);
+
+      if (backupVersion >= 5) {
+        if (
+          !backup.allQuestionSetHistories
+          || typeof backup.allQuestionSetHistories !== "object"
+          || Array.isArray(backup.allQuestionSetHistories)
+        ) {
+          throw new Error(
+            "allQuestionSetHistories がオブジェクトではありません。"
+          );
+        }
+
+        if (
+          !backup.allQuestionSetProgress
+          || typeof backup.allQuestionSetProgress !== "object"
+          || Array.isArray(backup.allQuestionSetProgress)
+        ) {
+          throw new Error(
+            "allQuestionSetProgress がオブジェクトではありません。"
+          );
+        }
+
+        if (
+          !backup.masteryStates
+          || typeof backup.masteryStates !== "object"
+          || Array.isArray(backup.masteryStates)
+        ) {
+          throw new Error("masteryStates がオブジェクトではありません。");
+        }
+      } else {
+        if (!Array.isArray(backup.history)) {
+          throw new Error("history が配列ではありません。");
+        }
+
+        if (
+          !backup.progress
+          || typeof backup.progress !== "object"
+          || Array.isArray(backup.progress)
+        ) {
+          throw new Error("progress がオブジェクトではありません。");
+        }
+      }
+
+      if (
+        backup.purposeHistories !== undefined
+        && (
+          !backup.purposeHistories
+          || typeof backup.purposeHistories !== "object"
+          || Array.isArray(backup.purposeHistories)
+        )
+      ) {
+        throw new Error(
+          "purposeHistories がオブジェクトではありません。"
+        );
+      }
+
+      if (
+        backup.purposeCycles !== undefined
+        && (
+          !backup.purposeCycles
+          || typeof backup.purposeCycles !== "object"
+          || Array.isArray(backup.purposeCycles)
+        )
+      ) {
         throw new Error("purposeCycles がオブジェクトではありません。");
       }
     }
