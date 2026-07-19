@@ -2302,75 +2302,192 @@
           const backup = JSON.parse(String(reader.result || "{}"));
           validateBackup(backup);
 
-          if (backup.questionSetId && backup.questionSetId !== QUESTION_SET_PROFILE.questionSetId) {
+          const backupVersion = Number(backup.backupVersion || 0);
+          const isFullBackup = backupVersion >= 5;
+
+          if (
+            !isFullBackup
+            && backup.questionSetId
+            && backup.questionSetId
+              !== QUESTION_SET_PROFILE.questionSetId
+          ) {
             const proceed = confirm(
-              `教材が一致しないバックアップです。\n\n` +
-              `現在の教材：${QUESTION_SET_PROFILE.questionSetName}\n` +
-              `現在の教材ID：${QUESTION_SET_PROFILE.questionSetId}\n\n` +
-              `バックアップの教材：${backup.questionSetName || "不明"}\n` +
-              `バックアップの教材ID：${backup.questionSetId}\n\n` +
-              `このまま読み込むと、現在の履歴・進捗が別教材の内容で上書きされる可能性があります。\n` +
-              `続行しますか？`
+              `教材が一致しないバックアップです。\n\n`
+              + `現在の教材：${QUESTION_SET_PROFILE.questionSetName}\n`
+              + `現在の教材ID：${QUESTION_SET_PROFILE.questionSetId}\n\n`
+              + `バックアップの教材：`
+              + `${backup.questionSetName || "不明"}\n`
+              + `バックアップの教材ID：`
+              + `${backup.questionSetId}\n\n`
+              + `このまま読み込むと、現在の履歴・進捗が`
+              + `別教材の内容で上書きされる可能性があります。\n`
+              + `続行しますか？`
             );
+
             if (!proceed) return;
           }
 
-          const historyCount = Array.isArray(backup.history) ? backup.history.length : 0;
-          const progressCount = backup.progress && typeof backup.progress === "object" ? Object.keys(backup.progress).length : 0;
-          const hasPurposeHistories = backup.purposeHistories && typeof backup.purposeHistories === "object";
+          const hasPurposeHistories =
+            backup.purposeHistories
+            && typeof backup.purposeHistories === "object";
           const purposeHistoryCount = hasPurposeHistories
-            ? Object.values(backup.purposeHistories).reduce((sum, sessions) => sum + (Array.isArray(sessions) ? sessions.length : 0), 0)
+            ? Object.values(backup.purposeHistories).reduce(
+                (sum, sessions) =>
+                  sum + (Array.isArray(sessions) ? sessions.length : 0),
+                0
+              )
             : 0;
           const purposeHistorySetCount = hasPurposeHistories
             ? Object.keys(backup.purposeHistories).length
             : 0;
-          const purposeHistoryImportMessage = hasPurposeHistories
-            ? `目的別問題集履歴：${purposeHistoryCount} セッション（${purposeHistorySetCount} 件）\n`
-            : `目的別問題集履歴：旧形式バックアップのため変更しません\n`;
-          const hasPurposeCycles = backup.purposeCycles && typeof backup.purposeCycles === "object";
+          const hasPurposeCycles =
+            backup.purposeCycles
+            && typeof backup.purposeCycles === "object";
           const purposeCycleCount = hasPurposeCycles
             ? Object.keys(backup.purposeCycles).length
             : 0;
-          const purposeCycleImportMessage = hasPurposeCycles
-            ? `周回状況：${purposeCycleCount} 件\n`
-            : `周回状況：旧形式バックアップのため変更しません\n`;
-          const overwriteTargets = [
-            "現在の履歴",
-            "進捗",
-            ...(hasPurposeHistories ? ["目的別問題集履歴"] : []),
-            ...(hasPurposeCycles ? ["周回状況"] : [])
-          ];
-          const keepTargets = [
-            ...(!hasPurposeHistories ? ["目的別問題集履歴"] : []),
-            ...(!hasPurposeCycles ? ["周回状況"] : [])
-          ];
-          const overwriteMessage = keepTargets.length === 0
-            ? `${overwriteTargets.join("・")}は上書きされます。`
-            : `${overwriteTargets.join("・")}は上書きされます。${keepTargets.join("・")}は変更しません。`;
-          const ok = confirm(
-            `バックアップを読み込みますか？\n\n` +
-            `出力日時：${backup.exportedAt || "不明"}\n` +
-            `教材：${backup.questionSetName || "旧形式または不明"}\n` +
-            `教材ID：${backup.questionSetId || "旧形式または不明"}\n` +
-            `通常教材履歴：${historyCount} セッション\n` +
-            purposeHistoryImportMessage +
-            purposeCycleImportMessage +
-            `進捗：${progressCount} 問分\n\n` +
-            overwriteMessage
-          );
+
+          let confirmationMessage = "";
+
+          if (isFullBackup) {
+            const allHistories = backup.allQuestionSetHistories;
+            const allProgress = backup.allQuestionSetProgress;
+            const masteryStates = backup.masteryStates;
+
+            const historySetCount = Object.keys(allHistories).length;
+            const historyCount = Object.values(allHistories).reduce(
+              (sum, sessions) =>
+                sum + (Array.isArray(sessions) ? sessions.length : 0),
+              0
+            );
+            const progressSetCount = Object.keys(allProgress).length;
+            const progressCount = Object.values(allProgress).reduce(
+              (sum, progressMap) =>
+                sum + (
+                  progressMap
+                  && typeof progressMap === "object"
+                  && !Array.isArray(progressMap)
+                    ? Object.keys(progressMap).length
+                    : 0
+                ),
+              0
+            );
+            const masteryCount = Object.keys(masteryStates).length;
+
+            confirmationMessage =
+              `一括バックアップを読み込みますか？\n\n`
+              + `バックアップ形式：version ${backupVersion}\n`
+              + `出力日時：${backup.exportedAt || "不明"}\n`
+              + `通常教材履歴：${historyCount} セッション`
+              + `（${historySetCount} 教材）\n`
+              + `問題別進捗：${progressCount} 問分`
+              + `（${progressSetCount} 教材）\n`
+              + `目的別問題集履歴：${purposeHistoryCount} セッション`
+              + `（${purposeHistorySetCount} 件）\n`
+              + `周回状況：${purposeCycleCount} 件\n`
+              + `定着状態：${masteryCount} 問分\n`
+              + `定着判定：`
+              + `${backup.masteryAlgorithmId || "不明"}`
+              + ` version `
+              + `${backup.masteryAlgorithmVersion ?? "不明"}\n\n`
+              + `通常教材履歴・問題別進捗・目的別問題集履歴・`
+              + `周回状況・定着状態を一括で上書きします。`;
+          } else {
+            const historyCount = Array.isArray(backup.history)
+              ? backup.history.length
+              : 0;
+            const progressCount =
+              backup.progress
+              && typeof backup.progress === "object"
+                ? Object.keys(backup.progress).length
+                : 0;
+            const purposeHistoryImportMessage = hasPurposeHistories
+              ? `目的別問題集履歴：${purposeHistoryCount} セッション`
+                + `（${purposeHistorySetCount} 件）\n`
+              : `目的別問題集履歴：旧形式バックアップのため`
+                + `変更しません\n`;
+            const purposeCycleImportMessage = hasPurposeCycles
+              ? `周回状況：${purposeCycleCount} 件\n`
+              : `周回状況：旧形式バックアップのため`
+                + `変更しません\n`;
+            const overwriteTargets = [
+              "現在の履歴",
+              "進捗",
+              ...(hasPurposeHistories
+                ? ["目的別問題集履歴"]
+                : []),
+              ...(hasPurposeCycles ? ["周回状況"] : [])
+            ];
+            const keepTargets = [
+              ...(!hasPurposeHistories
+                ? ["目的別問題集履歴"]
+                : []),
+              ...(!hasPurposeCycles ? ["周回状況"] : [])
+            ];
+            const overwriteMessage = keepTargets.length === 0
+              ? `${overwriteTargets.join("・")}は上書きされます。`
+              : `${overwriteTargets.join("・")}は上書きされます。`
+                + `${keepTargets.join("・")}は変更しません。`;
+
+            confirmationMessage =
+              `バックアップを読み込みますか？\n\n`
+              + `バックアップ形式：version `
+              + `${backupVersion || "旧形式"}\n`
+              + `出力日時：${backup.exportedAt || "不明"}\n`
+              + `教材：`
+              + `${backup.questionSetName || "旧形式または不明"}\n`
+              + `教材ID：`
+              + `${backup.questionSetId || "旧形式または不明"}\n`
+              + `通常教材履歴：${historyCount} セッション\n`
+              + purposeHistoryImportMessage
+              + purposeCycleImportMessage
+              + `進捗：${progressCount} 問分\n\n`
+              + overwriteMessage;
+          }
+
+          const ok = confirm(confirmationMessage);
           if (!ok) return;
 
-          localStorage.setItem(HISTORY_KEY, JSON.stringify(backup.history || []));
-          localStorage.setItem(PROGRESS_KEY, JSON.stringify(backup.progress || {}));
-          restorePurposeHistories(backup.purposeHistories);
-          restorePurposeCycles(backup.purposeCycles);
+          if (isFullBackup) {
+            restoreAllQuestionSetHistories(
+              backup.allQuestionSetHistories
+            );
+            restoreAllQuestionSetProgress(
+              backup.allQuestionSetProgress
+            );
+            restorePurposeHistories(backup.purposeHistories);
+            restorePurposeCycles(backup.purposeCycles);
+            saveMasteryStates(backup.masteryStates);
+          } else {
+            localStorage.setItem(
+              HISTORY_KEY,
+              JSON.stringify(backup.history || [])
+            );
+            localStorage.setItem(
+              PROGRESS_KEY,
+              JSON.stringify(backup.progress || {})
+            );
+            restorePurposeHistories(backup.purposeHistories);
+            restorePurposeCycles(backup.purposeCycles);
+            rebuildAndSaveAllMasteryStates();
+          }
+
           refreshSetupSummary();
           checkStorageStatus(false);
-          alert("バックアップJSONから復元しました。");
+
+          alert(
+            isFullBackup
+              ? "一括バックアップJSONから復元しました。"
+              : "バックアップJSONから復元しました。"
+          );
         } catch (e) {
-          alert(`バックアップJSONの読み込みに失敗しました。\n${e.message}`);
+          alert(
+            `バックアップJSONの読み込みに失敗しました。\n`
+            + `${e.message}`
+          );
         }
       };
+
       reader.readAsText(file, "utf-8");
     }
 
@@ -2412,6 +2529,26 @@
           || Array.isArray(backup.masteryStates)
         ) {
           throw new Error("masteryStates がオブジェクトではありません。");
+        }
+
+        if (
+          !backup.purposeHistories
+          || typeof backup.purposeHistories !== "object"
+          || Array.isArray(backup.purposeHistories)
+        ) {
+          throw new Error(
+            "purposeHistories がオブジェクトではありません。"
+          );
+        }
+
+        if (
+          !backup.purposeCycles
+          || typeof backup.purposeCycles !== "object"
+          || Array.isArray(backup.purposeCycles)
+        ) {
+          throw new Error(
+            "purposeCycles がオブジェクトではありません。"
+          );
         }
       } else {
         if (!Array.isArray(backup.history)) {
