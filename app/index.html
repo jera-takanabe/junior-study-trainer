@@ -2447,6 +2447,57 @@
       return progressByQuestionSet;
     }
 
+    function restoreAllQuestionSetHistories(histories) {
+      if (
+        !histories
+        || typeof histories !== "object"
+        || Array.isArray(histories)
+      ) {
+        return;
+      }
+
+      clearStorageKeysByPrefix(`${HISTORY_KEY_BASE}__`);
+
+      Object.entries(histories).forEach(([questionSetId, sessions]) => {
+        if (!questionSetId || !Array.isArray(sessions)) return;
+
+        localStorage.setItem(
+          `${HISTORY_KEY_BASE}__${questionSetId}`,
+          JSON.stringify(sessions)
+        );
+      });
+    }
+
+    function restoreAllQuestionSetProgress(progressByQuestionSet) {
+      if (
+        !progressByQuestionSet
+        || typeof progressByQuestionSet !== "object"
+        || Array.isArray(progressByQuestionSet)
+      ) {
+        return;
+      }
+
+      clearStorageKeysByPrefix(`${PROGRESS_KEY_BASE}__`);
+
+      Object.entries(progressByQuestionSet).forEach(
+        ([questionSetId, progressMap]) => {
+          if (
+            !questionSetId
+            || !progressMap
+            || typeof progressMap !== "object"
+            || Array.isArray(progressMap)
+          ) {
+            return;
+          }
+
+          localStorage.setItem(
+            `${PROGRESS_KEY_BASE}__${questionSetId}`,
+            JSON.stringify(progressMap)
+          );
+        }
+      );
+    }
+
     function buildMasteryQuestionRefKey(questionSetId, questionId) {
       if (!questionSetId || !questionId) return "";
       return `${questionSetId}::${questionId}`;
