@@ -146,6 +146,7 @@
         <button class="btn-secondary" onclick="showPurposeCycles()">周回状況を見る</button>
         <button class="btn-secondary" onclick="showProgressList()">問題別進捗を見る</button>
         <button class="btn-secondary" onclick="showMasteryList()">定着・復習状況を見る</button>
+        <button class="btn-secondary" onclick="rebuildMasteryStates()">定着状態再構築</button>
         <button class="btn-secondary" onclick="exportHistoryCsv()">履歴CSV</button>
         <button class="btn-secondary" onclick="exportProgressCsv()">進捗CSV</button>
         <button class="btn-secondary" onclick="exportAnswerEventsCsv()">回答イベントCSV</button>
@@ -1724,6 +1725,28 @@
         </div>
       `;
       showScreen("progressList");
+    }
+
+    function rebuildMasteryStates() {
+      const answerEventCount = collectAllAnswerEvents().length;
+      const ok = confirm(
+        `定着状態を回答履歴から再構築しますか？\n\n`
+        + `対象となる回答イベント：${answerEventCount} 件\n\n`
+        + `通常教材履歴・目的別問題集履歴・問題別進捗は`
+        + `削除されません。`
+      );
+      if (!ok) return;
+
+      const masteryMap = rebuildAndSaveAllMasteryStates();
+      const masteryCount = Object.keys(masteryMap).length;
+
+      refreshSetupSummary();
+      checkStorageStatus(false);
+
+      alert(
+        `定着状態を再構築しました。\n`
+        + `定着状態：${masteryCount} 問分`
+      );
     }
 
     function showMasteryList() {
