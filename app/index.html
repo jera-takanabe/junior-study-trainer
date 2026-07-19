@@ -703,7 +703,7 @@
         mode: "purposeSet",
         id: purposeSet.purposeSetId,
         title: purposeSet.title || purposeSet.purposeSetId,
-        saveProgress: false,
+        saveProgress: true,
         saveHistory: true
       }, {
         setId: `purpose:${purposeSet.purposeSetId}`,
@@ -768,7 +768,7 @@
         mode: "purposeSet",
         id: purposeSet.purposeSetId,
         title: `${purposeSet.title || purposeSet.purposeSetId} ${modeLabel}`,
-        saveProgress: false,
+        saveProgress: true,
         saveHistory: true
       }, {
         setId: `purpose:${purposeSet.purposeSetId}`,
@@ -835,7 +835,7 @@
         id: purposeSet.purposeSetId,
         title: `${purposeSet.title || purposeSet.purposeSetId} 周回練習`,
         cycleId: cycle.cycleId || "",
-        saveProgress: false,
+        saveProgress: true,
         saveHistory: true
       }, {
         setId: `purpose-cycle:${purposeSet.purposeSetId}`,
@@ -1348,9 +1348,19 @@
         questionEndedAt - currentQuestionStartedAt - totalPausedMs
       );
 
-      const updatedProgress = runtimeContext.saveProgress
-        ? updateQuestionProgress(q.id, judgement, now)
-        : createDefaultProgress(q.id);
+      let updatedProgress = createDefaultProgress(q.id);
+
+      if (runtimeContext.saveProgress) {
+        updatedProgress = isPurposeRuntime(runtimeContext)
+          ? updatePurposeQuestionProgress(
+              runtimeContext.id,
+              q.questionSetId || QUESTION_SET_PROFILE.questionSetId,
+              q.id,
+              judgement,
+              now
+            )
+          : updateQuestionProgress(q.id, judgement, now);
+      }
 
       results.push({
         questionSetId: q.questionSetId || QUESTION_SET_PROFILE.questionSetId || "unknown",
@@ -1441,7 +1451,7 @@
         resultRuntimeInfo.classList.remove("hidden");
         resultRuntimeInfo.innerHTML =
           `<strong>目的別問題集：</strong>${escapeHtml(sessionRuntimeContext.title || sessionRuntimeContext.id || "名称未設定")}<br />` +
-          `<span class="small">履歴は保存しています。問題別進捗にはまだ反映していません。</span>`;
+          `<span class="small">履歴と目的別問題集進捗を保存しました。</span>`;
       } else {
         resultRuntimeInfo.classList.add("hidden");
         resultRuntimeInfo.innerHTML = "";
@@ -1490,7 +1500,7 @@
 
       const items = reviewTargets.map(r => {
         const setLabel = isPurposeSetSession
-          ? `${sessionRuntimeContext.title || sessionRuntimeContext.id || "目的別問題集"}（進捗未反映）`
+          ? `${sessionRuntimeContext.title || sessionRuntimeContext.id || "目的別問題集"}`
           : (r.setName || "");
 
         return `
@@ -1508,8 +1518,58 @@
 
     function updateQuestionProgress(questionId, judgement, nowMs) {
       const progressMap = loadProgressMap();
-      const progress = normalizeProgress(progressMap[questionId] || createDefaultProgress(questionId));
+      const progress = updateProgressEntry(
+        progressMap,
+        questionId,
+        questionId,
+        judgement,
+        nowMs
+      );
 
+      saveProgressMap(progressMap);
+      checkStorageStatus(false);
+      return progress;
+    }
+
+    function updatePurposeQuestionProgress(
+      purposeSetId,
+      questionSetId,
+      questionId,
+      judgement,
+      nowMs
+    ) {
+      const progressMap = loadPurposeProgressMap(purposeSetId);
+      const progressKey =
+        `${questionSetId || "unknown_question_set"}::${questionId}`;
+      const progress = updateProgressEntry(
+        progressMap,
+        progressKey,
+        questionId,
+        judgement,
+        nowMs
+      );
+
+      progress.purposeSetId = purposeSetId;
+      progress.questionSetId = questionSetId || "";
+      progressMap[progressKey] = progress;
+
+      savePurposeProgressMap(purposeSetId, progressMap);
+      checkStorageStatus(false);
+      return progress;
+    }
+
+    function updateProgressEntry(
+      progressMap,
+      progressKey,
+      questionId,
+      judgement,
+      nowMs
+    ) {
+      const progress = normalizeProgress(
+        progressMap[progressKey] || createDefaultProgress(questionId)
+      );
+
+      progress.questionId = questionId;
       progress.seenCount += 1;
       progress.lastJudgement = judgement;
       progress.lastAnsweredAt = new Date(nowMs).toISOString();
@@ -1529,9 +1589,7 @@
       }
 
       applyStatus(progress, questionId);
-      progressMap[questionId] = progress;
-      saveProgressMap(progressMap);
-      checkStorageStatus(false);
+      progressMap[progressKey] = progress;
       return progress;
     }
 
