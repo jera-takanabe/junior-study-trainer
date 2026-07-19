@@ -1100,9 +1100,19 @@
     }
 
     function updateQuestionCountInfo() {
-      const count = getFilteredQuestions(setSelect.value, categorySelect.value, levelSelect.value, modeSelect.value).length;
-      const countSetting = questionCountSelect.value === "all" ? "全問" : `${questionCountSelect.value}問`;
-      questionCountInfo.textContent = `現在の条件で ${count} 問あります。開始時は ${countSetting} 出題します。`;
+      const count = getFilteredQuestions(
+        setSelect.value,
+        categorySelect.value,
+        levelSelect.value,
+        modeSelect.value
+      ).length;
+      const requestedCount = questionCountSelect.value === "all"
+        ? count
+        : Number(questionCountSelect.value);
+      const actualCount = Math.min(count, requestedCount);
+
+      questionCountInfo.textContent =
+        `現在の条件で ${count} 問あります。開始時は ${actualCount} 問出題します。`;
     }
 
     function updateProgressSummary() {
