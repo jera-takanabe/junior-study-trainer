@@ -2146,6 +2146,7 @@
       const ok = confirm("履歴をすべて削除しますか？問題別進捗は残ります。");
       if (!ok) return;
       localStorage.removeItem(HISTORY_KEY);
+      rebuildAndSaveAllMasteryStates();
       checkStorageStatus();
       alert("履歴を削除しました。");
     }
@@ -2160,6 +2161,7 @@
       if (!ok) return;
 
       clearAllPurposeHistories();
+      rebuildAndSaveAllMasteryStates();
       checkStorageStatus();
       alert("目的別問題集履歴を削除しました。");
     }
