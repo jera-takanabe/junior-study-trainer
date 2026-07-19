@@ -88,6 +88,8 @@
             <option value="not_mastered">習得済みを除く</option>
             <option value="review_points">復習ポイントあり</option>
             <option value="wrong_before">過去に不正解あり</option>
+            <option value="mastery_review">弱点練習</option>
+            <option value="mastery_check">定着確認</option>
           </select>
         </div>
 
@@ -995,16 +997,96 @@
     }
 
     function getFilteredQuestions(setId, category, level, mode = "all") {
-      return QUESTIONS.filter(q => {
-        const qSetId = q.setId || "unset";
-        const qCategory = q.category || "未設定";
-        const qLevel = q.level || "未設定";
-        const matchSet = setId === "all" || qSetId === setId;
-        const matchCategory = category === "all" || qCategory === category;
-        const matchLevel = level === "all" || qLevel === level;
-        const matchMode = matchProgressMode(q.id, mode);
-        return matchSet && matchCategory && matchLevel && matchMode;
-      });
+      const isMasteryMode =
+        mode === "mastery_review"
+        || mode === "mastery_check";
+      const masteryMap = isMasteryMode
+        ? loadMasteryStates()
+        : null;
+      const evaluatedAt = isMasteryMode
+        ? new Date().toISOString()
+        : "";
+      const statusPriority = {
+        "要確認": 0,
+        "復習推奨": 1,
+        "まもなく確認": 2
+      };
+
+      const matchedItems = QUESTIONS
+        .map(question => {
+          const qSetId = question.setId || "unset";
+          const qCategory = question.category || "未設定";
+          const qLevel = question.level || "未設定";
+          const matchSet = setId === "all" || qSetId === setId;
+          const matchCategory =
+            category === "all"
+            || qCategory === category;
+          const matchLevel =
+            level === "all"
+            || qLevel === level;
+
+          if (!matchSet || !matchCategory || !matchLevel) {
+            return null;
+          }
+
+          if (!isMasteryMode) {
+            return matchProgressMode(question.id, mode)
+              ? { question, evaluation: null }
+              : null;
+          }
+
+          const questionSetId =
+            question.questionSetId
+            || QUESTION_SET_PROFILE.questionSetId
+            || "unknown";
+          const questionRefKey = buildMasteryQuestionRefKey(
+            questionSetId,
+            question.id
+          );
+          const state = masteryMap[questionRefKey];
+
+          if (!state) return null;
+
+          const evaluation = calculateMasteryReviewEvaluation(
+            state,
+            evaluatedAt
+          );
+          const targetStatuses = mode === "mastery_review"
+            ? ["要確認", "復習推奨"]
+            : ["要確認", "復習推奨", "まもなく確認"];
+
+          return targetStatuses.includes(evaluation.reviewStatus)
+            ? { question, evaluation }
+            : null;
+        })
+        .filter(Boolean);
+
+      if (isMasteryMode) {
+        matchedItems.sort((a, b) => {
+          const priorityDifference =
+            (statusPriority[a.evaluation.reviewStatus] ?? 99)
+            - (statusPriority[b.evaluation.reviewStatus] ?? 99);
+
+          if (priorityDifference !== 0) {
+            return priorityDifference;
+          }
+
+          const riskDifference =
+            (b.evaluation.forgettingRisk ?? -1)
+            - (a.evaluation.forgettingRisk ?? -1);
+
+          if (riskDifference !== 0) {
+            return riskDifference;
+          }
+
+          return String(a.question.id).localeCompare(
+            String(b.question.id),
+            "ja"
+          );
+        });
+      }
+
+      return matchedItems.map(item => item.question);
     }
 
     function matchProgressMode(questionId, mode) {
@@ -2920,6 +3002,8 @@
       if (mode === "not_mastered") return "習得済みを除く";
       if (mode === "review_points") return "復習ポイントあり";
       if (mode === "wrong_before") return "過去に不正解あり";
+      if (mode === "mastery_review") return "弱点練習";
+      if (mode === "mastery_check") return "定着確認";
       return mode || "全部から出題";
     }
 
