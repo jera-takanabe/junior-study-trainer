@@ -583,6 +583,11 @@
         const orderLabel = item.randomization === true || item.ordering === "random" ? "ランダム" : "固定順";
         const runtimeLabel = `設定：${runtimeQuestionCount}問 / 問題${questionSeconds}秒 / ${orderLabel}`;
 
+        const purposeProgressMap = item.isStartable
+          ? loadPurposeProgressMap(item.purposeSetId)
+          : {};
+        const purposeProgressCount = Object.keys(purposeProgressMap).length;
+
         const cycle = item.isStartable ? loadPurposeCycle(item.purposeSetId) : null;
         const canAddToCycle = Boolean(cycle && cycle.status === "inProgress");
         const addToCycleLabel = canAddToCycle
@@ -594,15 +599,16 @@
           `${escapeHtml(item.title)} ` +
           `<span class="small">(${escapeHtml(item.purposeSetId)} / ${runtimeQuestionCount}問 / ${escapeHtml(statusLabel || "状態不明")} / ${escapeHtml(resolveLabel)})</span><br />` +
           `<span class="small">${escapeHtml(item.description || "")}</span><br />` +
-          `<span class="small">${escapeHtml(runtimeLabel)}</span><br />` +
+          `<span class="small">${escapeHtml(runtimeLabel)} / 目的別進捗 ${purposeProgressCount}問</span><br />` +
           `<button type="button" class="btn-secondary purpose-set-start-button" ${item.isStartable ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(buttonLabel)}</button>` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-cycle-start-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">周回練習を始める</button>` : ""}` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-mastery-review-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">弱点練習</button>` : ""}` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-mastery-check-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">定着確認</button>` : ""}` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-cycle-add-button" ${canAddToCycle ? "" : "disabled"} data-purpose-set-id="${escapeHtml(item.purposeSetId)}">${escapeHtml(addToCycleLabel)}</button>` : ""}` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-history-reset-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">履歴リセット</button>` : ""}` +
+          `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-progress-reset-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">進捗リセット</button>` : ""}` +
           `${item.isStartable ? ` <button type="button" class="btn-secondary purpose-set-cycle-reset-button" data-purpose-set-id="${escapeHtml(item.purposeSetId)}">周回リセット</button>` : ""}` +
-          `${item.isStartable ? `<span class="small"> ※履歴は保存します。問題別進捗にはまだ反映しません。</span>` : ""}` +
+          `${item.isStartable ? `<span class="small"> ※履歴と目的別進捗を保存します。</span>` : ""}` +
           `</li>`
         );
       }).join("");
@@ -615,7 +621,7 @@
 
       purposeSetsPanel.innerHTML =
         `<strong>目的別問題集：</strong>${startableCount}件開始可能 / 全${items.length}件<br />` +
-        `<span class="small">※目的別問題集の履歴は保存します。問題別進捗にはまだ反映しません。</span>` +
+        `<span class="small">※目的別問題集の履歴と目的別進捗は、通常教材とは分けて保存します。</span>` +
         `${unavailableToggle}` +
         `<ul style="margin: 6px 0 0 18px; padding: 0;">${listItems}</ul>`;
 
@@ -658,6 +664,12 @@
       purposeSetsPanel.querySelectorAll(".purpose-set-history-reset-button").forEach(button => {
         button.addEventListener("click", () => {
           clearPurposeHistoryById(button.dataset.purposeSetId || "");
+        });
+      });
+
+      purposeSetsPanel.querySelectorAll(".purpose-set-progress-reset-button").forEach(button => {
+        button.addEventListener("click", () => {
+          clearPurposeProgressById(button.dataset.purposeSetId || "");
         });
       });
 
@@ -2414,6 +2426,28 @@
       checkStorageStatus(false);
 
       alert(`「${title}」の履歴を削除しました。`);
+    }
+
+    function clearPurposeProgressById(purposeSetId) {
+      if (!purposeSetId) return;
+
+      const purposeSet = window.PurposeSets?.getById(purposeSetId);
+      const title = purposeSet?.title || purposeSetId;
+      const progressMap = loadPurposeProgressMap(purposeSetId);
+      const progressCount = Object.keys(progressMap).length;
+
+      const ok = confirm(
+        `「${title}」の目的別進捗を削除しますか？\n\n`
+        + `対象：${progressCount} 問分\n\n`
+        + `通常教材進捗・履歴・周回状況は残ります。`
+      );
+      if (!ok) return;
+
+      localStorage.removeItem(buildPurposeProgressKey(purposeSetId));
+      renderPurposeSetsPanel();
+      checkStorageStatus(false);
+
+      alert(`「${title}」の目的別進捗を削除しました。`);
     }
 
     function clearPurposeCycleById(purposeSetId) {
