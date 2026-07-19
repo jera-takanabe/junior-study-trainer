@@ -1012,6 +1012,22 @@
     }
 
     function getFilteredQuestions(setId, category, level, mode = "all") {
+      return filterQuestionsByMode(
+        QUESTIONS,
+        setId,
+        category,
+        level,
+        mode
+      );
+    }
+
+    function filterQuestionsByMode(
+      sourceQuestions,
+      setId,
+      category,
+      level,
+      mode = "all"
+    ) {
       const isMasteryMode =
         mode === "mastery_review"
         || mode === "mastery_check";
@@ -1027,7 +1043,7 @@
         "まもなく確認": 2
       };
 
-      const matchedItems = QUESTIONS
+      const matchedItems = (Array.isArray(sourceQuestions) ? sourceQuestions : [])
         .map(question => {
           const qSetId = question.setId || "unset";
           const qCategory = question.category || "未設定";
