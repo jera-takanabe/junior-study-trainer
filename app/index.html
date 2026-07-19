@@ -2413,6 +2413,37 @@
       return histories;
     }
 
+    function loadAllQuestionSetProgress() {
+      const prefix = `${PROGRESS_KEY_BASE}__`;
+      const progressByQuestionSet = {};
+
+      try {
+        for (let i = 0; i < localStorage.length; i += 1) {
+          const key = localStorage.key(i);
+          if (!key || !key.startsWith(prefix)) continue;
+
+          const questionSetId = key.slice(prefix.length);
+
+          try {
+            const progressMap =
+              JSON.parse(localStorage.getItem(key)) || {};
+            progressByQuestionSet[questionSetId] =
+              progressMap
+              && typeof progressMap === "object"
+              && !Array.isArray(progressMap)
+                ? progressMap
+                : {};
+          } catch (e) {
+            progressByQuestionSet[questionSetId] = {};
+          }
+        }
+      } catch (e) {
+        return {};
+      }
+
+      return progressByQuestionSet;
+    }
+
     function buildMasteryQuestionRefKey(questionSetId, questionId) {
       if (!questionSetId || !questionId) return "";
       return `${questionSetId}::${questionId}`;
