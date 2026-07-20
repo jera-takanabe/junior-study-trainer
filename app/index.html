@@ -2641,10 +2641,11 @@
       const backup = {
         appName: "timed-quiz-trainer",
         version: APP_VERSION,
-        backupVersion: 5,
+        backupVersion: 6,
         exportedAt: new Date().toISOString(),
         historyKeyBase: HISTORY_KEY_BASE,
         progressKeyBase: PROGRESS_KEY_BASE,
+        purposeProgressKeyBase: PURPOSE_PROGRESS_KEY_BASE,
         purposeHistoryKeyBase: PURPOSE_HISTORY_KEY_BASE,
         purposeCycleKeyBase: PURPOSE_CYCLE_KEY_BASE,
         masteryKey: MASTERY_KEY,
@@ -2658,6 +2659,7 @@
         questionIds: QUESTIONS.map(q => q.id),
         allQuestionSetHistories: loadAllQuestionSetHistories(),
         allQuestionSetProgress: loadAllQuestionSetProgress(),
+        purposeProgress: loadAllPurposeProgress(),
         purposeHistories: loadAllPurposeHistories(),
         purposeCycles: loadAllPurposeCycles(),
         masteryStates: loadMasteryStates()
@@ -2688,6 +2690,7 @@
 
           const backupVersion = Number(backup.backupVersion || 0);
           const isFullBackup = backupVersion >= 5;
+          const hasPurposeProgressBackup = backupVersion >= 6;
 
           if (
             !isFullBackup
@@ -2736,6 +2739,9 @@
           if (isFullBackup) {
             const allHistories = backup.allQuestionSetHistories;
             const allProgress = backup.allQuestionSetProgress;
+            const purposeProgress = hasPurposeProgressBackup
+              ? backup.purposeProgress
+              : {};
             const masteryStates = backup.masteryStates;
 
             const historySetCount = Object.keys(allHistories).length;
@@ -2756,6 +2762,20 @@
                 ),
               0
             );
+            const purposeProgressSetCount =
+              Object.keys(purposeProgress).length;
+            const purposeProgressCount =
+              Object.values(purposeProgress).reduce(
+                (sum, progressMap) =>
+                  sum + (
+                    progressMap
+                    && typeof progressMap === "object"
+                    && !Array.isArray(progressMap)
+                      ? Object.keys(progressMap).length
+                      : 0
+                  ),
+                0
+              );
             const masteryCount = Object.keys(masteryStates).length;
 
             confirmationMessage =
@@ -2766,6 +2786,12 @@
               + `（${historySetCount} 教材）\n`
               + `問題別進捗：${progressCount} 問分`
               + `（${progressSetCount} 教材）\n`
+              + (
+                hasPurposeProgressBackup
+                  ? `目的別進捗：${purposeProgressCount} 問分`
+                    + `（${purposeProgressSetCount} 件）\n`
+                  : `目的別進捗：version 5のため変更しません\n`
+              )
               + `目的別問題集履歴：${purposeHistoryCount} セッション`
               + `（${purposeHistorySetCount} 件）\n`
               + `周回状況：${purposeCycleCount} 件\n`
@@ -2774,8 +2800,17 @@
               + `${backup.masteryAlgorithmId || "不明"}`
               + ` version `
               + `${backup.masteryAlgorithmVersion ?? "不明"}\n\n`
-              + `通常教材履歴・問題別進捗・目的別問題集履歴・`
-              + `周回状況・定着状態を一括で上書きします。`;
+              + (
+                hasPurposeProgressBackup
+                  ? `通常教材履歴・問題別進捗・目的別進捗・`
+                  : `通常教材履歴・問題別進捗・`
+              )
+              + `目的別問題集履歴・周回状況・定着状態を`
+              + (
+                hasPurposeProgressBackup
+                  ? `一括で上書きします。`
+                  : `上書きします。目的別進捗は変更しません。`
+              );
           } else {
             const historyCount = Array.isArray(backup.history)
               ? backup.history.length
@@ -2839,6 +2874,9 @@
             restoreAllQuestionSetProgress(
               backup.allQuestionSetProgress
             );
+            if (hasPurposeProgressBackup) {
+              restorePurposeProgress(backup.purposeProgress);
+            }
             restorePurposeHistories(backup.purposeHistories);
             restorePurposeCycles(backup.purposeCycles);
             saveMasteryStates(backup.masteryStates);
@@ -2908,6 +2946,19 @@
         }
 
         if (
+          backupVersion >= 6
+          && (
+            !backup.purposeProgress
+            || typeof backup.purposeProgress !== "object"
+            || Array.isArray(backup.purposeProgress)
+          )
+        ) {
+          throw new Error(
+            "purposeProgress がオブジェクトではありません。"
+          );
+        }
+
+        if (
           !backup.masteryStates
           || typeof backup.masteryStates !== "object"
           || Array.isArray(backup.masteryStates)
@@ -2946,6 +2997,19 @@
         ) {
           throw new Error("progress がオブジェクトではありません。");
         }
+      }
+
+      if (
+        backup.purposeProgress !== undefined
+        && (
+          !backup.purposeProgress
+          || typeof backup.purposeProgress !== "object"
+          || Array.isArray(backup.purposeProgress)
+        )
+      ) {
+        throw new Error(
+          "purposeProgress がオブジェクトではありません。"
+        );
       }
 
       if (
