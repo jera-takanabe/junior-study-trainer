@@ -288,3 +288,89 @@
 
 分類時には、機能の重要度だけでなく、
 完成版の縦方向経路を成立させるために必要かどうかを判断する。
+
+## 7. 確認状況
+
+### 7.1 要求抽出の主対象
+
+次の資料は、完成版要求の抽出対象として確認済みである。
+
+- `docs/design/learning_content_model_v0_8.md`
+- `docs/design/question_metadata_schema_design_v0_1.md`
+- `docs/design/catalog_to_question_data_design_v0_1.md`
+- `docs/design/id_and_code_policy_v0_1.md`
+- `docs/design/purpose_based_question_sets_design_v0_1.md`
+- `docs/design/purpose_set_runtime_design_v0_1.md`
+- `docs/design/progress_design.md`
+- `docs/design/progress_model_motivation.md`
+- `docs/design/gui_structure_design_v0_1.md`
+- `docs/design/visual_question_data_design_v0_1.md`
+- `docs/design/printable_question_output_design_v0_1.md`
+
+確認済みとは、
+文書全体を完成版仕様として採用したことを意味しない。
+
+完成版に必要な要求を抽出し、
+現行試作固有の実装方法、旧データ形式、
+旧画面構造、旧保存方式は除外済みである。
+
+### 7.2 補助資料
+
+次の補助資料は確認済みである。
+
+- `docs/concept/project_overview.md`
+- `docs/concept/category_policy.md`
+- `docs/design/catalogs/`
+- `docs/operations/question_set_registration_procedure.md`
+- `docs/operations/multi_set_support_design.md`
+
+カタログ資料については、
+学校教科と検定の代表資料に加え、
+理科、地理、歴史、英語、漢検、数検の構造差を確認した。
+
+個別単元や特定検定級の内容は、
+完成版の共通要求として固定していない。
+
+### 7.3 原則除外資料の確認状況
+
+`docs/design/persistence_policy.md` は、
+永続保存、保存状態、バックアップ、復元、
+可搬性、複数端末利用に関する要求漏れ確認のために参照済みである。
+
+次の資料は、
+要求抽出の主対象としては扱わない。
+
+- `docs/design/app_refactoring_plan_v0_1.md`
+- `docs/design/metadata_migration_plan_v0_1.md`
+- `docs/materials/`
+
+ただし、
+要求定義の最終漏れ確認として必要な範囲に限り
+代表箇所を参照できる。
+
+### 7.4 現在の要求抽出結果
+
+現時点で、
+完成版要求インベントリには次が整理されている。
+
+- 539件の要求
+- 98セクション
+- 重複した要求IDなし
+- セクション番号の欠番なし
+
+対象文書：
+
+- `docs/requirements/full_rebuild_requirements_inventory_v0_1.md`
+
+### 7.5 要求抽出フェーズの残作業
+
+要求抽出フェーズの残作業は次とする。
+
+1. 原則除外資料から要求漏れだけを最終確認する
+2. 要求インベントリ全体の重複・矛盾・粒度差を点検する
+3. 初期リリース必須、初期リリース後、将来候補の妥当性を再確認する
+4. 要求間の依存関係を整理する
+5. 完成版要求定義書へ統合する
+
+新たな資料が見つからない限り、
+既存資料からの通常の要求抽出は完了扱いとする。
