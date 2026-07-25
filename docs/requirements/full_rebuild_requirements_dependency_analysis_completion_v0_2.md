@@ -131,3 +131,26 @@
 
 - 検査エラー総数: 0
 - 検査エラー: none
+
+## 8. 正式成果物
+
+要求依存関係の詳細明細は、次の正式成果物を正本とする。
+
+- 依存関係正本CSV:
+  `docs/requirements/full_rebuild_requirement_dependencies_v0_1.csv`
+- 正式成果物完了記録:
+  `docs/requirements/full_rebuild_requirement_dependencies_completion_v0_1.md`
+
+個別領域ごとの統合Markdownおよび検証用ファイルは
+`.local/` に保持される作業成果物であり、
+後続工程から依存関係を参照する場合は上記CSVを使用する。
+
+CSVには、1,368本の有効依存線について次を保存している。
+
+- 依存元要求ID
+- 関係種別
+- 前提となる依存先要求ID
+- 取得できた依存理由
+- 代表出典ファイルおよび行番号
+- 同じ依存線が記録されていた全統合成果物
+- 統合成果物間での出現数
