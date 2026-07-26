@@ -289,6 +289,10 @@ Codex等のリポジトリ操作を試す場合、
 - `docs/requirements/full_rebuild_requirements_phase_completion_v0_1.md`
 - `docs/requirements/full_rebuild_system_overview_v0_1.md`
 - `docs/requirements/full_rebuild_requirement_dependencies_completion_v0_1.md`
+- `docs/roadmap/work_codex_handoff_protocol_v0_1.md`
+
+新しいWorkタスクまたは作業環境での3者間の作業受け渡しでは、
+上記の受け渡し手順を参照する。
 
 その後、
 作業環境移行と設計開始準備の進め方を決める。
