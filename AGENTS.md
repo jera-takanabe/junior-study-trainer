@@ -131,3 +131,44 @@ Git状態や差分の読み取り確認は行ってよい。
 2. `docs/requirements/full_rebuild_requirements_phase_completion_v0_1.md`
 3. `docs/requirements/full_rebuild_system_overview_v0_1.md`
 4. `docs/requirements/full_rebuild_requirement_dependencies_completion_v0_1.md`
+
+## 11. WorkとCodexの開始時点の役割分担
+
+### PC版ChatGPT Work
+
+- Junior Study Trainer完成版再開発の主作業場所とする。
+- 要求定義成果物の参照、工程管理、方針検討、設計判断、
+  要求IDとの対応確認を担当する。
+- 次に行う一つの作業を決め、必要に応じてCodex向け指示を作成する。
+- Codexの調査結果、変更内容、差分、検証結果をレビューする。
+- 完成版コードの広範囲な直接編集は、開始時点の主担当としない。
+- コミットやpushを自動的に行わない。
+
+### VS CodeのCodex
+
+- ローカルリポジトリの調査、限定されたファイル編集、
+  検証コマンド実行、差分説明を担当する。
+- Workまたはユーザーが指定した一つの作業だけを行う。
+- 指定範囲外を変更しない。
+- 設計方針、要求の削除・統合、技術選定を独断で確定しない。
+- `git add`、`git commit`、`git push`、ブランチ操作を行わない。
+
+### ユーザー
+
+- 重要な設計判断と作業開始を承認する。
+- 差分と検証結果を確認する。
+- コミットとpushを明示的に実行する。
+- WorkとCodexの結果を相互に受け渡す。
+
+### 基本フロー
+
+Workで次の一作業を決定
+→ Codex向け指示を作成
+→ ユーザーがCodexへ指示
+→ Codexが調査・編集・検証
+→ ユーザーが結果をWorkへ渡す
+→ Workがレビュー
+→ ユーザーが必要に応じてcommit・push
+
+この役割分担は開始時点の運用ルールであり、
+試行結果や工程の進展に応じて明示的に見直すことができる。
