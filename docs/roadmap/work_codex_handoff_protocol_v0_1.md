@@ -452,4 +452,5 @@ Codexによる `git add`、commit、pushを行わない。
 - `AGENTS.md`
 - `docs/roadmap/requirements_artifacts_index_v0_1.md`
 - `docs/roadmap/requirements_to_design_handoff_v0_1.md`
+- `docs/requirements/full_rebuild_system_overview_v0_1.md`
 - `docs/requirements/full_rebuild_requirements_phase_completion_v0_1.md`
